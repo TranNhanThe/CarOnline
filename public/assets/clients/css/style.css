@@ -1,0 +1,150 @@
+table thead a{
+    color: inherit;
+    text-decoration: none;
+}
+ul li a{
+    text-decoration: none;
+}
+
+a{
+  text-decoration: none;
+}
+
+.image-container {
+    width: 400px; /* Điều chỉnh chiều rộng ảnh theo ý muốn */
+    height: auto; /* Giữ tỉ lệ khung ảnh gốc */
+}
+.rounded-open{
+    /* border-top-left-radius: 20px; 
+    border-bottom-left-radius: 20px;  */
+    border-radius: 15px ; 
+    overflow: hidden; /* Loại bỏ phần bị tràn nếu cần */
+}
+.rounded-image-open{
+    border-top-left-radius: 15px; 
+    border-bottom-left-radius: 15px; 
+    /* border-radius: 20px ;  */
+    overflow: hidden; /* Loại bỏ phần bị tràn nếu cần */
+}
+.bg-rentalcard {
+    background-color: #383448;
+}
+.bg-rentalcard-in{
+    background-color: #1f1b2d;
+}
+
+/* word-pack */
+
+.word-bg{
+  color: #1f1b2d;
+}
+.word-ash{
+    color: #c7cad1;
+}
+.word-ash-normal{
+    color: #c7cad1;
+}
+
+.word-ash:hover{
+    color: azure;
+}
+.word-rental-money{
+    color: #fa5531;
+}
+/* end word pack */
+/* open image pack */
+.object {
+  /* width: 550px;
+  height: 300px; */
+  width: 100%;
+  height: 320px;
+}
+.cover{
+  /* object-fit: cover; */
+  object-fit:cover;
+}
+.object1 {
+  width: 450px;
+  height: 450px;
+}
+.cover1{
+  object-fit: cover;
+}
+.container-flex{
+    position: relative;
+    width: 100%;
+  }
+.image {
+    opacity: 1;
+    display: block;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    /* text-align: center; */
+  }
+  .toptop {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 15%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    /* text-align: center; */
+  }
+
+  .container-flex:hover .image {
+    opacity: 0.3;
+  }
+  
+  .container-flex:hover .middle {
+    opacity: 1;
+  }
+
+  .container-flex:hover .toptop {
+    opacity: 1;
+  }
+  
+  .text {
+    background-color: #04AA6D;
+    color: white;
+    font-size: 16px;
+    padding: 16px 32px;
+  }
+
+  .top-left {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
+  
+  .top-left-bottom {
+      position: absolute;
+      top: 45px;
+      left: 5px;
+    }
+
+
+
+/* end image pack */
+
+hr{
+    color: #c7cad1;
+}
+@media (max-width: 800px) {
+  .hidden-on-sm {
+    display: none;
+  }
+}
+
+label{
+  color:azure;
+}
