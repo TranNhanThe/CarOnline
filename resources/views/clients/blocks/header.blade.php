@@ -1,46 +1,3 @@
-{{-- 
-  <header class="py-3 border shadow">
-    <div class="container-flex">
-        <div class="row">
-            <div class="col-4">
-                <h1>Unicode</h1>
-            </div>
-          <div class="col-8 d-flex justify-content-end align-items-center">
-                <ul class="nav">
-                    <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="{{route('home')}}">Trang chủ</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Giới thiệu</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{{route('product')}}">Sản phẩm</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Dịch vụ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Tin tức</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Liên hệ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('post-add')}}">Thêm sản phẩm</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('users.index')}}">Danh sách User</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('rental.index')}}">Danh sách Xe thuê</a>
-                    </li>
-                  </ul>
-            </div>
-        </div>
-    </div>
-</header> 
---}}
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-rentalcard-in py-4 shadow fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" href=""><img src="{{ asset('assets/clients/images/logotimotopj.png') }}" height="87px" width="150px" class="rounded img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt=""></a>
@@ -83,14 +40,31 @@
           <li class="nav-item">
               <a class="nav-link" href="{{route('rental.index')}}">Danh sách Xe thuê</a>
           </li>
-          <li class="nav-item">
-            <form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
-              @csrf
-              @method('DELETE')
-              <button class="btn btn-danger" type="submit">Logout</button>
-          </form>
-        </li>
         </ul>
+        <div>
+          <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="Avatar" class="rounded-circle avatar-image-sm"> 
+        </div> 
+        <div class="mb-4">
+           <li class="nav-item dropdown">
+            <a class="nav-link word-white dropdown-toggle mr-3" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ auth()->user()->fullname }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-danger container-flex" type="submit">Đăng xuất</button>
+              </form></li>
+              {{-- <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li> --}}
+            </ul>
+          </li>
+        </div>
+         
+
+        
+        
       </div>
     </div>
   </nav>

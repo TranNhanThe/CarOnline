@@ -2,7 +2,10 @@
 @section('title')
     {{$title}}
 @endsection
-
+@section('sidebar')
+    @parent
+    <h3 class="word-white">product sidebar</h3>
+@endsection
 @section('content')
     <h1 class="text-white">{{$title}}</h1>
     @if (session('msg'))
@@ -74,10 +77,10 @@
                     <div class="rounded-image-open container-flex">
 
                         {{-- <img src="public/storage/{{$item->image_link}}" class="image cover object" id="{{$item->id}}"> --}}
-                        <img src="storage/{{$item->image_link}}" class="image cover object" id="{{$item->id}}">
+                        <a href="{{route('rental.show', ['id'=>$item->id])}}"><img src="storage/{{$item->image_link}}" class="image cover object" id="{{$item->id}}"></a>
 
                         <div class="middle" id="1{{$item->id}}">
-                            <div  class="text">Yêu thích</div>
+                            <div class="text "><a class="word-white" href="{{route('rental.add')}}">Yêu thích</a></div>
 
                         </div>
 

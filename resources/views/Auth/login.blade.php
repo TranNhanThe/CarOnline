@@ -35,7 +35,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label word-bg">Password</label>
-                            <input type="password" name="password" class="form-control" id="password" required>
+                            <input type="password" name="password" class="form-control" placeholder="Mật khẩu" id="password" required>
                         </div>
                         <div class="mb-3">
                             <div class="d-grid">

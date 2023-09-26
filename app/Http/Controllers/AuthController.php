@@ -10,7 +10,17 @@ use App\Http\Requests\UserRequest;
 
 class AuthController extends Controller
 {
-      public $data = [];
+    public $data = [];
+
+    protected $fillable = [
+        'fullname',
+        'email',
+        'phone',
+        'cccd',
+        'password',
+        'avatar' // Đảm bảo trường 'avatar' được thêm vào đây
+    ];
+    
     public function register(){
         $this->data['title'] = 'Đăng Ký';
         return view('Auth.register', $this->data);
@@ -18,14 +28,27 @@ class AuthController extends Controller
 
     public function registerPost(UserRequest $request)
     {
-        $user = new Users();
- 
-        $user->fullname = $request->fullname;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
- 
-        $user->save();
- 
+        
+
+        $users = new Users();
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatarPath = $avatar->store('avatars', 'public'); // Lưu hình ảnh vào thư mục 'avatars'
+            // $avatarPath = $request->file('avatar')->store('avatars', 'public');
+           
+            $users->avatar = $avatarPath;
+        }
+
+        $users->fullname = $request->fullname;
+        $users->email = $request->email;
+        $users->phone = $request->phone;
+        $users->cccd = $request->cccd;
+        $users->password = Hash::make($request->password);
+        
+        
+        
+        
+        $users->save();
         return back()->with('success', 'Register successfully');
     }
  

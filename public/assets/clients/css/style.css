@@ -45,6 +45,10 @@ a{
     color: #c7cad1;
 }
 
+.word-white{
+  color: azure;
+}
+
 .word-ash:hover{
     color: azure;
 }
@@ -148,3 +152,68 @@ hr{
 label{
   color:azure;
 }
+
+/* open icon pack */
+.heart-icon {
+  background-color: #383448;
+  color: white;
+  border-radius: 10%;
+  padding: 5px;
+  font-size: 20px;
+}
+/* end icon pack */
+/* ------------------------------------------------ */
+/* star pack */
+.rating {
+  font-size: 24px; /* Điều chỉnh kích thước sao */
+}
+
+.star {
+  color: gold; /* Màu của các sao đầy */
+}
+
+.star-half {
+  color: gold; /* Màu của sao bán */
+}
+/* end star pack */
+
+/* avatar pack */
+.avatar {
+  width: 70px; /* Điều chỉnh kích thước avatar theo ý muốn */
+  height: 70px; /* Điều chỉnh kích thước avatar theo ý muốn */
+  overflow: hidden; 
+  object-fit: cover; /* Hiển thị hình ảnh sao cho nó bao phủ toàn bộ vùng hiển thị */
+  object-position: center center; /* Đặt tấm hình ảnh tập trung vào trung tâm *//* Đảm bảo hình ảnh không vượt ra ngoài khung hình */
+  border-radius: 50%; /* Làm tròn viền hình ảnh thành hình tròn */
+}
+
+.avatar img {
+  width: 150%;
+  height: auto;
+  display: block; 
+}
+
+.avatar-image-sm {
+  width: 50px; /* Điều chỉnh kích thước của hình ảnh */
+  height: 50px; /* Điều chỉnh kích thước của hình ảnh */
+  object-fit: cover; /* Hiển thị hình ảnh sao cho nó bao phủ toàn bộ vùng hiển thị */
+  object-position: center center; /* Đặt tấm hình ảnh tập trung vào trung tâm */
+  border-radius: 50%; /* Tạo hình tròn */
+}
+
+.avatar-image {
+  width: 70px; /* Điều chỉnh kích thước của hình ảnh */
+  height: 70px; /* Điều chỉnh kích thước của hình ảnh */
+  object-fit: cover; /* Hiển thị hình ảnh sao cho nó bao phủ toàn bộ vùng hiển thị */
+  object-position: center center; /* Đặt tấm hình ảnh tập trung vào trung tâm */
+  border-radius: 50%; /* Tạo hình tròn */
+}
+
+
+
+/* .avatar-sm img {
+  width: 150%;
+  height: auto;
+  display: block; 
+} */
+/* end avatar pack */

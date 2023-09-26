@@ -31,13 +31,17 @@ class UserRequest extends FormRequest
             
                 'fullname' => 'required|min:5',
                 'email' => 'required|email|'.$uniqueEmail,
-                'group_id' => ['required', 'integer', function($attribute, $value, $fail){
-                    if($value==0){
-                        $fail('Bắt buộc phải chọn nhóm');  
-                    }
-                }], 
-                'status' => 'required|integer',
-                'password' => 'required|min:9|regex:/[A-Z]/'
+                'phone' => 'required|min:10|max:12',
+                'cccd' => 'required|min:12|max:12',
+                
+                // 'group_id' => ['required', 'integer', function($attribute, $value, $fail){
+                //     if($value==0){
+                //         $fail('Bắt buộc phải chọn nhóm');  
+                //     }
+                // }], 
+                // 'status' => 'required|integer',
+                'password' => 'required|min:9|regex:/[A-Z]/',
+                
             
         ];
     }
@@ -46,13 +50,20 @@ class UserRequest extends FormRequest
         return [
             'fullname.required' => 'Họ và tên bắt buộc phải nhập',
             'fullname.min' => 'Họ và tên phải từ :min ký tự trở lên',
+            'phone.required' => 'Mời nhập số điện thoại',
+            'phone.min' => 'Số điện thoại phải từ :min số trở lên',
+            'phone.max' => 'Số điện thoại không quá :max số',
+            'cccd.required' => 'Mời nhập số Căn cước',
+            'cccd.min' => 'Số căn cước phải từ :min số trở lên',
+            'cccd.max' => 'Số căn cước không quá :max số',
             'email.required' => 'Email bắt buộc phải nhập',
             'email.email' => 'Email không đúng định dạng',
             'email.unique' => 'Email đã tồn tại', 
-            'group_id.required' => 'Nhóm không được để trống',
-            'group_id.integer' => 'Nhóm không hợp lệ',
-            'status.required' => 'Trạng thái khôn được để trống',
-            'status.integer' => 'Trạng thái không hợp lệ',
+            
+            // 'group_id.required' => 'Nhóm không được để trống',
+            // 'group_id.integer' => 'Nhóm không hợp lệ',
+            // 'status.required' => 'Trạng thái khôn được để trống',
+            // 'status.integer' => 'Trạng thái không hợp lệ',
             'password.min' => 'Password phải từ 9 ký tự trở lên',
             'password.regex' => 'Password phải có một chữ cái viết hoa'
         ];

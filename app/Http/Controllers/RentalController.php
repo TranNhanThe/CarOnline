@@ -5,6 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Rentalcar;
 
 use App\Models\RentalImage;
+use App\Models\Make;
+use App\Models\Bodytype;
+use App\Models\Models;
+use App\Models\Drivetrain;
+use App\Models\Fuel;
+use App\Models\Province;
+use App\Models\Transmission;
+use App\Models\Users;
+use App\Models\Utilities;
 use Illuminate\Http\Request;
 use App\Http\Requests\RentalRequest;
 use Attribute;
@@ -229,7 +238,29 @@ public function show($id)
 {
     $this->data['title'] = 'Chi Tiết Xe Thuê';
     $rentalcar = Rentalcar::find($id);
-    return view('clients.rental.rentalcar', ['rentalcar' => $rentalcar], $this->data);
+    $rental_image = RentalImage::where('id_rentalcar', $id)->get();
+    $make = Make::find($rentalcar->id_make);
+    $model = Models::find($rentalcar->id_model);
+    $bodytype = Bodytype::find($rentalcar->id_bodytype);
+    $drivetrain = Drivetrain::find($rentalcar->id_drivetrain);
+    $fuel = Fuel::find($rentalcar->id_fuel);
+    $province = Province::find($rentalcar->id_province);
+    $transmission = Transmission::find($rentalcar->id_transmission);
+    $utilities = Utilities::find($rentalcar->id_transmission);
+    $users = Users::find($rentalcar->id_user);
+    return view('clients.rental.rentalcar', [
+        'rentalcar' => $rentalcar,
+        'rental_image' => $rental_image,
+        'make' => $make,
+        'model' => $model,
+        'bodytype' => $bodytype,
+        'drivetrain' => $drivetrain,
+        'fuel' => $fuel,
+        'province' => $province,
+        'transmission' => $transmission,
+        'utilities' => $utilities,
+        'users' => $users
+    ], $this->data,);
 }
    
    
