@@ -7,11 +7,80 @@
     <h3 class="word-white">product sidebar</h3>
 @endsection
 @section('content')
-    <h1 class="text-white">{{$title}}</h1>
+    
     @if (session('msg'))
         <div class="alert alert-success">{{session('msg')}}</div>
     @endif
-    <a href="{{route('rental.add')}}" class="btn btn-primary">Thêm xe thuê</a>
+    
+    <div class="text-bg rounded">
+        <form id="searchForm"  action="{{ route('search') }}" method="GET">
+            <div class="row">
+                
+                <div class="col-md-2 col-sm-12">           
+                    <input class="form-control " value="{{request()->keywords}}"  type="text" id="keyword"  placeholder="Từ khóa" name="keywords">
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    
+                    <select class="form-select bg-rentalcard word-white" id="make" name="id_make">
+                        <option value=""><i class='fas fa-car-alt'></i>Tất cả hãng</option>
+                        @if (!empty(getAllMake()))
+                        @foreach (getAllMake() as $item)
+                            <option value="{{$item->id}}"{{request()->id_make==$item->id?
+                                'selected':false}}>{{$item->name}}</option>                           
+                        @endforeach
+                    @endif
+                        <!-- Thêm các hãng xe khác vào đây -->
+                    </select>
+                </div>
+                {{-- style="display: none;" --}}
+                <div class="col-md-2 col-sm-12" id="modelField" >
+                    
+                    <select class="form-select bg-rentalcard word-white" id="model" name="id_model">
+                        <option value=""><i class='fas fa-car-alt'></i>Tất cả Model</option>
+                        @if (!empty(getAllModels()))
+                        @foreach (getAllModels() as $item)
+                            <option value="{{$item->id}}"{{request()->id_model==$item->id?
+                                'selected':false}}>{{$item->name}}</option>                           
+                        @endforeach
+                    @endif
+                        <!-- Thêm các hãng xe khác vào đây -->
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    
+                    <select class="form-select bg-rentalcard word-white" id="bodytype" name="id_bodytype">
+                        <option value=""><i class='fas fa-car-alt'></i>Tất cả Dòng xe</option>
+                        @if (!empty(getAllBodytype()))
+                        @foreach (getAllBodytype() as $item)
+                            <option value="{{$item->id}}"{{request()->id_bodytype==$item->id?
+                                'selected':false}}>{{$item->name}}</option>                           
+                        @endforeach
+                    @endif
+                        <!-- Thêm các hãng xe khác vào đây -->
+                    </select>
+                    
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <select class="form-select bg-rentalcard word-white" id="province" name="id_province">
+                        <option value=""><i class='fas fa-car-alt'></i>Tất cả Tỉnh</option>
+                        @if (!empty(getAllProvince()))
+                        @foreach (getAllProvince() as $item)
+                            <option value="{{$item->id}}"{{request()->id_province==$item->id?
+                                'selected':false}}>{{$item->name}}</option>                           
+                        @endforeach
+                    @endif
+                        <!-- Thêm các hãng xe khác vào đây -->
+                    </select>
+                    
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <button class="btn text-search" width="100%" type="submit">Tìm kiếm</button>
+                </div>
+                
+            </div>
+            
+        </form>
+    </div>
     <hr>
 
     {{-- <form action="" method="get" class="mb-3">
@@ -64,7 +133,7 @@
     @if (!empty($rentalcarList))
     @foreach ($rentalcarList as $key => $item)
     {{-- <div class="container mb-3 col-12 col-md-12 col-lg-12 col-xl-4 "> --}}
-        <div class="container mb-3 col-lg-6 col-md-6 col-sm-6 col-xxl-12">
+        <div class="container mb-3 col-12 col-lg-12 col-md-12 col-sm-6 col-xxl-12">
         <div class="container">
         
             <div class=" bg-rentalcard rounded-open">
@@ -72,7 +141,7 @@
 <div class="row">
     
                 {{-- /////////////////////////////////image///////////////////////////// --}}
-                <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12 col-xxl-5">
+                <div class="col-md-12 col-lg-5 col-xl-5 col-sm-12 col-xxl-5">
 
                     <div class="rounded-image-open container-flex">
 
@@ -80,8 +149,18 @@
                         <a href="{{route('rental.show', ['id'=>$item->id])}}"><img src="storage/{{$item->image_link}}" class="image cover object" id="{{$item->id}}"></a>
 
                         <div class="middle" id="1{{$item->id}}">
-                            <div class="text "><a class="word-white" href="{{route('rental.add')}}">Yêu thích</a></div>
-
+                            @if (Auth::check())
+                            <form action="{{ route('favorite.toggle', $item->id) }}" method="POST">
+                                @csrf
+                                <button class="btn" type="submit">
+                                    @if (Auth::user()->hasFavorite($item->id))
+                                    <i class='fa fa-heart word-rental-money' title="Bỏ yêu thích" style="font-size: 30px"></i> 
+                                    @else
+                                    <i class='fa fa-heart-o word-rental-money' title="Thêm vào yêu thích" style="font-size: 30px"></i>
+                                    @endif 
+                                </button>
+                            </form>
+                            @endif
                         </div>
 
                         <div class="toptop" id="2{{$item->id}}">
@@ -101,26 +180,27 @@
                 </div>
                 {{-- /////////////////////////////////image-end///////////////////////////// --}}
                 
-                <div class="col-md-12  col-lg-12 col-xl-12 col-sm-12 col-xxl-7">
+                <div class="col-md-6  col-lg-7 col-xl-7 col-sm-12 col-xxl-7">
                     <div class="row container">
                         
-                        <div class="col-md-9 col-sm-9">
+                        <div class="col-md-8 col-sm-8">
                             <p class="my-1 word-ash-normal">{{ date('d-m-Y', strtotime($item->created_at)) }}</p>
                            <a href="{{route('rental.show', ['id'=>$item->id])}}"><h4 class="my-1 word-ash">{{$item->car_name}}</h4></a> 
                             <p class="my-1 word-rental-money">{{ number_format($item->price, 0, ',', '.') }} Đồng/ngày</p>
                             <p class="my-1 word-ash-normal"><i style="font-size: 20px" class='fa-solid fa-location-dot'></i> {{$item->location}}, {{$item->province_name}}</p>
-                            {!!$item->driver==0?'<button class="btn btn-danger btn-sm">Không kèm tài xế</button>':
-                '<button class="btn btn-success btn-sm">Có kèm tài xế</button>'!!}
+                            
                         </div>
 
-                        <div class="col-md-3 col-sm-3  d-flex justify-content-end">
+                        <div class="col-md-4 col-sm-4  ">
 
                            <div class="d-flex align-items-center justify-content-center">
 
-                            <img src="assets\clients\images\rental.png" width="80%" height="auto" alt="" >
+                            <img src="assets\clients\images\rental.png" class="pt-2" width="30px" alt="" > <h3 class="word-ash-normal pt-3">: {{$item->rented}}</h3>
                         </div>
                             {{-- đã thuê n lần --}}
-                           <div class="d-flex align-items-center justify-content-center"><h4 class="word-ash-normal"> : {{$item->rented}}</h4></div> 
+                            
+                           {!!$item->driver==0?'<button class="btn btn-danger btn-sm mt-3">Không kèm tài xế</button>':
+                           '<button class="btn btn-success btn-sm mt-3">Có kèm tài xế</button>'!!}
                         </div>
 
                     </div>
@@ -131,21 +211,21 @@
                         {{-- ghế --}}
                         <div class="col-md-4 col-sm-2">
                             <div class="rounded bg-rentalcard-in text-white pt-3" style="width: auto; height: auto;">
-                                <div class="d-flex align-items-center justify-content-center"><img src="assets\clients\images\seat2.png" width="50px" alt=""></div>
+                                <div class="d-flex align-items-center justify-content-center"><img src="assets\clients\images\seat2.png" width="30px" alt=""></div>
                                 <div class="d-flex align-items-center justify-content-center"><h5>{{$item->seat}}</h5></div>
                             </div>
                         </div>
                         {{-- hộp số --}}
                         <div class="col-md-4 col-sm-2">
                             <div class="rounded bg-rentalcard-in text-white pt-3" style="width: auto; height: auto;">  
-                                <div class="d-flex align-items-center justify-content-center"><img src="assets\clients\images\gearboxpro.png" width="50px" alt=""></div>
+                                <div class="d-flex align-items-center justify-content-center"><img src="assets\clients\images\gearboxpro.png" width="30px" alt=""></div>
                                 <div class="d-flex align-items-center justify-content-center"><h6>{{$item->transmission_name}}</h6></div>
                             </div>
                         </div>
                         {{-- nhiên liệu --}}
                         <div class="col-md-4 col-sm-2">
                             <div class="rounded bg-rentalcard-in text-white pt-3" style="width: auto; height: auto">
-                                <div class="d-flex align-items-center justify-content-center"><img src="assets\clients\images\fuel.png" width="50px" alt=""></div>
+                                <div class="d-flex align-items-center justify-content-center"><img src="assets\clients\images\fuel.png" width="30px" alt=""></div>
                                 <div class="d-flex align-items-center justify-content-center"><h5>{{$item->fuel_name}}</h5></div>
                             </div>
                         </div>

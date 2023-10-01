@@ -219,4 +219,5 @@ class Users extends Model
         $detail = DB::table($this -> table)->first();
         dd($detail->email);
     }
+    
 }

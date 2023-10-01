@@ -75,6 +75,10 @@
                     <div class="d-flex align-items-center justify-content-center"><h6>
                       @if ($rentalcar->driver == 1)
                           Có kèm tài xế
+                      @elseif ($rentalcar->driver == 0)
+                          Không kèm tài xế
+                      @else 
+                          Liên hệ
                       @endif
                     </h6></div>
                 </div>
@@ -84,10 +88,12 @@
                 <div class="rounded bg-rentalcard text-white pt-3" style="width: auto; height: auto">
                     <div class="d-flex align-items-center justify-content-center"><img src="{{ asset('assets\clients\images\accident.png') }}" width="50px" alt=""></div>
                     <div class="d-flex align-items-center justify-content-center"><h5>
-                      @if ($rentalcar->accident == 1)
-                          Từng bị va chạm
-                      @else
+                      @if ($rentalcar->no_accident == 1)
                           Chưa từng va chạm
+                      @elseif ($rentalcar->no_accident == 0)
+                          Từng va chạm
+                      @else
+                          Không xác định
                       @endif  
                     </h5></div>
                 </div>
@@ -98,11 +104,13 @@
            <h3 class="my-3 word-ash">Tính năng</h3>
           <div class="row bg-rentalcard rounded m-1 mb-4 p-4">
             <div class="col word-ash">
-              <P>
-                 @if ($utilities->Bluetooth == 1)
-                    Bluetooth
+              <h3 class="word-white">An Toàn</h3>
+              
+              <p>
+                @if ($utilities->lop_du_phong == 1)
+                     Lốp dự phòng
                 @endif
-              </P>
+              </p>
                
               <P>
                 @if ($utilities->camera_lui == 1)
@@ -110,17 +118,17 @@
                 @endif
               </P>
                 
-              <P>
-                @if ($utilities->dinh_vi_gps == 1)
-                    Định vị GPS
+              <p>
+                @if ($utilities->camera_cap_le == 1)
+                     Camera Cập Lề
                 @endif
-              </P>
+              </p>
                 
-              <P>
-                @if ($utilities->etc == 1)
-                   ETC  
+              <p>
+                @if ($utilities->cam_bien_va_cham == 1)
+                     Cảm Biến Va Chạm
                 @endif
-              </P>
+              </p>
                 
               <P>
                 @if ($utilities->cam_bien_lop == 1)
@@ -129,8 +137,8 @@
               </P>
 
               <p>
-                @if ($utilities->khe_cam_usb == 1)
-                     Khe Cắm USB
+                @if ($utilities->camera_360 == 1)
+                     Camera 360
                 @endif
               </p>
 
@@ -140,11 +148,7 @@
                 @endif
               </p>
 
-              <p>
-                @if ($utilities->camera_hanh_trinh == 1)
-                     Camera Hành Trình
-                @endif
-              </p>
+              
 
               <p>
                 @if ($utilities->canh_bao_toc_do == 1)
@@ -154,17 +158,25 @@
             </div>
 
             <div class="col word-ash">
-              <p>
-                @if ($utilities->lop_du_phong == 1)
-                     Lốp dự phòng
-                @endif
-              </p>
+              <h3 class="word-white">Tiện Nghi</h3>
 
-              <p>
-                @if ($utilities->camera_cap_le == 1)
-                     Camera Cập Lề
-                @endif
-              </p>
+              <P>
+                @if ($utilities->Bluetooth == 1)
+                   Bluetooth
+               @endif
+             </P>
+
+             <P>
+              @if ($utilities->dinh_vi_gps == 1)
+                  Định vị GPS
+              @endif
+            </P>
+
+            <P>
+              @if ($utilities->etc == 1)
+                 ETC  
+              @endif
+            </P>
 
               <p>
                 @if ($utilities->cua_so_troi == 1)
@@ -173,14 +185,14 @@
               </p>
 
               <p>
-                @if ($utilities->cam_bien_va_cham == 1)
-                     Cảm Biến Va Chạm
+                @if ($utilities->khe_cam_usb == 1)
+                     Khe Cắm USB
                 @endif
               </p>
 
               <p>
-                @if ($utilities->camera_360 == 1)
-                     Camera 360
+                @if ($utilities->camera_hanh_trinh == 1)
+                     Camera Hành Trình
                 @endif
               </p>
 
@@ -208,9 +220,7 @@
 
           <div class="bg-rentalcard word-white m-1 mb-4 p-4">
             <p  id="content">
-              Lorem tincidunt lectus vitae id vulputate diam quam. Imperdiet non scelerisque turpis sed etiam ultrices. Blandit mollis dignissim egestas consectetur porttitor. Vulputate dolor pretium, dignissim eu augue sit ut convallis. Lectus est, magna urna feugiat sed ultricies sed in lacinia. Fusce potenti sit id pharetra vel ornare. Vestibulum sed tellus ullamcorper arcu.
-
-Asperiores eos molestias, aspernatur assumenda vel corporis ex, magni excepturi totam exercitationem quia inventore quod amet labore impedit quae distinctio? Officiis blanditiis consequatur alias, atque, sed est incidunt accusamus repudiandae tempora repellendus obcaecati delectus ducimus inventore tempore harum numquam autem eligendi culpa.
+              {{$rentalcar->mota}}
           </p><button class="btn btn-success bg-rentalcard" id="readMore">Đọc tiếp</button>
           </div>
           {{-- end mô tả chủ xe --}}
@@ -260,7 +270,7 @@ Asperiores eos molestias, aspernatur assumenda vel corporis ex, magni excepturi 
               <p class="my-1 word-ash-normal"><i style="font-size: 20px" class='fa-solid fa-location-dot'></i> {{$rentalcar->location}}, {{$province->name}}</p>
               
               <div class="bg-rentalcard rounded m-1 mb-4 p-2">
-                  <p class="word-white">Chủ xe tư nhân</p>
+                  <p class="word-white">Chủ Xe Tư Nhân</p>
 
                 <div class="row">
                   <div class="col-3">

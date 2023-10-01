@@ -26,7 +26,7 @@ class RentalController extends Controller
     private $rentalcar;
     private $rental_image;
 
-    const _PER_PAGE = 4;
+    const _PER_PAGE = 10;
     public function __construct(){
         $this->rentalcar = new Rentalcar();
         $this->rental_image = New RentalImage();
@@ -85,6 +85,8 @@ class RentalController extends Controller
             'sortBy' => $sortBy,
             'sortType' => $sortType
         ];
+
+        
 
         $rentalcarList = $this->rentalcar->getAllRental($filters, $keywords, $sortArr, self::_PER_PAGE); 
         $imagelist = $this->rental_image->getAllImage();
@@ -171,11 +173,35 @@ class RentalController extends Controller
         $rentalcar->interior_color = $request->input('interior_color');
         $rentalcar->vin = $request->input('vin');
         $rentalcar->no_accident = $request->input('no_accident');
-        $rentalcar->price = $request->input('price');
+        $rentalcar->price = str_replace(['.', ','], '', $request->input('price'));
+        // $rentalcar->price = $request->input('price');
         $rentalcar->seat = $request->input('seat');
         $rentalcar->driver = $request->input('driver');
+        $rentalcar->mota = $request->input('mota');
         $rentalcar->save();
         $firstImage = true;
+        $utilities = new Utilities();
+
+
+        $utilities->camera_lui = $request->input('camera_lui');
+        $utilities->dinh_vi_gps = $request->input('dinh_vi_gps');
+        $utilities->etc = $request->input('etc');
+        $utilities->Bluetooth = $request->input('Bluetooth');
+        $utilities->cam_bien_lop = $request->input('cam_bien_lop');
+        $utilities->khe_cam_usb = $request->input('khe_cam_usb');
+        $utilities->tui_khi_an_toan = $request->input('tui_khi_an_toan');
+        $utilities->camera_hanh_trinh = $request->input('camera_hanh_trinh');
+        $utilities->canh_bao_toc_do = $request->input('canh_bao_toc_do');
+        $utilities->lop_du_phong = $request->input('lop_du_phong');
+        $utilities->camera_cap_le = $request->input('camera_cap_le');
+        $utilities->cua_so_troi = $request->input('cua_so_troi');
+        $utilities->cam_bien_va_cham = $request->input('cam_bien_va_cham');
+        $utilities->camera_360 = $request->input('camera_360');
+        $utilities->ghe_tre_em = $request->input('ghe_tre_em');
+        $utilities->man_hinh_dvd = $request->input('man_hinh_dvd');
+        $utilities->ban_do = $request->input('ban_do');
+        $utilities->id_rentalcar = $rentalcar->id;
+        $utilities->save();
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
             $imagePath = $image->store('rental_image', 'public');

@@ -9,6 +9,8 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\SearchController;
 
 
 /*
@@ -21,8 +23,20 @@ use App\Http\Controllers\AuthController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::group(['middleware' => 'auth'], function () {
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::prefix('rental')->name('rental.')->group(function () {
+   Route::get('/', [RentalController::class, 'index'])->name('index');
+   Route::middleware(['auth'])->get('/add', [RentalController::class, 'add'])->name('add');
+   Route::middleware(['auth'])->post('/add', [RentalController::class, 'postAdd'])->name('post-add');
+   // Route::get('/detail/{id}', [RentalController::class, 'getCarDetail'])->name('detail');
+   Route::get('/xe-thue/{id}', [RentalController::class, 'show'])->name('show');
+});
+Route::group(['middleware' => 'auth'], function () {
+Route::post('/favorite/{car}', [FavoriteController::class, 'toggleFavorite'])->name('favorite.toggle');
+// Route::middleware(['auth'])->get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+
+Route::get('/search', [HomeController::class, 'searchMaster'])->name('search');
+Route::get('/favorite', [HomeController::class, 'allFavor'])->name('favorite');
 Route::get('/san-pham', [HomeController::class, 'products'])->name('product');
 
 
@@ -69,13 +83,7 @@ Route::get('demo-response', function () {
 
  });
 
- Route::prefix('rental')->name('rental.')->group(function () {
-   Route::get('/', [RentalController::class, 'index'])->name('index');
-   Route::get('/add', [RentalController::class, 'add'])->name('add');
-   Route::post('/add', [RentalController::class, 'postAdd'])->name('post-add');
-   // Route::get('/detail/{id}', [RentalController::class, 'getCarDetail'])->name('detail');
-   Route::get('/xe-thue/{id}', [RentalController::class, 'show'])->name('show');
-});
+
 
  Route::prefix('posts')->name('posts.')->group(function () {
    Route::get('/', [PostController::class, 'index'])->name('index');

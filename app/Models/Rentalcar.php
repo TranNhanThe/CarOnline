@@ -32,8 +32,8 @@ class Rentalcar extends Model
        'bodytype.name as bodytype_name',
        'make.name as make_name',
        'province.name as province_name',
-       'rental_image.link as image_link'
-
+       'rental_image.link as image_link',
+        // 'favorite_rental.id_frentalcar as id' 
        )
     //  ->join('groups', 'users.group_id', '=', 'groups.id')
         ->join('users', 'rentalcar.id_user', '=', 'users.id')
@@ -45,6 +45,7 @@ class Rentalcar extends Model
         ->join('make', 'rentalcar.id_make', '=', 'make.id')
         ->join('province', 'rentalcar.id_province', '=', 'province.id')
         ->join('rental_image', 'rentalcar.id', '=', 'rental_image.id_rentalcar')
+        // ->join('favorite_rental', 'rentalcar.id', '=', 'favorite_rental.id_frentalcar')
        ->where('rentalcar.trash', 0)
        ->where('rental_image.is_main', 1)
        ; 
@@ -70,7 +71,7 @@ class Rentalcar extends Model
            $rentalcar = $rentalcar->where(function($query) use ($keywords){
                $query->orWhere('car_name', 'like', '%'.$keywords.'%');
                $query->orWhere('location', 'like', '%'.$keywords.'%');
-               $query->orWhere('id', 'like', '%'.$keywords.'%');
+               $query->orWhere('rentalcar.id', 'like', '%'.$keywords.'%');
            });
        }
 
@@ -90,6 +91,81 @@ class Rentalcar extends Model
 
        return $rentalcar;
     }
+
+    public function getAllRentalFavo($filters = [], $keywords = null, $sortByArr = null, $perPage = null){
+        //too raw
+     // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
+     //DB::enableQueryLog();
+     $rentalcar = DB::table($this->table)
+     ->select('rentalcar.*', 
+     'users.fullname as user_name',
+     'model.name as model_name',
+     'fuel.name as fuel_name',
+     'drivetrain.name as drivetrain_name', 
+     'transmission.name as transmission_name',
+     'bodytype.name as bodytype_name',
+     'make.name as make_name',
+     'province.name as province_name',
+     'rental_image.link as image_link',
+    'favorite_rental.id_frentalcar as id' 
+     )
+  //  ->join('groups', 'users.group_id', '=', 'groups.id')
+      ->join('users', 'rentalcar.id_user', '=', 'users.id')
+      ->join('model', 'rentalcar.id_model', '=', 'model.id')
+      ->join('fuel', 'rentalcar.id_fuel', '=', 'fuel.id')
+      ->join('drivetrain', 'rentalcar.id_drivetrain', '=', 'drivetrain.id')
+      ->join('transmission', 'rentalcar.id_transmission', '=', 'transmission.id')
+      ->join('bodytype', 'rentalcar.id_bodytype', '=', 'bodytype.id')
+      ->join('make', 'rentalcar.id_make', '=', 'make.id')
+      ->join('province', 'rentalcar.id_province', '=', 'province.id')
+      ->join('rental_image', 'rentalcar.id', '=', 'rental_image.id_rentalcar')
+      ->join('favorite_rental', 'rentalcar.id', '=', 'favorite_rental.id_frentalcar')
+     ->where('rentalcar.trash', 0)
+     ->where('favorite_rental.id_fuser', auth()->user()->id)
+     ->where('rental_image.is_main', 1)
+     ; 
+     $orderBy = 'rentalcar.created_at';
+     $orderType = 'desc';
+     
+
+     if(!empty($sortByArr) && is_array($sortByArr)){
+         if(!empty($sortByArr['sortBy']) && !empty($sortByArr['sortType'])){
+             $orderBy = trim($sortByArr['sortBy']);
+             $orderType = trim($sortByArr['sortType']);        
+         } 
+     }
+
+     $rentalcar = $rentalcar->orderBy($orderBy, $orderType);
+     
+
+     if(!empty($filters)){
+         $rentalcar = $rentalcar->where($filters);
+     }
+
+     if(!empty($keywords)){
+         $rentalcar = $rentalcar->where(function($query) use ($keywords){
+             $query->orWhere('car_name', 'like', '%'.$keywords.'%');
+             $query->orWhere('location', 'like', '%'.$keywords.'%');
+             $query->orWhere('rentalcar.id', 'like', '%'.$keywords.'%');
+         });
+     }
+
+    // $users = $users->get(); 
+
+    //phân trang
+     if(!empty($perPage)){
+         $rentalcar = $rentalcar->paginate($perPage)->withQueryString();
+     }else{
+      $rentalcar = $rentalcar->get();
+     }
+     
+
+  //    $sql = DB::getQueryLog();
+  //    //dd($lists);
+  //    dd($sql);
+
+     return $rentalcar;
+  }
     public function rentalImages()
 {
     return $this->hasMany(RentalImage::class, 'id_rentalcar', 'id');

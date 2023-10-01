@@ -42,4 +42,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function favorites()
+    {
+        return $this->belongsToMany(RentalCar::class, 'favorite_rental', 'id_fuser', 'id_frentalcar');
+    }
+
+    public function hasFavorite($carId)
+    {
+        return $this->favorites->contains($carId);
+    }
 }

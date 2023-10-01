@@ -34,10 +34,23 @@ a{
 }
 
 /* word-pack */
-
+.word-lg{
+  font-size: large;
+}
+.word-xlg{
+  font-size:x-large;
+}
 .word-bg{
   color: #1f1b2d;
 }
+
+.word-black{
+  color: #1f1b2d;
+}
+.word-black:hover{
+  color: #ff6600;
+}
+
 .word-ash{
     color: #c7cad1;
 }
@@ -49,6 +62,12 @@ a{
   color: azure;
 }
 
+.t-a-r{
+  text-align: right;
+}
+.t-a-l{
+  text-align: left;
+}
 .word-ash:hover{
     color: azure;
 }
@@ -61,7 +80,7 @@ a{
   /* width: 550px;
   height: 300px; */
   width: 100%;
-  height: 320px;
+  height: 252px;
 }
 .cover{
   /* object-fit: cover; */
@@ -124,6 +143,40 @@ a{
     padding: 16px 32px;
   }
 
+  .text-bg {
+    background-color: #383448;
+    color: white;
+    font-size: 16px;
+    padding: 16px 32px;
+  }
+  .text-search {
+    background-color: #ec7037;
+    color: white;
+    font-size: 15px;
+    padding: 7px 32px;
+  }
+  
+
+  .text-search:hover {
+    background-color: #ec5108;
+    color: white;
+    font-size: 15px;
+    padding: 7px 32px;
+  }
+
+  .wrap {
+    background-color: #1f1b2d;
+    color: white;
+    padding: 7px 22px;
+  }
+  
+
+  .wrap:hover {
+    background-color: #383448;
+    color: white;
+    padding: 7px 22px;
+  }
+
   .top-left {
     position: absolute;
     top: 5px;
@@ -136,6 +189,9 @@ a{
       left: 5px;
     }
 
+    .rotated-image {
+      transform: rotate(90deg);
+    }
 
 
 /* end image pack */
@@ -209,11 +265,10 @@ label{
   border-radius: 50%; /* Tạo hình tròn */
 }
 
-
-
-/* .avatar-sm img {
-  width: 150%;
-  height: auto;
-  display: block; 
-} */
 /* end avatar pack */
+
+/* form size */
+.custom-input-1 {
+  width: 300px;
+}
+/* end form size */

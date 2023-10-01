@@ -13,7 +13,6 @@
     <hr>
 
     <form action="" method="get" class="mb-3">
-        
         <div class="row">
             <div class="col-3">
                 <select class="form-control" name="status">

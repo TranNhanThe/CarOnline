@@ -91,7 +91,8 @@ class RentalRequest extends FormRequest
                 'price' => 'required',
                 'seat' => 'required|integer',
                 'driver' => 'required|integer',
-                'image' => 'required'
+                'image' => 'required',
+                'mota' => 'required'
 
                 
 
@@ -144,6 +145,8 @@ class RentalRequest extends FormRequest
             'no_accident.required' => 'Từng bị va chạm hay chưa',
 
             'no_accident.integer' => 'Dữ liệu không hợp lệ',
+
+            'mota.required' => 'Hãy viết mô tả',
 
             'price.required' => 'Giá bắt buộc phải nhập',
 

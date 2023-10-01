@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
+use App\Models\FavoriteRental;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\Uppercase;
+use App\Models\Models;
+use App\Models\Rentalcar;
+use App\Models\RentalImage;
 
 use Illuminate\Support\Facades\DB;
 
@@ -14,9 +18,15 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     public $data = [];
+    private $rentalcar;
+    private $rental_image;
+    public function __construct(){
+        $this->rentalcar = new Rentalcar();
+        $this->rental_image = New RentalImage();
+    }
     public function index(){
-        $this->data['title'] = 'dao tao lap trinh web';
-        $this->data['message'] = 'Đăng ký tài khoản thành công';
+        $this->data['title'] = 'Timoto - Trang chủ';
+        // $this->data['message'] = 'Đăng ký tài khoản thành công';
 
         // $user = DB::select('SELECT * FROM users WHERE email=:email', [
         //     'email' => 'hoangan.web@gmail.com'
@@ -26,6 +36,122 @@ class HomeController extends Controller
 
         return view('clients.home', $this->data);
     }
+    public function searchMaster(Request $request){
+    
+         $title = 'Kết quả tìm kiếm';
+         $filters = [];
+         $keywords = null;
+         $favorite = null;
+
+         if (!empty($request->id_make)){
+            $idMake = $request->id_make; 
+            $filters[] =  ['rentalcar.id_make', '=', $idMake];
+        }
+
+        if (!empty($request->id_model)){
+            $idModel = $request->id_model; 
+            $filters[] =  ['rentalcar.id_model', '=', $idModel];
+        }
+
+        if (!empty($request->id_bodytype)){
+            $idBodyType = $request->id_bodytype; 
+            $filters[] =  ['rentalcar.id_bodytype', '=', $idBodyType];
+        }
+
+        if (!empty($request->id_province)){
+            $idProvince = $request->id_province; 
+            $filters[] =  ['rentalcar.id_province', '=', $idProvince];
+        }
+
+ 
+         if (!empty($request->keywords)){
+             $keywords = $request->keywords;
+         }
+ 
+         $sortBy = $request->input('sort-by');
+         
+         $sortType = $request->input('sort-type')?$request->input('sort-type'):'asc'; 
+ 
+         $allowSort = ['asc', 'desc'];
+ 
+         if(!empty($sortType)&&in_array($sortType, $allowSort, $sortBy)){
+             if($sortType == 'desc'){
+                         $sortType = 'asc';
+             }else{
+                         $sortType = 'desc';
+              } 
+         }else{
+             $sortType = 'asc';
+         }
+ 
+         
+         $sortArr = [
+             'sortBy' => $sortBy,
+             'sortType' => $sortType
+         ];
+         $imagelist = $this->rental_image->getAllImage();
+         
+         $rentalcarList = $this->rentalcar->getAllRental($filters, $keywords, $sortArr); 
+         return view('clients.rental.rentallist', compact('title', 'rentalcarList', 'sortType', 'imagelist'));
+     }
+
+     public function allFavor(Request $request){
+        $title = 'Kết quả tìm kiếm';
+        $filters = [];
+        $keywords = null;
+        $favorite = null;
+
+        if (!empty($request->id_make)){
+           $idMake = $request->id_make; 
+           $filters[] =  ['rentalcar.id_make', '=', $idMake];
+       }
+
+       if (!empty($request->id_model)){
+           $idModel = $request->id_model; 
+           $filters[] =  ['rentalcar.id_model', '=', $idModel];
+       }
+
+       if (!empty($request->id_bodytype)){
+           $idBodyType = $request->id_bodytype; 
+           $filters[] =  ['rentalcar.id_bodytype', '=', $idBodyType];
+       }
+
+       if (!empty($request->id_province)){
+           $idProvince = $request->id_province; 
+           $filters[] =  ['rentalcar.id_province', '=', $idProvince];
+       }
+
+
+        if (!empty($request->keywords)){
+            $keywords = $request->keywords;
+        }
+
+        $sortBy = $request->input('sort-by');
+        
+        $sortType = $request->input('sort-type')?$request->input('sort-type'):'asc'; 
+
+        $allowSort = ['asc', 'desc'];
+
+        if(!empty($sortType)&&in_array($sortType, $allowSort, $sortBy)){
+            if($sortType == 'desc'){
+                        $sortType = 'asc';
+            }else{
+                        $sortType = 'desc';
+             } 
+        }else{
+            $sortType = 'asc';
+        }
+
+        
+        $sortArr = [
+            'sortBy' => $sortBy,
+            'sortType' => $sortType
+        ];
+        $imagelist = $this->rental_image->getAllImage();
+        
+        $rentalcarList = $this->rentalcar->getAllRentalFavo($filters, $keywords, $sortArr); 
+        return view('clients.rental.rentallist', compact('title', 'rentalcarList', 'sortType', 'imagelist'));
+     }
 
     public function products(){
         $this->data['title'] = 'San pham';
