@@ -52,6 +52,11 @@ function getAllMake(){
     return $make->getAll();
 }
 
+function getAMake(){
+    $make = new Make; 
+    return $make->getA();
+}
+
 
 function getAllProvince(){
     $province = new Province; 

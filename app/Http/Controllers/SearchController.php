@@ -14,6 +14,7 @@ class SearchController extends Controller
         $id_model = $request->input('id_model');
         $id_bodytype = $request->input('id_bodytype');
         $id_province = $request->input('id_province');
+        $id_drivetrain = $request->input('id_drivetrain');
 
         // Thực hiện tìm kiếm dựa trên dữ liệu và trả về kết quả
         // Ví dụ: $results = YourModel::where('car_name', $carName)->...

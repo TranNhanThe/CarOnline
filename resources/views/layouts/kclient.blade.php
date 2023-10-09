@@ -9,6 +9,7 @@
     <script src="https://kit.fontawesome.com/5644bf12f0.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{asset('assets/clients/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/clients/css/style.css')}}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
     @yield('css') 
     <style>
         

@@ -24,6 +24,8 @@ use App\Http\Controllers\SearchController;
 |
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/search', [HomeController::class, 'searchMaster'])->name('search');
+Route::get('/selectmodel', [HomeController::class, 'selectModel'])->name('selectModel');
 Route::prefix('rental')->name('rental.')->group(function () {
    Route::get('/', [RentalController::class, 'index'])->name('index');
    Route::middleware(['auth'])->get('/add', [RentalController::class, 'add'])->name('add');
@@ -35,7 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::post('/favorite/{car}', [FavoriteController::class, 'toggleFavorite'])->name('favorite.toggle');
 // Route::middleware(['auth'])->get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 
-Route::get('/search', [HomeController::class, 'searchMaster'])->name('search');
+
 Route::get('/favorite', [HomeController::class, 'allFavor'])->name('favorite');
 Route::get('/san-pham', [HomeController::class, 'products'])->name('product');
 

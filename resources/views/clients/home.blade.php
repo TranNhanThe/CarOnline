@@ -18,10 +18,10 @@
             <div class="col-sm-12 col-md-8 col-lg-8">
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                      <div class="carousel-item ">
+                      <div class="carousel-item active">
                         <img class="d-block w-100" src="{{ asset('assets\clients\images\bronco.png') }}" alt="First slide">
                       </div>
-                      <div class="carousel-item active">
+                      <div class="carousel-item ">
                         <img class="d-block w-100"  src="{{ asset('assets\clients\images\mache.png') }}" alt="Second slide">
                       </div>
                     </div>
@@ -39,8 +39,10 @@
         {{-- ----------------------------------Các nút----------------------------------- --}}
         {{-- action="{{ route('search') }}" --}}
         
-        <div class="text-bg rounded">
+        <div class="text-bg">
             <form id="searchForm"  action="{{ route('search') }}" method="GET">
+                <div class="row"><h3><i class='fa fa-search'></i> Tìm xe thuê</h3></div>
+             
                 <div class="row">
                     
                     <div class="col-md-2 col-sm-12">           
@@ -48,8 +50,8 @@
                     </div>
                     <div class="col-md-2 col-sm-12">
                         
-                        <select class="form-select bg-rentalcard word-white" id="make" name="id_make">
-                            <option value=""><i class='fas fa-car-alt'></i>Tất cả hãng</option>
+                        <select class="form-select bg-rentalcard word-white" id="id_make" name="id_make">
+                            <option value=""><i class='fas fa-car-alt'></i>Mọi Hãng</option>
                             @if (!empty(getAllMake()))
                             @foreach (getAllMake() as $item)
                                 <option value="{{$item->id}}"{{request()->id_make==$item->id?
@@ -62,21 +64,21 @@
                     {{-- style="display: none;" --}}
                     <div class="col-md-2 col-sm-12" id="modelField" >
                         
-                        <select class="form-select bg-rentalcard word-white" id="model" name="id_model">
-                            <option value=""><i class='fas fa-car-alt'></i>Tất cả Model</option>
-                            @if (!empty(getAllModels()))
+                        <select class="form-select bg-rentalcard word-white" id="id_model" name="id_model">
+                            <option value=""><i class='fas fa-car-alt'></i>Mọi Model</option>
+                            {{-- @if (!empty(getAllModels()))
                             @foreach (getAllModels() as $item)
                                 <option value="{{$item->id}}"{{request()->id_model==$item->id?
                                     'selected':false}}>{{$item->name}}</option>                           
                             @endforeach
-                        @endif
+                        @endif --}}
                             <!-- Thêm các hãng xe khác vào đây -->
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-12">
                         
                         <select class="form-select bg-rentalcard word-white" id="bodytype" name="id_bodytype">
-                            <option value=""><i class='fas fa-car-alt'></i>Tất cả Dòng xe</option>
+                            <option value=""><i class='fas fa-car-alt'></i>Mọi Dòng xe</option>
                             @if (!empty(getAllBodytype()))
                             @foreach (getAllBodytype() as $item)
                                 <option value="{{$item->id}}"{{request()->id_bodytype==$item->id?
@@ -89,7 +91,7 @@
                     </div>
                     <div class="col-md-2 col-sm-12">
                         <select class="form-select bg-rentalcard word-white" id="province" name="id_province">
-                            <option value=""><i class='fas fa-car-alt'></i>Tất cả Tỉnh</option>
+                            <option value=""><i class='fas fa-car-alt'></i>Trên cả Nước</option>
                             @if (!empty(getAllProvince()))
                             @foreach (getAllProvince() as $item)
                                 <option value="{{$item->id}}"{{request()->id_province==$item->id?
@@ -268,8 +270,38 @@
        <h2 class="word-white">Xe mới nhất                                                          </h2>
     </div>         
                 
-
-                
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script>
+        $('#id_make').on('change', function() {
+            var selectedValue = $(this).val();
+            //alert(selectedValue);
+            $.ajax({
+                url: 'selectmodel',
+                  method: 'GET',
+                  data: {
+                    selectedValue: selectedValue
+                  },
+                success: function(data) {
+                    var district_sent =$('#id_model');
+                    district_sent.empty();
+                    $('#id_model').append($('<option>', {
+                            value: 0,
+                            text: "Tất cả Model"
+                        }));
+                    $.each(data, function(key, model) {
+                        $('#id_model').append($('<option>', {
+                            value: model.id{{request()->id_model==$item->id?
+                            'selected':false}},
+                            text: model.name
+                        }));
+                    });
+                },
+                error: function() {
+                  alert('Đã có lỗi xảy ra.');
+                }
+              });
+            });
+    </script>
 
                
                 

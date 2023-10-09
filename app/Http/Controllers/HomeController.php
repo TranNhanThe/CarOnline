@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transmission;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use App\Models\FavoriteRental;
@@ -11,6 +12,7 @@ use App\Models\Models;
 use App\Models\Rentalcar;
 use App\Models\RentalImage;
 
+
 use Illuminate\Support\Facades\DB;
 
 //  use DB;
@@ -19,10 +21,13 @@ class HomeController extends Controller
 {
     public $data = [];
     private $rentalcar;
+
+    private $transmission;
     private $rental_image;
     public function __construct(){
         $this->rentalcar = new Rentalcar();
         $this->rental_image = New RentalImage();
+        $this->transmission = New Transmission();
     }
     public function index(){
         $this->data['title'] = 'Timoto - Trang chủ';
@@ -39,6 +44,14 @@ class HomeController extends Controller
     public function searchMaster(Request $request){
     
          $title = 'Kết quả tìm kiếm';
+         $ketqua = 'Kết quả cho:';
+         $makebu = null;
+         $provincebu = null;
+         $modelbu = null;
+         $bodytypebu = null;
+         $drivetrainbu = null;
+         $transmissionbu = null;
+         $fuelbu = null;
          $filters = [];
          $keywords = null;
          $favorite = null;
@@ -63,10 +76,26 @@ class HomeController extends Controller
             $filters[] =  ['rentalcar.id_province', '=', $idProvince];
         }
 
+        if (!empty($request->id_drivetrain)){
+            $idDrivetrain = $request->id_drivetrain; 
+            $filters[] =  ['rentalcar.id_drivetrain', '=', $idDrivetrain];
+        }
+
+        if (!empty($request->id_fuel)){
+            $idFuel = $request->id_fuel; 
+            $filters[] =  ['rentalcar.id_fuel', '=', $idFuel];
+        }
+
+        if (!empty($request->id_transmission)){
+            $idTransmission = $request->id_transmission; 
+            $filters[] =  ['rentalcar.id_transmission', '=', $idTransmission];
+            }
  
          if (!empty($request->keywords)){
              $keywords = $request->keywords;
          }
+
+        
  
          $sortBy = $request->input('sort-by');
          
@@ -92,9 +121,21 @@ class HomeController extends Controller
          $imagelist = $this->rental_image->getAllImage();
          
          $rentalcarList = $this->rentalcar->getAllRental($filters, $keywords, $sortArr); 
-         return view('clients.rental.rentallist', compact('title', 'rentalcarList', 'sortType', 'imagelist'));
+         
+         return view('clients.rental.rentallist', compact('title', 'ketqua', 'rentalcarList', 'sortType', 'imagelist'));
      }
 
+    //  public function selectProvince(Request $request){
+    //     $province = $request->selectedValue;
+    //     $district = DB::table('tbl_district')->Where('id_province', $province)->get();
+    //     return response()->json($district);
+    // } 
+
+     public function selectModel(Request $request){
+        $make = $request->selectedValue;
+        $model = DB::table('model')->Where('id_make', $make)->get();
+        return response()->json($model);
+    } 
      public function allFavor(Request $request){
         $title = 'Kết quả tìm kiếm';
         $filters = [];
@@ -120,6 +161,7 @@ class HomeController extends Controller
            $idProvince = $request->id_province; 
            $filters[] =  ['rentalcar.id_province', '=', $idProvince];
        }
+       
 
 
         if (!empty($request->keywords)){

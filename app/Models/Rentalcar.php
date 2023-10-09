@@ -18,7 +18,7 @@ class Rentalcar extends Model
         return $this->hasMany(RentalImage::class, 'id_rentalcar');
     }
 
-    public function getAllRental($filters = [], $keywords = null, $sortByArr = null, $perPage = null){
+    public function getAllRental($filters = [],  $keywords = null, $sortByArr = null, $perPage = null){
           //too raw
        // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
        //DB::enableQueryLog();
@@ -67,12 +67,14 @@ class Rentalcar extends Model
            $rentalcar = $rentalcar->where($filters);
        }
 
+      
+
        if(!empty($keywords)){
            $rentalcar = $rentalcar->where(function($query) use ($keywords){
                $query->orWhere('car_name', 'like', '%'.$keywords.'%');
                $query->orWhere('location', 'like', '%'.$keywords.'%');
                $query->orWhere('rentalcar.id', 'like', '%'.$keywords.'%');
-           });
+           });                     
        }
 
       // $users = $users->get(); 
