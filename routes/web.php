@@ -28,6 +28,7 @@ Route::get('/search', [HomeController::class, 'searchMaster'])->name('search');
 Route::get('/selectmodel', [HomeController::class, 'selectModel'])->name('selectModel');
 Route::prefix('rental')->name('rental.')->group(function () {
    Route::get('/', [RentalController::class, 'index'])->name('index');
+   Route::middleware(['auth'])->get('/yoretaca', [RentalController::class, 'yoretaca'])->name('yoretaca');
    Route::middleware(['auth'])->get('/add', [RentalController::class, 'add'])->name('add');
    Route::middleware(['auth'])->post('/add', [RentalController::class, 'postAdd'])->name('post-add');
    // Route::get('/detail/{id}', [RentalController::class, 'getCarDetail'])->name('detail');

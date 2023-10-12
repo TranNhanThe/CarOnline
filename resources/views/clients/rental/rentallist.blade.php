@@ -164,12 +164,13 @@
     
 @endsection
 @section('content')
-    @if (!empty($ketqua))
+    {{-- @if (!empty($ketqua))
     <h4 class="word-white">{{$ketqua}} </h4>
         
             <button class="btn bg-rentalcard word-white"></button>
       
-    @endif
+    @endif --}}
+    <h4 class="word-white">{{ $title }}</h4>
     
     
     <div class="text-bg-bar d-lg-none flex-container rounded">
@@ -360,9 +361,14 @@
                     <div class="rounded-image-open container-flex">
 
                         {{-- <img src="public/storage/{{$item->image_link}}" class="image cover object" id="{{$item->id}}"> --}}
-                        <a href="{{route('rental.show', ['id'=>$item->id])}}"><img src="storage/{{$item->image_link}}" class="image cover object" id="{{$item->id}}"></a>
+                        <a href="{{route('rental.show', ['id'=>$item->id])}}"><img src="{{ asset('storage/' . $item->image_link) }}" class="image cover object" id="{{$item->id}}"></a>
 
                         <div class="middle" id="1{{$item->id}}">
+                    @if (!empty(Auth::user()))
+                        @if (Auth::user()->id != $item->id_user)
+                                
+                           
+                            {{-- ------------------------ --}}
                             @if (Auth::check())
                             <form action="{{ route('favorite.toggle', $item->id) }}" method="POST">
                                 @csrf
@@ -375,16 +381,49 @@
                                 </button>
                             </form>
                             @endif
+                            {{-- ---------------------------- --}}
+                       
+                        @else
+                                <a class="btn btn-primary" href="#">Đăng tin xe này</a>
+                        @endif
+                    @endif
                         </div>
 
                         <div class="toptop" id="2{{$item->id}}">
 
                             <div>
 
-                                <img src="assets\clients\images\logotimotopj.png" 
+                                <img src=" {{asset('assets\clients\images\logotimotopj.png')  }} " 
                            
     class="rounded img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt="">
     
+                            </div>
+                        </div>
+
+                        <div class="topleft" id="3{{$item->id}}">
+
+                            <div>
+                                @if (!empty($item->ad_status))
+                                    
+                                
+                                @if ($item->ad_status == 1)
+                                    @if ($item->adtype == 1)
+                                    <p class=" saving word-white"><i class='fa fa-flash'></i> Tiết kiệm</p>
+                                @elseif($item->adtype == 2)
+                                    <p class=" silver word-white"><i class='fa fa-circle-o'></i> Cơ bản</p>
+                                @elseif($item->adtype == 3)
+                                    <p class=" gold word-white">
+                                        <i class='fa fa-plus'></i> Plus</p>
+                                @elseif($item->adtype == 4)
+                                <p class="platinum word-white"><i class='fa fa-star'></i> Premium</p>
+                                @endif
+                                @else
+                                    <p class="blood word-white"><i class='fa fa-warning'></i> Tin hết hạn</p>
+                                @endif
+                                
+                                @endif
+                                
+                                
                             </div>
                         </div>
                         {{-- assets\clients\images\kar.jpg --}}
@@ -400,7 +439,9 @@
                         <div class="col-md-8 col-sm-8">
                             <p class="my-1 word-ash-normal">{{ date('d-m-Y', strtotime($item->created_at)) }}</p>
                            <a href="{{route('rental.show', ['id'=>$item->id])}}"><h4 class="my-1 word-ash">{{$item->car_name}}</h4></a> 
-                            <p class="my-1 word-rental-money">{{ number_format($item->price, 0, ',', '.') }} Đồng/ngày</p>
+                           @if (!empty($item->ad_status))
+                            <p class="my-1 word-rental-money">{{ number_format($item->adprice, 0, ',', '.') }} Đồng/ngày</p>
+                        @endif
                             <p class="my-1 word-ash-normal"><i style="font-size: 20px" class='fa-solid fa-location-dot'></i> {{$item->location}}, {{$item->province_name}}</p>
                             
                         </div>
@@ -409,7 +450,7 @@
 
                            <div class="d-flex align-items-center justify-content-center">
 
-                            <img src="assets\clients\images\rental.png" class="pt-2" width="30px" alt="" > <h3 class="word-ash-normal pt-3">: {{$item->rented}}</h3>
+                            <img src="{{ asset('assets\clients\images\rental.png') }}" class="pt-2" width="30px" alt="" > <h3 class="word-ash-normal pt-3">: {{$item->rented}}</h3>
                         </div>
                             {{-- đã thuê n lần --}}
                             
@@ -425,21 +466,21 @@
                         {{-- ghế --}}
                         <div class="col-md-4 col-sm-2">
                             <div class="rounded bg-rentalcard-in text-white pt-3" style="width: auto; height: auto;">
-                                <div class="d-flex align-items-center justify-content-center"><img src="assets\clients\images\seat2.png" width="30px" alt=""></div>
+                                <div class="d-flex align-items-center justify-content-center"><img src="{{ asset('assets\clients\images\seat2.png') }}" width="30px" alt=""></div>
                                 <div class="d-flex align-items-center justify-content-center"><h5>{{$item->seat}}</h5></div>
                             </div>
                         </div>
                         {{-- hộp số --}}
                         <div class="col-md-4 col-sm-2">
                             <div class="rounded bg-rentalcard-in text-white pt-3" style="width: auto; height: auto;">  
-                                <div class="d-flex align-items-center justify-content-center"><img src="assets\clients\images\gearboxpro.png" width="30px" alt=""></div>
+                                <div class="d-flex align-items-center justify-content-center"><img src="{{ asset('assets\clients\images\gearboxpro.png') }}" width="30px" alt=""></div>
                                 <div class="d-flex align-items-center justify-content-center"><h6>{{$item->transmission_name}}</h6></div>
                             </div>
                         </div>
                         {{-- nhiên liệu --}}
                         <div class="col-md-4 col-sm-2">
                             <div class="rounded bg-rentalcard-in text-white pt-3" style="width: auto; height: auto">
-                                <div class="d-flex align-items-center justify-content-center"><img src="assets\clients\images\fuel.png" width="30px" alt=""></div>
+                                <div class="d-flex align-items-center justify-content-center"><img src="{{ asset('assets\clients\images\fuel.png') }}" width="30px" alt=""></div>
                                 <div class="d-flex align-items-center justify-content-center"><h5>{{$item->fuel_name}}</h5></div>
                             </div>
                         </div>
@@ -482,11 +523,13 @@ containers.forEach((container) => {
     const image = container.querySelector('.image');
     const middle = container.querySelector('.middle');
     const toptop = container.querySelector('.toptop');
+    const topleft = container.querySelector('.topleft');
     
     container.addEventListener('mouseenter', () => {
         image.style.opacity = '0.3';
         middle.style.opacity = '1';
         toptop.style.opacity = '1';
+        topleft.style.opacity = '1';
         
     });
 
@@ -494,6 +537,7 @@ containers.forEach((container) => {
         image.style.opacity = '1';
         middle.style.opacity = '0';
         toptop.style.opacity = '0';
+        topleft.style.opacity = '0';
     });
 });
 </script>

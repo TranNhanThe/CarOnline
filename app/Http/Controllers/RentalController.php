@@ -16,6 +16,7 @@ use App\Models\Users;
 use App\Models\Utilities;
 use Illuminate\Http\Request;
 use App\Http\Requests\RentalRequest;
+use App\Models\Ad_rent;
 use Attribute;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +28,7 @@ class RentalController extends Controller
     private $rental_image;
 
     const _PER_PAGE = 10;
+
     public function __construct(){
         $this->rentalcar = new Rentalcar();
         $this->rental_image = New RentalImage();
@@ -92,6 +94,64 @@ class RentalController extends Controller
         $imagelist = $this->rental_image->getAllImage();
         return view('clients.rental.rentallist', compact('title', 'rentalcarList', 'sortType', 'imagelist'));
     }
+    public function yoretaca(Request $request){
+        $title = 'Kho xe của bạn';
+        $filters = [];
+        $keywords = null;
+        $favorite = null;
+
+        if (!empty($request->id_make)){
+           $idMake = $request->id_make; 
+           $filters[] =  ['rentalcar.id_make', '=', $idMake];
+       }
+
+       if (!empty($request->id_model)){
+           $idModel = $request->id_model; 
+           $filters[] =  ['rentalcar.id_model', '=', $idModel];
+       }
+
+       if (!empty($request->id_bodytype)){
+           $idBodyType = $request->id_bodytype; 
+           $filters[] =  ['rentalcar.id_bodytype', '=', $idBodyType];
+       }
+
+       if (!empty($request->id_province)){
+           $idProvince = $request->id_province; 
+           $filters[] =  ['rentalcar.id_province', '=', $idProvince];
+       }
+       
+
+
+        if (!empty($request->keywords)){
+            $keywords = $request->keywords;
+        }
+
+        $sortBy = $request->input('sort-by');
+        
+        $sortType = $request->input('sort-type')?$request->input('sort-type'):'asc'; 
+
+        $allowSort = ['asc', 'desc'];
+
+        if(!empty($sortType)&&in_array($sortType, $allowSort, $sortBy)){
+            if($sortType == 'desc'){
+                        $sortType = 'asc';
+            }else{
+                        $sortType = 'desc';
+             } 
+        }else{
+            $sortType = 'asc';
+        }
+
+        
+        $sortArr = [
+            'sortBy' => $sortBy,
+            'sortType' => $sortType
+        ];
+        $imagelist = $this->rental_image->getAllImage();
+        
+        $rentalcarList = $this->rentalcar->getAllRentalcarOfUser($filters, $keywords, $sortArr); 
+        return view('clients.rental.rentallist', compact('title', 'rentalcarList', 'sortType', 'imagelist'));
+     }
 
     public function getImagesForCar($id)
 {
@@ -173,7 +233,7 @@ class RentalController extends Controller
         $rentalcar->interior_color = $request->input('interior_color');
         $rentalcar->vin = $request->input('vin');
         $rentalcar->no_accident = $request->input('no_accident');
-        $rentalcar->price = str_replace(['.', ','], '', $request->input('price'));
+        // $rentalcar->price = str_replace(['.', ','], '', $request->input('price'));
         // $rentalcar->price = $request->input('price');
         $rentalcar->seat = $request->input('seat');
         $rentalcar->driver = $request->input('driver');
@@ -273,6 +333,10 @@ public function show($id)
     $province = Province::find($rentalcar->id_province);
     $transmission = Transmission::find($rentalcar->id_transmission);
     $utilities = Utilities::find($rentalcar->id_transmission);
+    // $ad_rent = Ad_rent::find($rentalcar->id);
+    // $ad_rent = Ad_rent::find($rentalcar->$id);
+    $ad_rent = Ad_rent::where('id_rentalcar', $id)->get();  
+    // $ad_rent = Ad_rent::where('id_rentalcar', $rentalcar->$id);
     $users = Users::find($rentalcar->id_user);
     return view('clients.rental.rentalcar', [
         'rentalcar' => $rentalcar,
@@ -285,7 +349,8 @@ public function show($id)
         'province' => $province,
         'transmission' => $transmission,
         'utilities' => $utilities,
-        'users' => $users
+        'users' => $users,
+        'ad_rent' => $ad_rent
     ], $this->data,);
 }
    

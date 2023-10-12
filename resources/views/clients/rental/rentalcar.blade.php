@@ -27,7 +27,7 @@
             <div class="carousel-inner">
             @foreach ($rental_image as $key => $image)
                 <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                    <img src="{{ asset('storage/' . $image->link) }}" class="d-block w-100" alt="Ảnh {{ $key + 1 }}">
+                    <img src="{{ asset('storage/' . $image->link) }}"  class="d-block w-100 cover object-slide" alt="Ảnh {{ $key + 1 }}">
                 </div>
             @endforeach
                     </div>
@@ -267,12 +267,19 @@
               </div></h5>
               
               {{-- end rating --}}
-              <h3 class="word-white">{{ number_format($rentalcar->price, 0, ',', '.') }} <span style="font-size: medium">đồng/ngày</span></h3>
+              <h3 class="word-white">
+                @foreach ($ad_rent as $key => $item)
+                {{ number_format( $item->price, 0, ',', '.') }}
+                
+                <span style="font-size: medium">đồng/ngày</span></h3>
               <p class="my-1 word-ash-normal"><i style="font-size: 20px" class='fa-solid fa-location-dot'></i> {{$rentalcar->location}}, {{$province->name}}</p>
-              
+              @if ($item->expiration_date >= now() && $item->status == 1)
                 <div class="row">
                   <div class="col-2"> <h3><button title="Chia sẻ" class="btn" id="copy-button"><i class="fas fa-share heart-icon"></i></button></h3></div>
                         <div class="col">
+
+                        
+                          {{-- -------------------------------- --}}
                             @if (Auth::check())
                             <form action="{{ route('favorite.toggle', $rentalcar->id) }}" method="POST">
                               @csrf
@@ -285,12 +292,15 @@
                               </button>
                           </form>
                           @endif 
+                          {{-- ------------------------------------------ --}}
+                        
                           </div>
                           
                             <div id="message" class="alert alert-info text-center msg" style="display: none;"></div> 
               </div>
               
-              
+              @endif
+                          @endforeach
              
               
               <div class="bg-rentalcard rounded m-1 mb-4 p-2">
@@ -339,83 +349,114 @@
 
               </div>
             </div>
-            <form action="">
-              <div class="bg-rentalcard word-white">
-                <h3 class="mid">Bảng tính tiền</h3>
+            @foreach ($ad_rent as $key => $item)
                 
-                <h3 class="mid word-rental-money">{{ number_format($rentalcar->price, 0, ',', '.') }} <span class="px-1"  style="font-size: medium"> đồng/ngày</span></h3>
-                <h6 class="px-4"> Ngày nhận </h6>
-                <div class="px-4">
-                  <input class="form-control" type="date" name="ngaynhanxe">
-                  </div>
-                  <br>
-                  <h6 class="px-4"> Ngày trả </h6>
+             {{-- @if ( $item->status == 1 || $item->expiration_date >= now()) --}}
+              @if ($item->expiration_date >= now() && $item->status == 1)
+            <div>
+              
+             
+              
+              <form action="">
+                <div class="bg-rentalcard word-white rounded">
+                  <h3 class="mid">Bảng tính tiền</h3>
+                  
+                  
+                
+                  <h3 class="mid word-rental-money">{{ number_format( $item->price, 0, ',', '.') }} <span class="px-1"  style="font-size: medium"> đồng/ngày</span></h3>
+                  
+                  <h6 class="px-4"> Ngày nhận </h6>
                   <div class="px-4">
                     <input class="form-control" type="date" name="ngaynhanxe">
-                  </div>
-                  <br>
-                  <h5 class="px-4">Địa điểm giao / nhận xe</h5>
-                  <div class="mid p-2">
-                    <p class="px-4 word-rental-money p-2 w-100 bg-rentalcard-in" class="my-1"><i style="font-size: 20px" class='fa-solid fa-location-dot'></i> {{$rentalcar->location}}, {{$province->name}}</p>
-                  </div>
-                  {{-- <p class="px-4 word-rental-money p-2 w-100 bg-rentalcard-in" class="my-1"><i style="font-size: 20px" class='fa-solid fa-location-dot'></i> {{$rentalcar->location}}, {{$province->name}}</p> --}}
-                  
-                  <h6 class="px-4"> Giao nhận </h6>
-                  <div class="mid p-2"><div class=" p-2 w-100 bg-rentalcard-in ">
-                      <p>Giao nhận xe tận nơi trong bán kính <span class="word-rental-money">5km</span>.</p>
-                      <p>Phí giao nhận <span class="word-rental-money">Miễn phí</span>.</p>
+                    </div>
+                    <br>
+                    <h6 class="px-4"> Ngày trả </h6>
+                    <div class="px-4">
+                      <input class="form-control" type="date" name="ngaynhanxe">
+                    </div>
+                    <br>
+                    <h5 class="px-4">Địa điểm giao / nhận xe</h5>
+                    <div class="mid p-2">
+                      <p class="px-4 word-rental-money p-2 w-100 bg-rentalcard-in" class="my-1"><i style="font-size: 20px" class='fa-solid fa-location-dot'></i> {{$rentalcar->location}}, {{$province->name}}</p>
+                    </div>
+                    {{-- <p class="px-4 word-rental-money p-2 w-100 bg-rentalcard-in" class="my-1"><i style="font-size: 20px" class='fa-solid fa-location-dot'></i> {{$rentalcar->location}}, {{$province->name}}</p> --}}
+                    
+                    <h6 class="px-4"> Giao nhận </h6>
+                    <div class="mid p-2"><div class=" p-2 w-100 bg-rentalcard-in ">
+                        <p>Giao nhận xe tận nơi trong bán kính <span class="word-rental-money">5km</span>.</p>
+                        <p>Phí giao nhận <span class="word-rental-money">Miễn phí</span>.</p>
+                    </div></div>
+                    
+                    <h6 class="px-4"> Phụ phí </h6>
+                    <div class="mid p-2"><div class=" p-2 w-100 bg-rentalcard-in ">
+                      <p>Giới hạn quãng đường <span class="word-rental-money">500</span>km/ngày.</p>
+                      <p>Vượt quá mỗi 1 km: <span class="word-rental-money">4000</span>đ/km. (trả thêm cho chủ xe)</p>
                   </div></div>
+  
+                  <h6 class="px-4"> Chi tiết giá </h6>
+  
+                  <table>
+                    <tr>
+                      <td class="px-4">{{ $model->name }}</td>
+
+                      <td class="px-4">{{ number_format( $item->price, 0, ',', '.') }} vnđ/ngày</td>
+
+                    </tr>
+                    <tr>
+                      <td class="px-4">Phí dịch vụ</td>
+                      <td class="px-4">50.000 vnđ/ngày</td>
+                    </tr>
+                    <tr>
+                      <td class="px-4">Bảo hiểm</td>
+                      <td class="px-4">70.000 vnđ/ngày</td>
+                    </tr>
+                    <tr>
+                      <td class="px-4">Số ngày thuê</td>
+                      <td class="px-4">x <span class="word-rental-money">7</span></td>
+                    </tr>
+                  </table>
+  
+                  <hr>
+  
+                  <table>
+                    <tr>
+                      <td class="px-4 mid"><h6>Tổng phí thuê xe</h6></td>
+                      <td class="px-4"><h6><span class="word-rental-money">{{ number_format(($item->price+(70000)+(50000))*(7), 0, ',', '.') }}</span><span> vnđ</span> </h6></td>
+                    </tr>
+                  </table>
                   
-                  <h6 class="px-4"> Phụ phí </h6>
-                  <div class="mid p-2"><div class=" p-2 w-100 bg-rentalcard-in ">
-                    <p>Giới hạn quãng đường <span class="word-rental-money">500</span>km/ngày.</p>
-                    <p>Vượt quá mỗi 1 km: <span class="word-rental-money">4000</span>đ/km. (trả thêm cho chủ xe)</p>
-                </div></div>
-
-                <h6 class="px-4"> Chi tiết giá </h6>
-
-                <table>
-                  <tr>
-                    <td class="px-4">{{ $model->name }}</td>
-                    <td class="px-4">{{ number_format($rentalcar->price, 0, ',', '.') }} vnđ/ngày</td>
-                  </tr>
-                  <tr>
-                    <td class="px-4">Phí dịch vụ</td>
-                    <td class="px-4">50.000 vnđ/ngày</td>
-                  </tr>
-                  <tr>
-                    <td class="px-4">Bảo hiểm</td>
-                    <td class="px-4">70.000 vnđ/ngày</td>
-                  </tr>
-                  <tr>
-                    <td class="px-4">Số ngày thuê</td>
-                    <td class="px-4">x <span class="word-rental-money">7</span></td>
-                  </tr>
-                </table>
-
-                <hr>
-
-                <table>
-                  <tr>
-                    <td class="px-4 mid"><h6>Tổng phí thuê xe</h6></td>
-                    <td class="px-4"><h6><span class="word-rental-money">{{ number_format(($rentalcar->price+(70000)+(50000))*(7), 0, ',', '.') }}</span><span> vnđ</span> </h6></td>
-                  </tr>
-                </table>
-                
+                    
+                    <a class="my-2 btn text-search mid mx-2" href="">Thanh toán MOMO</a>
                   
-                  <a class="my-2 btn text-search mid mx-2" href="">Thanh toán MOMO</a>
-                
-                  <a class=" btn text-search mid mx-2" href="">Thanh toán VNPAY</a>
-                  <br>
-
-                  <a class=" btn back-green mid mx-2" href="">Thanh toán dành cho cán bộ</a>
-                  <br>
-                
-                
+                    <a class=" btn text-search mid mx-2" href="">Thanh toán VNPAY</a>
+                    <br>
+  
+                    <a class=" btn back-green mid mx-2" href="">Thanh toán dành cho cán bộ</a>
+                    <br>
+                  
+                  
+              </div>
+              </form>
             </div>
-            </form>
-            
-
+            @else
+            <div class="bg-rentalcard word-rental-money p-2 rounded">
+                <h2 class="mid"><i class='fa fa-warning'></i></h2>
+                <h3 class="">Xe đã hết hạn, hoặc chủ xe đã dừng kinh doanh xe này!</h3>
+                <div class="mid">
+                  @if (Auth::check())
+                            <form action="{{ route('favorite.toggle', $rentalcar->id) }}" method="POST">
+                              @csrf
+                              <button class="btn" type="submit">
+                                  @if (Auth::user()->hasFavorite($rentalcar->id))
+                                  <button class="btn text-search">Hủy yêu thích</button>
+                                  @endif 
+                              </button>
+                          </form>
+                          @endif 
+                </div>
+           </div> 
+             @endif
+            @endforeach
         </div>
         {{-- end info you --}}
     </div>

@@ -21,7 +21,7 @@ class HomeController extends Controller
 {
     public $data = [];
     private $rentalcar;
-
+    const _PER_PAGE = 2;
     private $transmission;
     private $rental_image;
     public function __construct(){
@@ -29,17 +29,89 @@ class HomeController extends Controller
         $this->rental_image = New RentalImage();
         $this->transmission = New Transmission();
     }
-    public function index(){
+    public function index(Request $request){
         $this->data['title'] = 'Timoto - Trang chủ';
-        // $this->data['message'] = 'Đăng ký tài khoản thành công';
+        $title = 'Kết quả tìm kiếm';
+        $ketqua = 'Kết quả cho:';
+        $makebu = null;
+        $provincebu = null;
+        $modelbu = null;
+        $bodytypebu = null;
+        $drivetrainbu = null;
+        $transmissionbu = null;
+        $fuelbu = null;
+        $filters = [];
+        $keywords = null;
+        $favorite = null;
 
-        // $user = DB::select('SELECT * FROM users WHERE email=:email', [
-        //     'email' => 'hoangan.web@gmail.com'
-        // ]);
+        if (!empty($request->id_make)){
+           $idMake = $request->id_make; 
+           $filters[] =  ['rentalcar.id_make', '=', $idMake];
+       }
 
-        // dd($user);
+       if (!empty($request->id_model)){
+           $idModel = $request->id_model; 
+           $filters[] =  ['rentalcar.id_model', '=', $idModel];
+       }
 
-        return view('clients.home', $this->data);
+       if (!empty($request->id_bodytype)){
+           $idBodyType = $request->id_bodytype; 
+           $filters[] =  ['rentalcar.id_bodytype', '=', $idBodyType];
+       }
+
+       if (!empty($request->id_province)){
+           $idProvince = $request->id_province; 
+           $filters[] =  ['rentalcar.id_province', '=', $idProvince];
+       }
+
+       if (!empty($request->id_drivetrain)){
+           $idDrivetrain = $request->id_drivetrain; 
+           $filters[] =  ['rentalcar.id_drivetrain', '=', $idDrivetrain];
+       }
+
+       if (!empty($request->id_fuel)){
+           $idFuel = $request->id_fuel; 
+           $filters[] =  ['rentalcar.id_fuel', '=', $idFuel];
+       }
+
+       if (!empty($request->id_transmission)){
+           $idTransmission = $request->id_transmission; 
+           $filters[] =  ['rentalcar.id_transmission', '=', $idTransmission];
+           }
+
+        if (!empty($request->keywords)){
+            $keywords = $request->keywords;
+        }
+
+       
+
+        $sortBy = $request->input('sort-by');
+        
+        $sortType = $request->input('sort-type')?$request->input('sort-type'):'asc'; 
+
+        $allowSort = ['asc', 'desc'];
+
+        if(!empty($sortType)&&in_array($sortType, $allowSort, $sortBy)){
+            if($sortType == 'desc'){
+                        $sortType = 'asc';
+            }else{
+                        $sortType = 'desc';
+             } 
+        }else{
+            $sortType = 'asc';
+        }
+
+        
+        $sortArr = [
+            'sortBy' => $sortBy,
+            'sortType' => $sortType
+        ];
+        $imagelist = $this->rental_image->getAllImage();
+        
+        $rentalcarList = $this->rentalcar->getAllRental($filters, $keywords, $sortArr, self::_PER_PAGE); 
+        
+
+        return view('clients.home', compact('title', 'ketqua', 'rentalcarList', 'sortType', 'imagelist'));
     }
     public function searchMaster(Request $request){
     
@@ -137,7 +209,7 @@ class HomeController extends Controller
         return response()->json($model);
     } 
      public function allFavor(Request $request){
-        $title = 'Kết quả tìm kiếm';
+        $title = 'Xe thuê đã thích';
         $filters = [];
         $keywords = null;
         $favorite = null;

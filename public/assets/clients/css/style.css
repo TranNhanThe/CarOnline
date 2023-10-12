@@ -89,6 +89,13 @@ a{
   width: 100%;
   height: 252px;
 }
+.object-slide {
+  /* width: 550px;
+  height: 300px; */
+  width: 100%;
+  height: 400px;
+}
+
 .cover{
   /* object-fit: cover; */
   object-fit:cover;
@@ -140,6 +147,16 @@ a{
     -ms-transform: translate(-50%, -50%);
     /* text-align: center; */
   }
+  .topleft {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    /* text-align: center; */
+  }
 
   .container-flex:hover .image {
     opacity: 0.3;
@@ -156,7 +173,51 @@ a{
   .container-flex:hover .toptop {
     opacity: 1;
   }
+
+  .container-flex:hover .topleft {
+    opacity: 1;
+  }
   
+  .platinum{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1CB5E0, #000046);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1cb5e0af, #000046ac); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .saving{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1ce06e, #004609);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #23e01caf, #064600ac); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .blood{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #e0391c, #460b00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #e0331caf, #460e00ac); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .gold{
+    background: #FF8008;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #FFC837, #FF8008);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #ffc637af, #ff7f08ab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .silver{
+    background: #8e9eab;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #eef2f3b0, #8e9eabab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+padding: 5px;
+    border-radius: 10px;
+  }
   .text {
     background-color: #04AA6D;
     color: white;

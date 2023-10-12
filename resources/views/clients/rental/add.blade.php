@@ -351,20 +351,18 @@
                 <br>
                 <div class="row g-3 align-items-center">
                     <div class="col-4">
-                      <label for="moneyInput" class="col-form-label"><h5>Phí trên ngày</h5></label>
-                      
+                      <label for="moneyInput" class="col-form-label"><h5>Số chỗ ngồi</h5></label>
                     </div>
-                    <div class="col-4">
-                      <input type="text" id="moneyInput" class="form-control" name="price" placeholder=".vnđ/ngày" value="{{ number_format(old('price'), 0, ',', '.') }}">
-                      @error('price')
-                    <span style="color: red;">{{$message}}</span>
-                    @enderror
-                    </div>
+                    
                     <div class="col-4">
                         <input type="text"  class="form-control" name="seat" placeholder="Số chỗ ngồi" value="{{old('seat')}}">
                         @error('seat')
                     <span style="color: red;">{{$message}}</span>
                     @enderror
+                      </div>
+                      <div class="col-4">
+                        <input type="text" disabled id="moneyInput" class="form-control blood word-white"  placeholder=".vnđ/ngày" value="Giá thuê (thêm sau)">
+                       
                       </div>
                 </div>
 

@@ -25,9 +25,9 @@
           {{-- <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li> --}}
-          <li class="nav-item">
+          {{-- <li class="nav-item">
               <a class="nav-link" href="{{route('users.index')}}">Danh sách User</a>
-          </li>
+          </li> --}}
 
           <li class="nav-item">
               <a class="nav-link" href="{{route('rental.index')}}">Danh sách Xe thuê</a>
@@ -37,6 +37,9 @@
           <li class="nav-item">
             <a href="{{route('rental.add')}}" class="nav-link">Thêm xe thuê</a>
         </li>
+        <li class="nav-item">
+          <a href="{{route('rental.yoretaca')}}" class="nav-link">Kho xe của tôi</a>
+      </li>
         @endif
         </ul>
         @if (empty(auth()->user()))

@@ -88,7 +88,7 @@ class RentalRequest extends FormRequest
                 'interior_color' => 'required',
                 'vin' => 'required|min:17',
                 'no_accident' => 'required|integer',
-                'price' => 'required',
+                
                 'seat' => 'required|integer',
                 'driver' => 'required|integer',
                 'image' => 'required',
@@ -147,8 +147,6 @@ class RentalRequest extends FormRequest
             'no_accident.integer' => 'Dữ liệu không hợp lệ',
 
             'mota.required' => 'Hãy viết mô tả',
-
-            'price.required' => 'Giá bắt buộc phải nhập',
 
             'seat.required' => 'Số ghế ngồi bắt buộc phải nhập',
 
