@@ -40,6 +40,9 @@
         <li class="nav-item">
           <a href="{{route('rental.yoretaca')}}" class="nav-link">Kho xe của tôi</a>
       </li>
+      <li class="nav-item">
+        <a href="{{route('rental.credit')}}" class="nav-link">Thêm Credit</a>
+    </li>
         @endif
         </ul>
         @if (empty(auth()->user()))
@@ -50,8 +53,17 @@
           <a href="{{route('register')}}" class="btn bg-rentalcard word-ash m-1">Đăng ký</a>
         </div>
         @endif
+        @if (!empty(auth()->user()))
+        
+          {{-- <div>
+            <img src="{{ asset('assets\clients\images\coin.png') }}"  width="30px" alt="" > 
+            </div> --}}
+            <div class="px-1 pt-2 mx-3 rounded bg-rentalcard">
+              <h5 class="word-green "><img src="{{ asset('assets\clients\images\coin.png') }}" class="" title="Credit"  width="30px" alt="" > {{ auth()->user()->credit }}</h5>
+            </div>
+        
+        
         <div>
-          @if (!empty(auth()->user()))
           <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="Avatar" class="rounded-circle avatar-image-sm"> 
          
         </div> 

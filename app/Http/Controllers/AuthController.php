@@ -43,6 +43,7 @@ class AuthController extends Controller
         $users->email = $request->email;
         $users->phone = $request->phone;
         $users->cccd = $request->cccd;
+        $users->credit = 200;
         $users->password = Hash::make($request->password);
         
         

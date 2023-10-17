@@ -30,8 +30,14 @@ Route::prefix('rental')->name('rental.')->group(function () {
    Route::get('/', [RentalController::class, 'index'])->name('index');
    Route::middleware(['auth'])->get('/yoretaca', [RentalController::class, 'yoretaca'])->name('yoretaca');
    Route::middleware(['auth'])->get('/add', [RentalController::class, 'add'])->name('add');
+   Route::middleware(['auth'])->get('/ad_add/{id}', [RentalController::class, 'ad_add'])->name('ad-add');
+   Route::middleware(['auth'])->post('/ad_add/{id}', [RentalController::class, 'postAd_add'])->name('post-ad_add');
    Route::middleware(['auth'])->post('/add', [RentalController::class, 'postAdd'])->name('post-add');
-   // Route::get('/detail/{id}', [RentalController::class, 'getCarDetail'])->name('detail');
+
+   Route::middleware(['auth'])->get('/credit', [RentalController::class, 'credit'])->name('credit');
+
+   Route::middleware(['auth'])->post('/credit', [RentalController::class, 'postCredit'])->name('post-credit');
+
    Route::get('/xe-thue/{id}', [RentalController::class, 'show'])->name('show');
 });
 Route::group(['middleware' => 'auth'], function () {
@@ -41,6 +47,7 @@ Route::post('/favorite/{car}', [FavoriteController::class, 'toggleFavorite'])->n
 
 Route::get('/favorite', [HomeController::class, 'allFavor'])->name('favorite');
 Route::get('/san-pham', [HomeController::class, 'products'])->name('product');
+
 
 
 Route::get('/them-san-pham', [HomeController::class, 'getAdd']);
@@ -83,6 +90,8 @@ Route::get('demo-response', function () {
     Route::post('/update', [UsersController::class, 'postEdit'])->name('post-edit');
 
     Route::get('/delete/{id}', [UsersController::class, 'delete'])->name('delete');
+         
+    
 
  });
 

@@ -43,18 +43,7 @@
         </div>
     </form>
     <table class="table table-bordered word-ash">
-        <thead>
-            <tr>
-                <th width="5%">STT</th>
-                <th><a href="?sort-by=fullname&sort-type={{$sortType}}">Tên</a></th>
-                <th><a href="?sort-by=email&sort-type={{$sortType}}">Email</a></th>
-                <th>Nhóm</th>
-                <th>Trạng thái</th>
-                <th width="15%"><a href="?sort-by=create_at&sort-type={{$sortType}}">Thời Gian</a></th>
-                <th width="5%">Sửa</th>
-                <th width="5%">Xóa</th>
-            </tr>
-        </thead>
+        c
         <tbody>
             @if (!empty($usersList))
                 @foreach ($usersList as $key => $item)

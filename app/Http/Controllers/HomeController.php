@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transmission;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\FavoriteRental;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\Uppercase;
@@ -29,6 +30,7 @@ class HomeController extends Controller
         $this->rental_image = New RentalImage();
         $this->transmission = New Transmission();
     }
+    
     public function index(Request $request){
         $this->data['title'] = 'Timoto - Trang chủ';
         $title = 'Kết quả tìm kiếm';
@@ -266,6 +268,7 @@ class HomeController extends Controller
         $rentalcarList = $this->rentalcar->getAllRentalFavo($filters, $keywords, $sortArr); 
         return view('clients.rental.rentallist', compact('title', 'rentalcarList', 'sortType', 'imagelist'));
      }
+   
 
     public function products(){
         $this->data['title'] = 'San pham';

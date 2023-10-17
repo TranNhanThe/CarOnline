@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RentalRequest extends FormRequest
+class AdrentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,84 +19,29 @@ class RentalRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-   
     public function rules(): array
     {
-        // $uniqueEmail = 'unique:users';
-        // if(session('id')){
-        //      $id = session('id');
-        //      $uniqueEmail = 'unique:users,email,' .$id;
-        // }
-       
         return [
-                'car_name' => 'required|min:9',
+            'price' => 'required|min:6',
 
-                'id_model' => ['required', 'integer', function($attribute, $value, $fail){
-                    if($value==0){
-                        $fail('Bắt buộc phải chọn Model xe');  
-                    }
-                }],
+            'id_adtype' => ['required', 'integer', function($attribute, $value, $fail){
+                if($value==0){
+                    $fail('Mời bạn chọn gói');
+                }
+            }],
 
-                'id_fuel' => ['required', 'integer', function($attribute, $value, $fail){
-                    if($value==0){
-                        $fail('Bắt buộc phải chọn nhiên liệu');  
-                    }
-                }],
+            'expiration_date' => 'required|date|date_format:Y-m-d|after:' . now()->format('Y-m-d'),
 
-                'id_drivetrain' => ['required', 'integer', function($attribute, $value, $fail){
-                    if($value==0){
-                        $fail('Bắt buộc phải chọn dẫn động');  
-                    }
-                }],
 
-                'id_transmission' => ['required', 'integer', function($attribute, $value, $fail){
-                    if($value==0){
-                        $fail('Bắt buộc phải chọn hộp số');  
-                    }
-                }],
-
-                'id_bodytype' => ['required', 'integer', function($attribute, $value, $fail){
-                    if($value==0){
-                        $fail('Bắt buộc phải chọn dòng xe');  
-                    }
-                }],
-
-                'id_make' => ['required', 'integer', function($attribute, $value, $fail){
-                    if($value==0){
-                        $fail('Bắt buộc phải chọn hãng');  
-                    }
-                }],
-
-                'location' => 'required',
-
-                'id_province' => ['required', 'integer', function($attribute, $value, $fail){
-                    if($value==0){
-                        $fail('Bắt buộc phải chọn tỉnh');  
-                    }
-                }],
-
-                'engine' => 'required',
-
-                'exterior_color' => 'required',
-
-                'interior_color' => 'required',
-                'vin' => 'required|min:17',
-                'no_accident' => 'required|integer',
-                
-                'seat' => 'required|integer',
-                'driver' => 'required|integer',
-                'image' => 'required',
-                'mota' => 'required'
-
-                
-
-                // 'status' => 'required|integer'
-            
         ];
     }
-
     public function messages(){
         return [
+            'price.required' => 'Mời bạn nhập giá',
+            'price.min' => 'Giá xe phải từ 100.000 vnđ trở lên',
+            
+            'expiration_date.required' => 'Mời bạn chọn ngày hết hạn',
+            'expiration_date.after' => 'Hãy chọn từ ngày mai trở về sau',
             'car_name.required' => 'Tên xe bắt buộc phải nhập',
             'car_name.min' => 'tên xe phải từ :min ký tự trở lên',
             

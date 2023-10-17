@@ -16,8 +16,12 @@ use App\Models\Users;
 use App\Models\Utilities;
 use Illuminate\Http\Request;
 use App\Http\Requests\RentalRequest;
+use App\Http\Requests\AdrentRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\Ad_rent;
+use App\Models\AdType;
 use Attribute;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,13 +29,17 @@ use Illuminate\Support\Facades\Hash;
 class RentalController extends Controller
 {
     private $rentalcar;
+    private $adtype;
     private $rental_image;
 
+    private $users;
     const _PER_PAGE = 10;
 
     public function __construct(){
         $this->rentalcar = new Rentalcar();
+        $this->adtype = new AdType();
         $this->rental_image = New RentalImage();
+        $this->users = New Users();
     }
 
     public function index(Request $request){
@@ -179,41 +187,16 @@ class RentalController extends Controller
      return view('clients.rental.add', compact('title', 'allUser', 'allModel',
       'allFuel', 'allDrivetrain', 'allTransmission', 'allBodytype', 'allMake', 'allProvince'));
     }
+
+    public function ad_add($id){
+        $title = 'Đăng tin cho thuê xe';
+        $rentalcar = Rentalcar::find($id);
+         $allUser = getAllUsers(); 
+        $allAdtype = getAllAdtype();
+         return view('clients.rental.ad_add', compact('title', 'rentalcar', 'allUser',  'allAdtype'));
+        }
     public function postAdd(RentalRequest $request){
         
-
-
-        // $dataInsert = [
-        //     $request->fullname,
-        //     $request->email,
-        //     date('Y-m-d H:i:s')
-        // ];
-       
-
-        //     $dataInsert = [
-        //         'car_name' => $request->car_name,
-        //         'id_user' => $request->id_user,
-        //         'id_model' => $request->id_model,
-        //         'id_fuel' => $request->id_fuel,
-        //         'id_drivetrain' => $request->id_drivetrain,
-        //         'id_transmission' => $request->id_transmission,
-        //         'id_bodytype' => $request->id_bodytype,
-        //         'id_make' => $request->id_make,
-        //         'location' => $request->location,
-        //         'id_province' => $request->id_province,
-        //         'engine' => $request->engine,
-        //         'exterior_color' => $request->exterior_color,
-        //         'interior_color' => $request->interior_color,
-        //         'vin' => $request->vin,
-        //         'no_accident' => $request->no_accident,
-        //         'price' => $request->price,
-        //         'seat' => $request->seat,
-        //         'driver' => $request->driver,
-        //         'created_at' => date('Y-m-d H:i:s')
-        //     ];
-
-        // $this->rentalcar->addRental($dataInsert);
-
 
         $rentalcar = new Rentalcar();
 
@@ -240,6 +223,11 @@ class RentalController extends Controller
         $rentalcar->mota = $request->input('mota');
         $rentalcar->save();
         $firstImage = true;
+
+        $ad_rent = new Ad_rent();
+        $ad_rent->id_rentalcar = $rentalcar->id;
+        $ad_rent->save();
+
         $utilities = new Utilities();
 
 
@@ -282,6 +270,57 @@ class RentalController extends Controller
 
         return redirect()->route('rental.index')->with('msg', 'Thêm xe thành công');
     }
+
+    public function postAd_add(AdrentRequest $request, $id){
+       
+        $iduser = Auth::id();
+        Ad_rent::where('id_rentalcar', $id)->delete();
+       
+        $ad_rent = new Ad_rent();
+        $ad_rent->id_rentalcar = $id;
+        $ad_rent->price = str_replace(['.', ','], '', $request->input('price'));
+        $ad_rent->id_adtype = $request->input('id_adtype');
+        $ad_rent->expiration_date = $request->input('expiration_date');
+        $ad_rent->save();
+        $rentalcar = Rentalcar::find($id); // Truy cập xe thuê theo $id
+if ($rentalcar) {
+    $rentalcar->update(['status' => 1]); // Cập nhật trường status thành 1
+}
+        
+
+        return redirect()->route('rental.yoretaca')->with('msg', 'Tin đăng của bạn đã vào danh sách chờ duyệt');
+    }
+
+
+    public function credit(){
+        $title = 'Thêm Credit';
+        
+         return view('clients.users.credit', compact('title'));
+        }
+        public function postCredit(Request $request, $id=0){
+            $data = [
+                'credit' => Auth::user()->credit + $request->credit
+            ];
+            $iduser = Auth::id();
+        
+        Users::where('id', $iduser)->update($data);
+        return back()->with('msg', 'Thêm Credit thành công');
+        }
+    // public function postCredit(UserRequest $request){
+    //     $id = Auth::id();
+            
+    //         if (!$request->has('credit') || !is_numeric($request->credit)) {
+    //             return back()->with('msg', 'Dữ liệu không hợp lệ');
+    //         }
+            
+    //         $data = [
+    //             'users.credit' => $request->credit + Auth::user()->credit
+    //         ];
+    //         // $this->users->updateUser($data, $id);
+        
+    //         return DB::table($this->users)->where('id', $id)->update($data);
+    //         // return back()->with('msg', 'Cập nhật người dùng thành công');
+    // }
 
 
     // public $data = [];

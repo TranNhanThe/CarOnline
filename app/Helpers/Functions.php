@@ -10,6 +10,7 @@ use App\Models\Bodytype;
 use App\Models\Make;
 use App\Models\Province;
 use App\Models\Ad_rent;
+use App\Models\AdType;
 function isUppercase($value, $message, $fail){
     if ($value!=mb_strtoupper($value, 'UTF-8')){
         $fail($message);
@@ -67,6 +68,11 @@ function getAllProvince(){
 function getAllAd_rent(){
     $ad_rent = new Ad_rent; 
     return $ad_rent->getAll();
+}
+
+function getAllAdtype(){
+    $adtype = new AdType; 
+    return $adtype->getAll();
 }
 
 

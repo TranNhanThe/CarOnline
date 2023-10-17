@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
         }
        
         return [
-            
+                // 'credit' => 'required',
                 'fullname' => 'required|min:5',
                 'email' => 'required|email|'.$uniqueEmail,
                 'phone' => 'required|min:10|max:12',

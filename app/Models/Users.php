@@ -12,7 +12,10 @@ class Users extends Model
     use HasFactory;
 
     protected $table = 'users';
-    
+    protected $fillable = [
+        'credit',
+        // Các trường khác
+    ];
 
     public function getAllUsers($filters = [], $keywords = null, $sortByArr = null, $perPage = null){
         //too raw
@@ -76,13 +79,13 @@ class Users extends Model
        return DB::select('SELECT * FROM '.$this->table.' WHERE id =?', [$id]);
     }
 
-    public function updateUser($data, $id){
+    public function updateUser($dataUpdate, $id){
 
         // $data[] = $id;
 
         // return DB::update('UPDATE '.$this->table.' SET fullname=?, email=?, update_at=? where id = ?', $data);
-
-        return DB::table($this->table)->where('id', $id)->update($data);
+        
+        return DB::table($this->table)->where('id', $id)->update($dataUpdate);
 
     }
 

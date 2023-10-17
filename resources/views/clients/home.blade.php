@@ -187,7 +187,7 @@
     @if (!empty($rentalcarList))
         @foreach ($rentalcarList as $key => $item)
         {{-- <div class="container mb-3 col-12 col-md-12 col-lg-12 col-xl-4 "> --}}
-            <div class="container mb-3 col-12 col-lg-6 col-md-6 col-sm-6 col-xxl-6">
+            <div class="container mb-3 col-12 col-lg-6 col-md-12 col-sm-12 col-xxl-6">
             <div class="container">
             
                 <div class=" bg-rentalcard rounded-open">
@@ -234,7 +234,7 @@
                     </div>
                     {{-- /////////////////////////////////image-end///////////////////////////// --}}
                     
-                    <div class="col-md-12  col-lg-12 col-xl-12 col-sm-12 col-xxl-12">
+                    <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12 col-xxl-12">
                         <div class="row container">
                             
                             <div class="col-md-8 col-sm-8">

@@ -10,6 +10,10 @@ class Rentalcar extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'status',
+        // Các trường khác
+    ];
     protected $table = 'rentalcar';
     protected $primaryKey = 'id';
 
@@ -38,7 +42,8 @@ class Rentalcar extends Model
        'rental_image.link as image_link',
        'ad_rent.status as ad_status',
        'ad_rent.id_adtype as adtype',
-       'ad_rent.price as adprice'
+       'ad_rent.price as adprice',
+       'ad_rent.expiration_date as expdate'
         
         // 'favorite_rental.id_frentalcar as id' 
        )
@@ -59,7 +64,7 @@ class Rentalcar extends Model
        ->whereDate('ad_rent.expiration_date', '>', $now)
        ->where('rental_image.is_main', 1)
        ; 
-       $orderBy = 'rentalcar.created_at';
+       $orderBy = 'ad_rent.id_adtype';
        $orderType = 'desc';
        
 
@@ -108,6 +113,7 @@ class Rentalcar extends Model
         //too raw
      // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
      //DB::enableQueryLog();
+     $now = now();
      $rentalcar = DB::table($this->table)
      ->select('rentalcar.*', 
      'users.fullname as user_name',
@@ -120,13 +126,14 @@ class Rentalcar extends Model
      'province.name as province_name',
      'rental_image.link as image_link',
     // 'favorite_rental.id_frentalcar as id',
-    //  'ad_rent.status as ad_status',
-    //   'ad_rent.price as adprice',
-    //  'ad_rent.id_adtype as adtype'
+     'ad_rent.status as ad_status',
+      'ad_rent.price as adprice',
+     'ad_rent.id_adtype as adtype',
+     'ad_rent.expiration_date as expdate'
      )
   //  ->join('groups', 'users.group_id', '=', 'groups.id')
       ->join('users', 'rentalcar.id_user', '=', 'users.id')
-    //   ->join('ad_rent', 'rentalcar.id', '=', 'ad_rent.id_rentalcar')
+        ->join('ad_rent', 'rentalcar.id', '=', 'ad_rent.id_rentalcar')
       ->join('model', 'rentalcar.id_model', '=', 'model.id')
       ->join('fuel', 'rentalcar.id_fuel', '=', 'fuel.id')
       ->join('drivetrain', 'rentalcar.id_drivetrain', '=', 'drivetrain.id')
@@ -137,9 +144,11 @@ class Rentalcar extends Model
       ->join('rental_image', 'rentalcar.id', '=', 'rental_image.id_rentalcar')
     //   ->join('favorite_rental', 'rentalcar.id', '=', 'favorite_rental.id_frentalcar')
      ->where('rentalcar.trash', 0)
+    //  ->where('rentalcar.status', 1)
      ->where('rentalcar.id_user', auth()->user()->id)
-     ->where('rental_image.is_main', 1)
-     ; 
+     
+     ->where('rental_image.is_main', 1);
+     
      $orderBy = 'rentalcar.created_at';
      $orderType = 'desc';
      
@@ -201,7 +210,8 @@ class Rentalcar extends Model
     'favorite_rental.id_frentalcar as id',
     'ad_rent.status as ad_status',
     'ad_rent.id_adtype as adtype',
-    'ad_rent.price as adprice'
+    'ad_rent.price as adprice',
+    'ad_rent.expiration_date as expdate'
      )
   //  ->join('groups', 'users.group_id', '=', 'groups.id')
       ->join('users', 'rentalcar.id_user', '=', 'users.id')

@@ -345,6 +345,9 @@
     <div class="d-flex justify-content-end">{{$rentalcarList->links()}}</div> --}}
     {{-- class="img-fluid" --}}
 <div class="row">
+    @if (session('msg'))
+        <div class="alert alert-success">{{session('msg')}}</div>
+    @endif
     @if (!empty($rentalcarList))
     @foreach ($rentalcarList as $key => $item)
     {{-- <div class="container mb-3 col-12 col-md-12 col-lg-12 col-xl-4 "> --}}
@@ -382,9 +385,10 @@
                             </form>
                             @endif
                             {{-- ---------------------------- --}}
-                       
+                        @elseif(Auth::user()->id == $item->id_user && $item->status == 1 && $item->expdate >= now())
+                            <a class="back-green" href="">xe của bạn</a>
                         @else
-                                <a class="btn btn-primary" href="#">Đăng tin xe này</a>
+                                <a class="btn btn-primary" href="{{route('rental.ad-add', ['id'=>$item->id])}}">Đăng tin xe này</a>
                         @endif
                     @endif
                         </div>
@@ -406,19 +410,21 @@
                                 @if (!empty($item->ad_status))
                                     
                                 
-                                @if ($item->ad_status == 1)
-                                    @if ($item->adtype == 1)
+                                @if ($item->ad_status == 1 )
+                                    @if ($item->adtype == 1 && $item->expdate >= now())
                                     <p class=" saving word-white"><i class='fa fa-flash'></i> Tiết kiệm</p>
-                                @elseif($item->adtype == 2)
+                                @elseif($item->adtype == 2 && $item->expdate >= now())
                                     <p class=" silver word-white"><i class='fa fa-circle-o'></i> Cơ bản</p>
-                                @elseif($item->adtype == 3)
+                                @elseif($item->adtype == 3 && $item->expdate >= now())
                                     <p class=" gold word-white">
                                         <i class='fa fa-plus'></i> Plus</p>
-                                @elseif($item->adtype == 4)
+                                @elseif($item->adtype == 4 && $item->expdate >= now())
                                 <p class="platinum word-white"><i class='fa fa-star'></i> Premium</p>
+                                @else
+                                        <p class="blood word-white"><i class='fa fa-warning'></i> Tin hết hạn</p>
                                 @endif
                                 @else
-                                    <p class="blood word-white"><i class='fa fa-warning'></i> Tin hết hạn</p>
+                                    
                                 @endif
                                 
                                 @endif
