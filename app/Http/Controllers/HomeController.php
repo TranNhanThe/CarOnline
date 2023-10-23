@@ -186,6 +186,7 @@ class HomeController extends Controller
          }else{
              $sortType = 'asc';
          }
+         
  
          
          $sortArr = [

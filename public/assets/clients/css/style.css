@@ -84,6 +84,9 @@ a{
 .word-green{
   color: #31fa34;
 }
+.word-info{
+  color: #31c1fa;
+}
 /* end word pack */
 /* open image pack */
 .object {
@@ -188,7 +191,13 @@ a{
     padding: 5px;
     border-radius: 10px;
   }
-
+  .chuadangtin{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1cb2e0, #003746);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1cafe0af, #003a46ac); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
   .saving{
     background: #000046;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #1ce06e, #004609);  /* Chrome 10-25, Safari 5.1-6 */
@@ -261,7 +270,32 @@ padding: 5px;
     font-size: 15px;
     padding: 7px 32px;
   }
+
+  .back-orange{
+    background-color: #ea4925 ;
+    color: white;
+    font-size: 15px;
+    padding: 7px 32px;
+  }
+  .back-orange:hover{
+    background-color: #ee6941;
+    color: white;
+    font-size: 15px;
+    padding: 7px 32px;
+  }
   
+  .back-info{
+    background-color: #25ddea ;
+    color: white;
+    font-size: 15px;
+    padding: 7px 32px;
+  }
+  .back-info:hover{
+    background-color: #41d7ee;
+    color: white;
+    font-size: 15px;
+    padding: 7px 32px;
+  }
 
   .text-search:hover {
     background-color: #ec5108;

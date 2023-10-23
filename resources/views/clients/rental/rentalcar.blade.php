@@ -100,7 +100,8 @@
             </div>
         </div>
         {{-- end detail --}}  
-
+        @foreach ($utilities as $key => $utilities)
+        @endforeach
            <h3 class="my-3 word-ash">Tính năng</h3>
           <div class="row bg-rentalcard rounded m-1 mb-4 p-4">
             <div class="col word-ash">
@@ -337,11 +338,11 @@
                       
                   </div>
                 </div>
-                <br>
-                <h6 class="word-rental-money">{{ $users->email }}</h6>
+              
+                <h6 class="word-rental-money mid">{{ $users->email }}</h6>
                 <a href="#" class="word-ash" style="text-decoration-line:underline"><h6>Các tin đăng khác của {{ $users->fullname }}</h6></a>
                 
-                <div class="btn btn-primary bg-rentalcard-in">
+                <div class="btn btn-primary bg-rentalcard-in mid">
                   <h6><i style="font-size: 25px" class='fas fa-phone-volume'></i>
                    {{ $users->phone }}
                   </h6></div>
@@ -438,11 +439,27 @@
               </div>
               </form>
             </div>
+            @elseif($item->rentaldays != 0 && !$item->expiration_date)
+                           {{-- <div><a class="back-green" href="">Đang chờ duyệt</a></div>  --}}
+                           <div class="bg-rentalcard word-info p-2 rounded"> 
+                            <h2 class="mid"><i class='fa fa-clock'></i></h2>
+                            <h3 class="mid">Đang chờ duyệt</h3>
+                       </div> 
+          @elseif(!$item->rentaldays)
+            <div class="bg-rentalcard word-rental-money p-2 rounded"> 
+              
+              <a class="btn btn-primary mid" href="{{route('rental.ad-add', ['id'=>$rentalcar->id])}}">Đăng tin xe này</a>
+         </div> 
+         @elseif($item->rentaldays != 0 && !$item->expiration_date < now())
+         <div class="bg-rentalcard word-rental-money p-2 rounded"> 
+          <h2 class="mid"><i class='fa fa-warning'></i>Tin đăng hết hạn</h2>
+          <a class="back-orange rounded mid" href="{{route('rental.ad-readd', ['id'=>$rentalcar->id])}}">Gia hạn</a>
+     </div> 
             @else
-            <div class="bg-rentalcard word-rental-money p-2 rounded">
+            <div class="bg-rentalcard word-rental-money p-2 rounded"> 
                 <h2 class="mid"><i class='fa fa-warning'></i></h2>
                 <h3 class="">Xe đã hết hạn, hoặc chủ xe đã dừng kinh doanh xe này!</h3>
-                <div class="mid">
+                {{-- <div class="mid">
                   @if (Auth::check())
                             <form action="{{ route('favorite.toggle', $rentalcar->id) }}" method="POST">
                               @csrf
@@ -453,7 +470,7 @@
                               </button>
                           </form>
                           @endif 
-                </div>
+                </div> --}}
            </div> 
              @endif
             @endforeach

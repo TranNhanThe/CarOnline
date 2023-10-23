@@ -386,7 +386,11 @@
                             @endif
                             {{-- ---------------------------- --}}
                         @elseif(Auth::user()->id == $item->id_user && $item->status == 1 && $item->expdate >= now())
-                            <a class="back-green" href="">xe của bạn</a>
+                            <a class="back-green rounded" href="">xe của bạn</a>
+                        @elseif(Auth::user()->id == $item->id_user && $item->status == 1 && $item->rentaldays != 0 && !$item->expdate)
+                            <a class="back-info rounded" href="">Đang chờ duyệt</a>
+                            @elseif(Auth::user()->id == $item->id_user && $item->status == 1 && $item->rentaldays != 0 && $item->expdate < now())
+                            <a class="back-orange rounded" href="{{route('rental.ad-readd', ['id'=>$item->id])}}">Gia hạn</a>
                         @else
                                 <a class="btn btn-primary" href="{{route('rental.ad-add', ['id'=>$item->id])}}">Đăng tin xe này</a>
                         @endif

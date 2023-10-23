@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +25,33 @@ use App\Http\Controllers\SearchController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::group(['middleware' => 'admin'], function () {
+      Route::prefix('admin')->name('admin.')->group(function () {
+      Route::get('/', [AdminController::class, 'index'])->name('home');
+      Route::get('/search', [AdminController::class, 'searchMaster'])->name('search');
+      Route::get('/selectmodel', [AdminController::class, 'selectModel'])->name('selectModel');
+      Route::get('/edit/{id}', [AdminController::class, 'getEdit'])->name('edit');
+      Route::post('/update', [AdminController::class, 'postEdit'])->name('post-edit');
+      Route::get('/delete/{id}', [AdminController::class, 'delete'])->name('delete');
+      Route::get('/xe-thue/{id}', [AdminController::class, 'rentalshow'])->name('rentalshow');
+      Route::get('/rentallist', [AdminController::class, 'rentallist'])->name('rentallist');
+      Route::post('/status/{car}', [AdminController::class, 'toggleStatus'])->name('status.toggle');
+    });
+});
+// Route::group(['middleware' => ['auth', 'admin']], function () {
+//    // Routes for authenticated admin users
+//    Route::prefix('admin')->name('admin.')->group(function () { 
+//       Route::get('/', [AdminController::class, 'index'])->name('admin.home');
+//       // Định nghĩa các route cho trang đăng nhập và xử lý đăng nhập của admin ở đây
+//       Route::get('/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+//       Route::post('/login', [AdminController::class, 'loginPost'])->name('admin.login.post');
+//     });
+  
+   
+//    // Thêm các route khác cho admin ở đây
+// });
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [HomeController::class, 'searchMaster'])->name('search');
 Route::get('/selectmodel', [HomeController::class, 'selectModel'])->name('selectModel');
@@ -30,6 +59,10 @@ Route::prefix('rental')->name('rental.')->group(function () {
    Route::get('/', [RentalController::class, 'index'])->name('index');
    Route::middleware(['auth'])->get('/yoretaca', [RentalController::class, 'yoretaca'])->name('yoretaca');
    Route::middleware(['auth'])->get('/add', [RentalController::class, 'add'])->name('add');
+
+   Route::middleware(['auth'])->get('/ad_readd/{id}', [RentalController::class, 'ad_readd'])->name('ad-readd');
+   Route::middleware(['auth'])->post('/ad_readd/{id}', [RentalController::class, 'postAd_readd'])->name('post-ad_readd');
+
    Route::middleware(['auth'])->get('/ad_add/{id}', [RentalController::class, 'ad_add'])->name('ad-add');
    Route::middleware(['auth'])->post('/ad_add/{id}', [RentalController::class, 'postAd_add'])->name('post-ad_add');
    Route::middleware(['auth'])->post('/add', [RentalController::class, 'postAdd'])->name('post-add');
@@ -117,4 +150,13 @@ Route::group(['middleware' => 'guest'], function () {
    Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
    Route::get('/login', [AuthController::class, 'login'])->name('login');
    Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
+   
+});
+Route::group(['middleware' => 'guest'], function () {
+Route::prefix('admin')->name('admin.')->group(function () { 
+      
+   // Định nghĩa các route cho trang đăng nhập và xử lý đăng nhập của admin ở đây
+   Route::get('/loginad', [AdminController::class, 'adminlogin'])->name('loginad');
+   Route::post('/loginad', [AdminController::class, 'adminloginPost'])->name('loginad');
+ });
 });

@@ -43,13 +43,13 @@
                   <a href="#" class="text-white"><i style="font-size: 30px" class='fa-brands fa-x-twitter'></i> Timoto.com</a>
                 </li>
                 <li>
-                  <a href="#" class="text-white"><i style="font-size: 30px" class='fa fa-twitter'></i> Timoto.com</a>
+                  <a href="#" class="text-white"><i style="font-size: 30px" class='fa fa-youtube'></i> Timoto.com</a>
                 </li>
                 <li>
                   <a href="#" class="text-white"><i style="font-size: 30px" class='fas fa-phone-volume'></i> 1900 0175</a>
                 </li>
                 <li>
-                  <a href="#" class="text-white"><i style="font-size: 30px" class='fas fa-headphones-alt'></i> Timoto@gmail.com</a>
+                  <a href="#" class="text-white"><i style="font-size: 30px" class='fas fa-headphones  -alt'></i> Timoto@gmail.com</a>
                 </li>
                 
               </ul>
@@ -72,6 +72,11 @@
                 </li>
                 <li>
                   <a href="#!" class="text-white">Câu hỏi thường gặp</a>
+                </li>
+                <li>
+                  <audio  controls>
+                    <source  src="{{ asset('assets\clients\audio\able.mp3') }}" type="audio/mpeg">
+                  </audio>
                 </li>
               </ul>
             </div>

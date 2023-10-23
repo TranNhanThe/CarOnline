@@ -43,7 +43,18 @@
         </div>
     </form>
     <table class="table table-bordered word-ash">
-        c
+        <thead>
+            <tr>
+                <th width="5%">STT</th>
+                <th><a href="?sort-by=fullname&sort-type={{$sortType}}">Tên</a></th>
+                <th><a href="?sort-by=email&sort-type={{$sortType}}">Email</a></th>
+                {{-- <th>Nhóm</th> --}}
+                <th>Trạng thái</th>
+                <th width="15%"><a href="?sort-by=created_at&sort-type={{$sortType}}">Thời Gian</a></th>
+                <th width="5%">Sửa</th>
+                <th width="5%">Xóa</th>
+            </tr>
+        </thead>
         <tbody>
             @if (!empty($usersList))
                 @foreach ($usersList as $key => $item)
@@ -51,7 +62,7 @@
                 <td>{{$key+1}}</td>
                 <td>{{$item->fullname}}</td>
                 <td>{{$item->email}}</td>
-                <td>{{$item->group_name}}</td>
+                {{-- <td>{{$item->group_name}}</td> --}}
                 <td>{!!$item->status==0?'<button class="btn btn-danger btn-sm">Chưa kích hoạt</button>':
                 '<button class="btn btn-success btn-sm">kích hoạt</button>'!!}</td>
                 <td>{{$item->created_at}}</td>

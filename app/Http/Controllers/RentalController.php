@@ -17,6 +17,7 @@ use App\Models\Utilities;
 use Illuminate\Http\Request;
 use App\Http\Requests\RentalRequest;
 use App\Http\Requests\AdrentRequest;
+use App\Http\Requests\ReAdrentRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Ad_rent;
 use App\Models\AdType;
@@ -195,6 +196,13 @@ class RentalController extends Controller
         $allAdtype = getAllAdtype();
          return view('clients.rental.ad_add', compact('title', 'rentalcar', 'allUser',  'allAdtype'));
         }
+        public function ad_readd($id){
+            $title = 'Gia hạn tin đăng thuê xe';
+            $rentalcar = Rentalcar::find($id);
+             $allUser = getAllUsers(); 
+            $allAdtype = getAllAdtype();
+             return view('clients.rental.ad_readd', compact('title', 'rentalcar', 'allUser',  'allAdtype'));
+            }
     public function postAdd(RentalRequest $request){
         
 
@@ -272,7 +280,14 @@ class RentalController extends Controller
     }
 
     public function postAd_add(AdrentRequest $request, $id){
-       
+        //  dd($request->all());
+       $total = $request->input('total');
+        $data = [
+            'credit' => Auth::user()->credit - $total // Sửa $request->$total thành $total
+        ];
+        $iduser = Auth::id();
+    
+        Users::where('id', $iduser)->update($data);
         $iduser = Auth::id();
         Ad_rent::where('id_rentalcar', $id)->delete();
        
@@ -280,7 +295,8 @@ class RentalController extends Controller
         $ad_rent->id_rentalcar = $id;
         $ad_rent->price = str_replace(['.', ','], '', $request->input('price'));
         $ad_rent->id_adtype = $request->input('id_adtype');
-        $ad_rent->expiration_date = $request->input('expiration_date');
+        $ad_rent->rentaldays = $request->input('rentaldays');
+        // $ad_rent->expiration_date = $request->input('expiration_date');
         $ad_rent->save();
         $rentalcar = Rentalcar::find($id); // Truy cập xe thuê theo $id
 if ($rentalcar) {
@@ -289,6 +305,37 @@ if ($rentalcar) {
         
 
         return redirect()->route('rental.yoretaca')->with('msg', 'Tin đăng của bạn đã vào danh sách chờ duyệt');
+    }
+
+    public function postAd_readd(ReAdrentRequest $request, $id){
+        //   dd($request->all());
+
+        $total = $request->input('total');
+        $data = [
+            'credit' => Auth::user()->credit - $total // Sửa $request->$total thành $total
+        ];
+        $iduser = Auth::id();
+        Users::where('id', $iduser)->update($data);
+        $iduser = Auth::id();
+        Ad_rent::where('id_rentalcar', $id)->delete();
+       
+        $ad_rent = new Ad_rent();
+        $ad_rent->id_rentalcar = $id;
+        $ad_rent->price = str_replace(['.', ','], '', $request->input('price'));
+        $ad_rent->id_adtype = $request->input('id_adtype');
+        $ad_rent->rentaldays = $request->input('rentaldays');
+        
+        $ad_rent->expiration_date = now()->addDays($ad_rent->rentaldays);
+        // $ad_rent->expiration_date = $request->input('expiration_date');
+        $ad_rent->status = 1;
+        $ad_rent->save();
+        $rentalcar = Rentalcar::find($id); // Truy cập xe thuê theo $id
+if ($rentalcar) {
+    $rentalcar->update(['status' => 1]); // Cập nhật trường status thành 1
+}
+        
+
+        return redirect()->route('rental.yoretaca')->with('msg', 'Tin đăng của bạn đã được gia hạn thành công');
     }
 
 
@@ -371,7 +418,7 @@ public function show($id)
     $fuel = Fuel::find($rentalcar->id_fuel);
     $province = Province::find($rentalcar->id_province);
     $transmission = Transmission::find($rentalcar->id_transmission);
-    $utilities = Utilities::find($rentalcar->id_transmission);
+    $utilities = Utilities::where('id_rentalcar', $id)->get();
     // $ad_rent = Ad_rent::find($rentalcar->id);
     // $ad_rent = Ad_rent::find($rentalcar->$id);
     $ad_rent = Ad_rent::where('id_rentalcar', $id)->get();  

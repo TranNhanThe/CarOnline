@@ -16,14 +16,18 @@ class Users extends Model
         'credit',
         // Các trường khác
     ];
-
+    public function isAdmin()
+{
+    // Thực hiện kiểm tra quyền admin ở đây (ví dụ: dựa vào role hoặc quyền cụ thể)
+     return $this->isAdmin;
+}
     public function getAllUsers($filters = [], $keywords = null, $sortByArr = null, $perPage = null){
         //too raw
        // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
        //DB::enableQueryLog();
         $users = DB::table($this->table)
-        ->select('users.*', 'groups.name as group_name')
-        ->join('groups', 'users.group_id', '=', 'groups.id')
+        ->select('users.*')
+        // ->join('groups', 'users.group_id', '=', 'groups.id')
         ->where('trash', 0); 
         $orderBy = 'users.created_at';
         $orderType = 'desc';
@@ -46,6 +50,9 @@ class Users extends Model
             $users = $users->where(function($query) use ($keywords){
                 $query->orWhere('fullname', 'like', '%'.$keywords.'%');
                 $query->orWhere('email', 'like', '%'.$keywords.'%');
+                $query->orWhere('phone', 'like', '%'.$keywords.'%');
+                $query->orWhere('id', 'like', '%'.$keywords.'%');
+                $query->orWhere('cccd', 'like', '%'.$keywords.'%');
             });
         }
 

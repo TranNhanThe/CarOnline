@@ -30,7 +30,10 @@ class AdrentRequest extends FormRequest
                 }
             }],
 
-            'expiration_date' => 'required|date|date_format:Y-m-d|after:' . now()->format('Y-m-d'),
+            // 'expiration_date' => 'required|date|date_format:Y-m-d|after:' . now()->format('Y-m-d'),
+
+            'rentaldays' => 'required',
+            'total' => 'required'
 
 
         ];
@@ -44,59 +47,9 @@ class AdrentRequest extends FormRequest
             'expiration_date.after' => 'Hãy chọn từ ngày mai trở về sau',
             'car_name.required' => 'Tên xe bắt buộc phải nhập',
             'car_name.min' => 'tên xe phải từ :min ký tự trở lên',
+            'rentaldays.required' => 'mời bạn chọn số ngày hiển thị' ,
             
-            // 'id_user.required' => 'User không được để trống',
-            // 'id_user.integer' => 'User không hợp lệ',
-
-            // 'id_model.required' => 'Model không được để trống',
-            // 'id_model.integer' => 'Model không hợp lệ',
-
-            // 'id_fuel.required' => 'Nhiên liệu không được để trống',
-            // 'id_fuel.integer' => 'Nhiên liệu không hợp lệ',
-
-            // 'id_drivetrain.required' => 'Dẫn động không được để trống',
-            // 'id_drivetrain.integer' => 'Dẫn động không hợp lệ',
-
-            // 'id_transmission.required' => 'Hộp số không được để trống',
-            // 'id_transmission.integer' => 'Hộp số không hợp lệ',
-
-            // 'id_bodytype.required' => 'Dòng xe không được để trống',
-            // 'id_bodytype.integer' => 'Dòng xe không hợp lệ',
-
-            // 'id_make.required' => 'Hãng không được để trống',
-            // 'id_make.integer' => 'Hãng không hợp lệ',
-
-            // 'id_province.required' => 'Tỉnh không được để trống',
-            // 'id_province.integer' => 'Tỉnh không hợp lệ',
-
-            'location.required' => 'Địa chỉ bắt buộc phải nhập',
-
-            'engine.required' => 'Động cơ bắt buộc phải nhập',
-
-            'exterior_color.required' => 'Màu ngoại thất bắt buộc phải nhập',
-
-            'interior_color.required' => 'Màu nội thất bắt buộc phải nhập',
-
-            'vin.required' => 'Số vin bắt buộc phải nhập',
-
-            'vin.min' => 'Số vin phải từ :min ký tự trở lên',
-
-            'no_accident.required' => 'Từng bị va chạm hay chưa',
-
-            'no_accident.integer' => 'Dữ liệu không hợp lệ',
-
-            'mota.required' => 'Hãy viết mô tả',
-
-            'seat.required' => 'Số ghế ngồi bắt buộc phải nhập',
-
-            'seat.integer' => 'dữ liệu nhập vào không hợp lệ',
-
-            'driver.required' => 'Xe có kèm tài xế hay không',
-
-            'driver.integer' => 'Dữ liệu không hợp lệ',
-
-            'image.required' => 'Mời nhập hình ảnh'
-            
+            'total.required' => 'sai'
         ];
     }
 }
