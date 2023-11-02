@@ -58,8 +58,8 @@
           {{-- <div>
             <img src="{{ asset('assets\clients\images\coin.png') }}"  width="30px" alt="" > 
             </div> --}}
-            <div class="px-1 pt-2 mx-3 rounded bg-rentalcard">
-              <h5 class="word-green "><img src="{{ asset('assets\clients\images\coin.png') }}" class="" title="Credit"  width="30px" alt="" > {{ auth()->user()->credit }}</h5>
+            <div class="px-1 pt-3 mx-3">
+              <h5 class="word-ash "><img src="{{ asset('assets\clients\images\coin.png') }}" class="" title="Credit"  width="30px" alt="" > {{ auth()->user()->credit }}</h5>
             </div>
         
         
@@ -83,6 +83,11 @@
                   <a class="word-black" href="{{route('favorite')}}">
                    <i class='fa fa-heart'></i> Danh sách Yêu thích
                   </a>
+                </li>
+                <li>
+                  <a class="word-black" href="{{route('users.userinfo', ['id'=>auth()->user()->id])}}">
+                    <i class='fa fa-user'></i> Thông tin cá nhân
+                   </a>
                 </li>
 
                 {{-- <li>

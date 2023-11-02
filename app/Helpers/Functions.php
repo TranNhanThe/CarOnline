@@ -27,7 +27,7 @@ function getAllUsers(){
 
 function getAllModels(){
     $model = new Models; 
-    return $model->getAll();
+    return $model->getAllModel();
 }
 
 function getAllFuel(){
@@ -51,7 +51,7 @@ function getAllBodytype(){
 
 function getAllMake(){
     $make = new Make; 
-    return $make->getAll();
+    return $make->getAllMake();
 }
 
 function getAMake(){

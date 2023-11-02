@@ -224,6 +224,7 @@ class RentalController extends Controller
         $rentalcar->interior_color = $request->input('interior_color');
         $rentalcar->vin = $request->input('vin');
         $rentalcar->no_accident = $request->input('no_accident');
+        $rentalcar->bsx = $request->input('bsx');
         // $rentalcar->price = str_replace(['.', ','], '', $request->input('price'));
         // $rentalcar->price = $request->input('price');
         $rentalcar->seat = $request->input('seat');
@@ -276,7 +277,7 @@ class RentalController extends Controller
             }
         }
 
-        return redirect()->route('rental.index')->with('msg', 'Thêm xe thành công');
+        return redirect()->route('rental.yoretaca')->with('msg', 'Thêm xe thành công');
     }
 
     public function postAd_add(AdrentRequest $request, $id){
@@ -306,7 +307,7 @@ if ($rentalcar) {
 
         return redirect()->route('rental.yoretaca')->with('msg', 'Tin đăng của bạn đã vào danh sách chờ duyệt');
     }
-
+   
     public function postAd_readd(ReAdrentRequest $request, $id){
         //   dd($request->all());
 
@@ -353,63 +354,19 @@ if ($rentalcar) {
         Users::where('id', $iduser)->update($data);
         return back()->with('msg', 'Thêm Credit thành công');
         }
-    // public function postCredit(UserRequest $request){
-    //     $id = Auth::id();
-            
-    //         if (!$request->has('credit') || !is_numeric($request->credit)) {
-    //             return back()->with('msg', 'Dữ liệu không hợp lệ');
-    //         }
-            
-    //         $data = [
-    //             'users.credit' => $request->credit + Auth::user()->credit
-    //         ];
-    //         // $this->users->updateUser($data, $id);
-        
-    //         return DB::table($this->users)->where('id', $id)->update($data);
-    //         // return back()->with('msg', 'Cập nhật người dùng thành công');
-    // }
-
-
-    // public $data = [];
-    // public function detail() {
-    //     $this->data['title'] = 'Chi Tiết Xe Thuê';
-    //     return view('clients.rental.rentalcar', $this->data);
-    // }
-//     public function getCarDetail(Request $request, $id=0){
-        
-//         $title = 'Chi Tiết Xe Thuê';
-
-//         if (!empty($id)){
-//             $rentalcarDetail = $this->rentalcar->getDetail($id);
-//             if(!empty($rentalcarDetail[0])){
-//                 $request->session()->put('id', $id);
-//                 $rentalcarDetail = $rentalcarDetail[0];
-//             }else{
-//                 return redirect()->route('rental.index')->with('msg', 'Nguời dùng không tồn tại');
-//             }
-//         }else{
-//             return redirect()->route('rental.index')->with('msg', 'Liên kết không tồn tại');
-//         }
-//         // $allGroups = getAllGroups();
-//         $allUser = getAllUsers(); 
-//         $allModel = getAllModels();
-//         $allFuel = getAllFuel();
-//         $allProvince = getAllProvince();
-//         $allMake = getAllMake();
-//         $allBodytype = getAllBodytype();
-//         $allTransmission = getAllTransmission();
-//         $allDrivetrain = getAllDrivetrain();
-
-//         return view('clients.rental.rentalcar', compact('title', 'rentalcarDetail', 'allUser', 'allModel',
-//         'allFuel', 'allDrivetrain', 'allTransmission', 'allBodytype', 'allMake', 'allProvince'));
-    
-         
-// }
 public $data = [];
 public function show($id)
 {
+
     $this->data['title'] = 'Chi Tiết Xe Thuê';
     $rentalcar = Rentalcar::find($id);
+    
+    if ($rentalcar) {
+        
+        $rentalcar->view_count = $rentalcar->view_count + 1;
+        $rentalcar->save();
+    }
+
     $rental_image = RentalImage::where('id_rentalcar', $id)->get();
     $make = Make::find($rentalcar->id_make);
     $model = Models::find($rentalcar->id_model);

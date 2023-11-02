@@ -34,8 +34,18 @@ Route::group(['middleware' => 'admin'], function () {
       Route::post('/update', [AdminController::class, 'postEdit'])->name('post-edit');
       Route::get('/delete/{id}', [AdminController::class, 'delete'])->name('delete');
       Route::get('/xe-thue/{id}', [AdminController::class, 'rentalshow'])->name('rentalshow');
+
+      Route::get('/users/{id}', [AdminController::class, 'userinfo'])->name('userinfo');
+
       Route::get('/rentallist', [AdminController::class, 'rentallist'])->name('rentallist');
       Route::post('/status/{car}', [AdminController::class, 'toggleStatus'])->name('status.toggle');
+
+      Route::post('/users/{id}', [AdminController::class, 'toggleUserStatus'])->name('userstatus.toggle');
+
+      Route::get('/addmake', [AdminController::class, 'addMake'])->name('addMake');
+      Route::post('/addmake', [AdminController::class, 'postAddMake'])->name('post-add');
+      Route::post('/addmodel', [AdminController::class, 'postAddModel'])->name('addModel');
+      // Route::middleware(['auth'])->get('/admin/increase-view-count/{id}', [AdminController::class, 'increaseViewCount'])->name('admin.increase-view-count');
     });
 });
 // Route::group(['middleware' => ['auth', 'admin']], function () {
@@ -55,11 +65,14 @@ Route::group(['middleware' => 'admin'], function () {
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [HomeController::class, 'searchMaster'])->name('search');
 Route::get('/selectmodel', [HomeController::class, 'selectModel'])->name('selectModel');
+
 Route::prefix('rental')->name('rental.')->group(function () {
    Route::get('/', [RentalController::class, 'index'])->name('index');
    Route::middleware(['auth'])->get('/yoretaca', [RentalController::class, 'yoretaca'])->name('yoretaca');
-   Route::middleware(['auth'])->get('/add', [RentalController::class, 'add'])->name('add');
+   // Route::middleware(['auth'])->get('/add', [RentalController::class, 'add'])->name('add');
+   Route::middleware(['auth', 'checkuserstatus'])->get('/add', [RentalController::class, 'add'])->name('add');
 
+   Route::middleware(['auth'])->get('/selectmodel', [HomeController::class, 'selectModel'])->name('selectModel');
    Route::middleware(['auth'])->get('/ad_readd/{id}', [RentalController::class, 'ad_readd'])->name('ad-readd');
    Route::middleware(['auth'])->post('/ad_readd/{id}', [RentalController::class, 'postAd_readd'])->name('post-ad_readd');
 
@@ -117,6 +130,10 @@ Route::get('demo-response', function () {
     Route::get('/add', [UsersController::class, 'add'])->name('add');
 
     Route::post('/add', [UsersController::class, 'postAdd'])->name('post-add');
+
+    Route::get('/info', [UsersController::class, 'userinfo'])->name('userinfo');
+
+    Route::post('/info', [UsersController::class, 'postUserInfo'])->name('post-userinfo');
 
     Route::get('/edit/{id}', [UsersController::class, 'getEdit'])->name('edit');
 

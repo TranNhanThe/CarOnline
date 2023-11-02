@@ -51,6 +51,7 @@
                <div class="row bg-rentalcard rounded m-1 mb-4 p-4">
                 <div class="col">
                   <h6><span class="word-white">Model: </span><span class="word-ash"> {{$model->name}}</span></h6>
+                  <h6><span class="word-white">Hãng: </span><span class="word-ash"> {{$make->name}}</span></h6>
                   <h6><span class="word-white">Dòng xe: </span><span class="word-ash"> {{$bodytype->name}}</span></h6>
                   <h6><span class="word-white">Dẫn động: </span><span class="word-ash"> {{$drivetrain->name}}</span></h6>
                   <h6><span class="word-white">Động cơ: </span><span class="word-ash"> {{$rentalcar->engine}}</span></h6>
@@ -61,6 +62,7 @@
                   <h6><span class="word-white">Màu ngoại thất: </span><span class="word-ash"> {{$rentalcar->exterior_color}}</span></h6>
                   <h6><span class="word-white">Màu nội thất: </span><span class="word-ash"> {{$rentalcar->interior_color}}</span></h6>
                   <h6><span class="word-white">Số ghế ngồi: </span><span class="word-ash"> {{$rentalcar->seat}}</span></h6>
+                  <h6><span class="word-white">Biển kiểm soát: </span><span class="word-ash"> {{$rentalcar->bsx}}</span></h6>
                   <h6><span class="word-white">VIN: </span><span class="word-ash"> {{$rentalcar->vin}}</span></h6>
                 </div>
                </div> {{-- end tổng quan --}}
@@ -106,120 +108,122 @@
             </div>
             {{-- end detail --}}  
     
-               <h3 class="my-3 word-ash">Tính năng</h3>
-              <div class="row bg-rentalcard rounded m-1 mb-4 p-4">
-                <div class="col word-ash">
-                  <h3 class="word-white">An Toàn</h3>
-                  
-                  <p>
-                    @if ($utilities->lop_du_phong == 1)
-                         Lốp dự phòng
-                    @endif
-                  </p>
-                   
-                  <P>
-                    @if ($utilities->camera_lui == 1)
-                        Camera Lùi
-                    @endif
-                  </P>
-                    
-                  <p>
-                    @if ($utilities->camera_cap_le == 1)
-                         Camera Cập Lề
-                    @endif
-                  </p>
-                    
-                  <p>
-                    @if ($utilities->cam_bien_va_cham == 1)
-                         Cảm Biến Va Chạm
-                    @endif
-                  </p>
-                    
-                  <P>
-                    @if ($utilities->cam_bien_lop == 1)
-                       Cảm Biến Lốp  
-                    @endif
-                  </P>
-    
-                  <p>
-                    @if ($utilities->camera_360 == 1)
-                         Camera 360
-                    @endif
-                  </p>
-    
-                  <p>
-                    @if ($utilities->tui_khi_an_toan == 1)
-                         Túi Khí An Toàn
-                    @endif
-                  </p>
-    
-                  
-    
-                  <p>
-                    @if ($utilities->canh_bao_toc_do == 1)
-                        Cảnh báo tốc độ 
-                    @endif
-                  </p>
-                </div>
-    
-                <div class="col word-ash">
-                  <h3 class="word-white">Tiện Nghi</h3>
-    
-                  <P>
-                    @if ($utilities->Bluetooth == 1)
-                       Bluetooth
-                   @endif
-                 </P>
-    
-                 <P>
-                  @if ($utilities->dinh_vi_gps == 1)
-                      Định vị GPS
-                  @endif
-                </P>
-    
-                <P>
-                  @if ($utilities->etc == 1)
-                     ETC  
-                  @endif
-                </P>
-    
-                  <p>
-                    @if ($utilities->cua_so_troi == 1)
-                         Cửa Sổ Trời
-                    @endif
-                  </p>
-    
-                  <p>
-                    @if ($utilities->khe_cam_usb == 1)
-                         Khe Cắm USB
-                    @endif
-                  </p>
-    
-                  <p>
-                    @if ($utilities->camera_hanh_trinh == 1)
-                         Camera Hành Trình
-                    @endif
-                  </p>
-    
-                  <p>
-                    @if ($utilities->ghe_tre_em == 1)
-                        Ghế Trẻ em 
-                    @endif
-                  </p>
-    
-                  <p>
-                    @if ($utilities->man_hinh_dvd == 1)
-                        Màn Hình DVD 
-                    @endif
-                  </p>
-    
-                  <p>
-                    @if ($utilities->ban_do == 1)
-                         Bản Đồ
-                    @endif
-                  </p>
-                </div>
-              </div>
+            @foreach ($utilities as $key => $utilities)
+        @endforeach
+           <h3 class="my-3 word-ash">Tính năng</h3>
+          <div class="row bg-rentalcard rounded m-1 mb-4 p-4">
+            <div class="col word-ash">
+              <h3 class="word-white">An Toàn</h3>
+              
+              <p>
+                @if ($utilities->lop_du_phong == 1)
+                <img src="{{ asset('assets\clients\images\lop.png') }}" width="25px" alt=""> Lốp dự phòng
+                @endif
+              </p>
+               
+              <P>
+                @if ($utilities->camera_lui == 1)
+                <img src="{{ asset('assets\clients\images\camback.png') }}" width="25px" alt=""> Camera Lùi
+                @endif
+              </P>
+                
+              <p>
+                @if ($utilities->camera_cap_le == 1)
+                <img src="{{ asset('assets\clients\images\pack.png') }}" width="25px" alt="">  Camera Cập Lề
+                @endif
+              </p>
+                
+              <p>
+                @if ($utilities->cam_bien_va_cham == 1)
+                <img src="{{ asset('assets\clients\images\accident.png') }}" width="25px" alt="">  Cảm Biến Va Chạm
+                @endif
+              </p>
+                
+              <P>
+                @if ($utilities->cam_bien_lop == 1)
+                <img src="{{ asset('assets\clients\images\apsuat.png') }}" width="25px" alt="">  Cảm Biến Lốp  
+                @endif
+              </P>
+
+              <p>
+                @if ($utilities->camera_360 == 1)
+                <img src="{{ asset('assets\clients\images\360.png') }}" width="25px" alt="">   Camera 360
+                @endif
+              </p>
+
+              <p>
+                @if ($utilities->tui_khi_an_toan == 1)
+                <img src="{{ asset('assets\clients\images\airbag.png') }}" width="25px" alt="">   Túi Khí An Toàn
+                @endif
+              </p>
+
+              
+
+              <p>
+                @if ($utilities->canh_bao_toc_do == 1)
+                <img src="{{ asset('assets\clients\images\speed.png') }}" width="25px" alt="">  Cảnh báo tốc độ 
+                @endif
+              </p>
+            </div>
+
+            <div class="col word-ash">
+              <h3 class="word-white">Tiện Nghi</h3>
+
+              <P>
+                @if ($utilities->Bluetooth == 1)
+                <img src="{{ asset('assets\clients\images\bluetooth.png') }}" width="25px" alt="">   Bluetooth
+               @endif
+             </P>
+
+             <P>
+              @if ($utilities->dinh_vi_gps == 1)
+              <img src="{{ asset('assets\clients\images\gps.png') }}" width="25px" alt="">   Định vị GPS
+              @endif
+            </P>
+
+            <P>
+              @if ($utilities->etc == 1)
+              <img src="{{ asset('assets\clients\images\etc.png') }}" width="25px" alt="">   ETC  
+              @endif
+            </P>
+
+              <p>
+                @if ($utilities->cua_so_troi == 1)
+                <img src="{{ asset('assets\clients\images\cuasotroi.png') }}" width="25px" alt="">   Cửa Sổ Trời
+                @endif
+              </p>
+
+              <p>
+                @if ($utilities->khe_cam_usb == 1)
+                <img src="{{ asset('assets\clients\images\usb.png') }}" width="25px" alt="">    Khe Cắm USB
+                @endif
+              </p>
+
+              <p>
+                @if ($utilities->camera_hanh_trinh == 1)
+                <img src="{{ asset('assets\clients\images\camera.png') }}" width="25px" alt="">   Camera Hành Trình
+                @endif
+              </p>
+
+              <p>
+                @if ($utilities->ghe_tre_em == 1)
+                <img src="{{ asset('assets\clients\images\child.png') }}" width="25px" alt="">  Ghế Trẻ em 
+                @endif
+              </p>
+
+              <p>
+                @if ($utilities->man_hinh_dvd == 1)
+                <img src="{{ asset('assets\clients\images\dvd.png') }}" width="25px" alt=""> Màn Hình DVD 
+                @endif
+              </p>
+
+              <p>
+                @if ($utilities->ban_do == 1)
+                <img src="{{ asset('assets\clients\images\map.png') }}" width="25px" alt="">   Bản Đồ
+                @endif
+              </p>
+            </div>
+          </div>
               {{-- end tính năng --}}
               <h3 class="my-3 word-ash">Mô tả của chủ xe</h3> 
     
@@ -232,10 +236,12 @@
               <hr>
     
               <div class="row word-white">
-                <div class="col-4">Ngày hiển thị: {{ date('d-m-Y', strtotime($rentalcar->created_at))  }}</div>
-                <div class="col-4">Mã tin đăng: 123122</div>
+                @foreach ($ad_rent as $key => $item)
+                <div class="col-4">Ngày hết hạn: {{ date('d-m-Y', strtotime($item->expiration_date))  }}</div>
+                <div class="col-4">Mã tin đăng: {{ $item->id }}</div>
                 <div class="col-2">ID: {{ $rentalcar->id }}</div>
-                <div class="col-2">Lượt xem: 43</div>
+                <div class="col-2">Lượt xem:  {{ $rentalcar->view_count }}</div>
+                @endforeach
               </div>
     
               
@@ -269,7 +275,7 @@
                         @endfor
                         <span class="word-white">{{ $rentalcar->star_rate }}</span>
                     </div>
-                  </div></h5>
+                  </div></h4>
                   
                   {{-- end rating --}}
                   <h3 class="word-white">
@@ -310,7 +316,7 @@
                   
                   <div class="bg-rentalcard rounded m-1 mb-4 p-2">
                       <p class="word-white">Chủ Xe Tư Nhân</p>
-    w
+    
                     <div class="row">
                       <div class="col-3">
                           <div >
@@ -342,11 +348,11 @@
                           
                       </div>
                     </div>
-                    <br>
-                    <h6 class="word-rental-money">{{ $users->email }}</h6>
+                   
+                    <h6 class="word-rental-money mid">{{ $users->email }}</h6>
                     <a href="#" class="word-ash" style="text-decoration-line:underline"><h6>Các tin đăng khác của {{ $users->fullname }}</h6></a>
                     
-                    <div class="btn btn-primary bg-rentalcard-in">
+                    <div class="btn btn-primary bg-rentalcard-in mid">
                       <h6><i style="font-size: 25px" class='fas fa-phone-volume'></i>
                        {{ $users->phone }}
                       </h6></div>

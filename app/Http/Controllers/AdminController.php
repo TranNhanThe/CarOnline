@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Users;
 use App\Models\RentalImage;
+use App\Http\Requests\MakeRequest;
+use App\Http\Requests\ModelRequest;
 use Illuminate\Support\Facades\DB;
 
 
@@ -27,15 +29,141 @@ class AdminController extends Controller
 {
     private $users;
     private $rentalcar;
+    private $make;
+    private $model;
 
     private $rental_image;
     public $data = [];
     const _PER_PAGE = 10;
+    const _PER_PAGEI = 10;
     public function __construct(){
         $this->users = new Users();
         $this->rentalcar = new Rentalcar();
         $this->rental_image = New RentalImage();
+        $this->make = New Make();
+        $this->model = New Models();
     }
+    public function userinfo($id)
+    {
+       
+    $users = Users::find($id);
+    $this->data['title'] = 'Thông tin cá nhân';
+    // return view('admin.info', $this->data, $users);
+    return view('admin.info', [
+        'users' => $users,
+    ], $this->data);
+    }
+    public function addMake(Request $request){
+        $title = 'Hãng và Model';
+        $filters = [];
+        $keywords = null;
+        if (!empty($request->status)){
+            $status = $request->status; 
+            if ($status == 'active'){
+                $status = 1;
+            }else{
+                $status = 0;
+            }
+
+            $filters[] =  ['users.status', '=', $status];
+
+     
+        }
+        if (!empty($request->group_id)){
+            $groupId = $request->group_id; 
+            $filters[] =  ['users.group_id', '=', $groupId];
+        }
+
+        if (!empty($request->keywords)){
+            $keywords = $request->keywords;
+             
+        }
+
+        //Xử lý logic sắp xếp
+
+        $sortBy = $request->input('sort-by');
+        
+        $sortType = $request->input('sort-type')?$request->input('sort-type'):'asc'; 
+
+        $allowSort = ['asc', 'desc'];
+
+        if(!empty($sortType)&&in_array($sortType, $allowSort, $sortBy)){
+            if($sortType == 'desc'){
+                        $sortType = 'asc';
+            }else{
+                        $sortType = 'desc';
+             } 
+        }else{
+            $sortType = 'asc';
+        }
+
+        
+        $sortArr = [
+            'sortBy' => $sortBy,
+            'sortType' => $sortType
+        ];
+        // ----------------------------------------
+        $filtersi = [];
+        $keywordsi = null;
+        
+        if (!empty($request->id_make)){
+            $id_make = $request->id_make; 
+            $filtersi[] =  ['model.id_make', '=', $id_make];
+        }
+
+        if (!empty($request->keywordsi)){
+            $keywordsi = $request->keywordsi;
+             
+        }
+
+        //Xử lý logic sắp xếp
+
+        $sortByi = $request->input('sort-byi');
+        
+        $sortTypei = $request->input('sort-typei')?$request->input('sort-typei'):'asc'; 
+
+        $allowSorti = ['asc', 'desc'];
+
+        if(!empty($sortTypei)&&in_array($sortTypei, $allowSorti, $sortByi)){
+            if($sortTypei == 'desc'){
+                        $sortTypei = 'asc';
+            }else{
+                        $sortTypei = 'desc';
+             } 
+        }else{
+            $sortTypei = 'asc';
+        }
+
+        
+        $sortArri = [
+            'sortByi' => $sortByi,
+            'sortTypei' => $sortTypei
+        ];
+        
+        $makeList = $this->make->getAllMake($filters, $keywords, $sortArr, self::_PER_PAGE);
+        $modelList = $this->model->getAllModel($filtersi, $keywordsi, $sortArri, self::_PER_PAGEI);
+        return view('admin.addMake', compact('title', 'makeList', 'modelList', 'sortType','sortTypei'));
+
+         
+
+    }
+    public function postAddMake(MakeRequest $request){
+            $dataInsert = [
+                'name' => $request->name,
+            ];
+        $this->make->addMake($dataInsert);
+
+        return redirect()->route('admin.addMake')->with('msg', 'Thêm Hãng thành công');
+    }
+    public function postAddModel(ModelRequest $request){
+        $data = [
+            'name'  => $request->name,
+            'id_make' => $request->id_make,
+        ];
+    $this->model->addModel($data);
+
+    return redirect()->route('admin.addMake')->with('msg', 'Thêm Model thành công');
+}
     public function index(Request $request)
     {
         $title = 'Danh sách người dùng';
@@ -150,7 +278,7 @@ class AdminController extends Controller
              'sortBy' => $sortBy,
              'sortType' => $sortType
          ];
- 
+         
          
  
          $rentalcarList = $this->rentalcar->getAllRentalAd($filters, $keywords, $sortArr, self::_PER_PAGE); 
@@ -251,7 +379,7 @@ public function rentalshow($id)
     $fuel = Fuel::find($rentalcar->id_fuel);
     $province = Province::find($rentalcar->id_province);
     $transmission = Transmission::find($rentalcar->id_transmission);
-    $utilities = Utilities::find($rentalcar->id_transmission);
+    $utilities = Utilities::where('id_rentalcar', $id)->get();
     // $ad_rent = Ad_rent::find($rentalcar->id);
     // $ad_rent = Ad_rent::find($rentalcar->$id);
     $ad_rent = Ad_rent::where('id_rentalcar', $id)->get();  
@@ -289,7 +417,7 @@ public function rentalshow($id)
 public function toggleStatus($carId)
 {
     $car = Ad_rent::where('id_rentalcar', $carId)->first(); // Lấy ra bản ghi cần thao tác
-
+   
     if ($car) {
         if ($car->status == '1') {
             $car->status = '0';
@@ -302,9 +430,32 @@ public function toggleStatus($carId)
 
         $car->save(); // Lưu thay đổi
 
-        return redirect()->back()->with('message', $message);
+         return redirect()->back()->with('message', $message);
+        // return redirect()->route('admin.rentalshow', ['id'=>$carId])->with('success', $message);
     } else {
         return redirect()->back()->with('error', 'Không tìm thấy xe yêu thích');
+    }
+}
+
+public function toggleUserStatus($userId)
+{
+    $users = Users::where('id', $userId)->first(); // Lấy ra bản ghi cần thao tác
+   
+    if ($users) {
+        if ($users->status == '1') {
+            $users->status = '0';
+            $message = 'Đã hủy chứng thực';
+        } else {
+            $users->status = '1';
+            $message = 'Đã chứng thực';
+        }
+
+        $users->save(); // Lưu thay đổi
+
+         return redirect()->back()->with('success', $message);
+        // return redirect()->route('admin.rentalshow', ['id'=>$carId])->with('success', $message);
+    } else {
+        return redirect()->back()->with('error', 'Không tìm thấy');
     }
 }
 

@@ -46,6 +46,7 @@
            <div class="row bg-rentalcard rounded m-1 mb-4 p-4">
             <div class="col">
               <h6><span class="word-white">Model: </span><span class="word-ash"> {{$model->name}}</span></h6>
+              <h6><span class="word-white">Hãng: </span><span class="word-ash"> {{$make->name}}</span></h6>
               <h6><span class="word-white">Dòng xe: </span><span class="word-ash"> {{$bodytype->name}}</span></h6>
               <h6><span class="word-white">Dẫn động: </span><span class="word-ash"> {{$drivetrain->name}}</span></h6>
               <h6><span class="word-white">Động cơ: </span><span class="word-ash"> {{$rentalcar->engine}}</span></h6>
@@ -56,6 +57,7 @@
               <h6><span class="word-white">Màu ngoại thất: </span><span class="word-ash"> {{$rentalcar->exterior_color}}</span></h6>
               <h6><span class="word-white">Màu nội thất: </span><span class="word-ash"> {{$rentalcar->interior_color}}</span></h6>
               <h6><span class="word-white">Số ghế ngồi: </span><span class="word-ash"> {{$rentalcar->seat}}</span></h6>
+              <h6><span class="word-white">Biển kiểm soát: </span><span class="word-ash"> {{$rentalcar->bsx}}</span></h6>
               <h6><span class="word-white">VIN: </span><span class="word-ash"> {{$rentalcar->vin}}</span></h6>
             </div>
            </div> {{-- end tổng quan --}}
@@ -109,43 +111,43 @@
               
               <p>
                 @if ($utilities->lop_du_phong == 1)
-                     Lốp dự phòng
+                <img src="{{ asset('assets\clients\images\lop.png') }}" width="25px" alt=""> Lốp dự phòng
                 @endif
               </p>
                
               <P>
                 @if ($utilities->camera_lui == 1)
-                    Camera Lùi
+                <img src="{{ asset('assets\clients\images\camback.png') }}" width="25px" alt=""> Camera Lùi
                 @endif
               </P>
                 
               <p>
                 @if ($utilities->camera_cap_le == 1)
-                     Camera Cập Lề
+                <img src="{{ asset('assets\clients\images\pack.png') }}" width="25px" alt="">  Camera Cập Lề
                 @endif
               </p>
                 
               <p>
                 @if ($utilities->cam_bien_va_cham == 1)
-                     Cảm Biến Va Chạm
+                <img src="{{ asset('assets\clients\images\accident.png') }}" width="25px" alt="">  Cảm Biến Va Chạm
                 @endif
               </p>
                 
               <P>
                 @if ($utilities->cam_bien_lop == 1)
-                   Cảm Biến Lốp  
+                <img src="{{ asset('assets\clients\images\apsuat.png') }}" width="25px" alt="">  Cảm Biến Lốp  
                 @endif
               </P>
 
               <p>
                 @if ($utilities->camera_360 == 1)
-                     Camera 360
+                <img src="{{ asset('assets\clients\images\360.png') }}" width="25px" alt="">   Camera 360
                 @endif
               </p>
 
               <p>
                 @if ($utilities->tui_khi_an_toan == 1)
-                     Túi Khí An Toàn
+                <img src="{{ asset('assets\clients\images\airbag.png') }}" width="25px" alt="">   Túi Khí An Toàn
                 @endif
               </p>
 
@@ -153,7 +155,7 @@
 
               <p>
                 @if ($utilities->canh_bao_toc_do == 1)
-                    Cảnh báo tốc độ 
+                <img src="{{ asset('assets\clients\images\speed.png') }}" width="25px" alt="">  Cảnh báo tốc độ 
                 @endif
               </p>
             </div>
@@ -163,55 +165,55 @@
 
               <P>
                 @if ($utilities->Bluetooth == 1)
-                   Bluetooth
+                <img src="{{ asset('assets\clients\images\bluetooth.png') }}" width="25px" alt="">   Bluetooth
                @endif
              </P>
 
              <P>
               @if ($utilities->dinh_vi_gps == 1)
-                  Định vị GPS
+              <img src="{{ asset('assets\clients\images\gps.png') }}" width="25px" alt="">   Định vị GPS
               @endif
             </P>
 
             <P>
               @if ($utilities->etc == 1)
-                 ETC  
+              <img src="{{ asset('assets\clients\images\etc.png') }}" width="25px" alt="">   ETC  
               @endif
             </P>
 
               <p>
                 @if ($utilities->cua_so_troi == 1)
-                     Cửa Sổ Trời
+                <img src="{{ asset('assets\clients\images\cuasotroi.png') }}" width="25px" alt="">   Cửa Sổ Trời
                 @endif
               </p>
 
               <p>
                 @if ($utilities->khe_cam_usb == 1)
-                     Khe Cắm USB
+                <img src="{{ asset('assets\clients\images\usb.png') }}" width="25px" alt="">    Khe Cắm USB
                 @endif
               </p>
 
               <p>
                 @if ($utilities->camera_hanh_trinh == 1)
-                     Camera Hành Trình
+                <img src="{{ asset('assets\clients\images\camera.png') }}" width="25px" alt="">   Camera Hành Trình
                 @endif
               </p>
 
               <p>
                 @if ($utilities->ghe_tre_em == 1)
-                    Ghế Trẻ em 
+                <img src="{{ asset('assets\clients\images\child.png') }}" width="25px" alt="">  Ghế Trẻ em 
                 @endif
               </p>
 
               <p>
                 @if ($utilities->man_hinh_dvd == 1)
-                    Màn Hình DVD 
+                <img src="{{ asset('assets\clients\images\dvd.png') }}" width="25px" alt=""> Màn Hình DVD 
                 @endif
               </p>
 
               <p>
                 @if ($utilities->ban_do == 1)
-                     Bản Đồ
+                <img src="{{ asset('assets\clients\images\map.png') }}" width="25px" alt="">   Bản Đồ
                 @endif
               </p>
             </div>
@@ -228,10 +230,12 @@
           <hr>
 
           <div class="row word-white">
-            <div class="col-4">Ngày hiển thị: {{ date('d-m-Y', strtotime($rentalcar->created_at))  }}</div>
-            <div class="col-4">Mã tin đăng: 123122</div>
+            @foreach ($ad_rent as $key => $item)
+            <div class="col-4">Ngày hết hạn: {{ date('d-m-Y', strtotime($item->expiration_date))  }}</div>
+            <div class="col-4">Mã tin đăng: {{ $item->id }}</div>
             <div class="col-2">ID: {{ $rentalcar->id }}</div>
-            <div class="col-2">Lượt xem: 43</div>
+            <div class="col-2">Lượt xem:  {{ $rentalcar->view_count }}</div>
+            @endforeach
           </div>
 
           
@@ -358,7 +362,8 @@
               
              
               
-              <form action="">
+              <form action="" method="POST" >
+                @csrf
                 <div class="bg-rentalcard word-white rounded">
                   <h3 class="mid">Bảng tính tiền</h3>
                   
@@ -368,12 +373,12 @@
                   
                   <h6 class="px-4"> Ngày nhận </h6>
                   <div class="px-4">
-                    <input class="form-control" type="date" name="ngaynhanxe">
+                    <input class="form-control" type="date" name="received_date">
                     </div>
                     <br>
                     <h6 class="px-4"> Ngày trả </h6>
                     <div class="px-4">
-                      <input class="form-control" type="date" name="ngaynhanxe">
+                      <input class="form-control" type="date" name="return_date">
                     </div>
                     <br>
                     <h5 class="px-4">Địa điểm giao / nhận xe</h5>
@@ -431,8 +436,9 @@
                   
                     <a class=" btn text-search mid mx-2" href="">Thanh toán VNPAY</a>
                     <br>
-  
-                    <a class=" btn back-green mid mx-2" href="">Thanh toán dành cho cán bộ</a>
+                    
+                    <button class="btn back-green mid mx-2" value="payment1" type="submit">Thanh toán dành cho cán bộ</button>
+                    
                     <br>
                   
                   

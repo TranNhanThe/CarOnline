@@ -81,27 +81,86 @@
     </form>
 </div>
 <br>
-{{-- <form action="" method="get" class="mb-3">
-    <div class="row d-flex justify-content-center">
-        <div class="col-4">
-            <input type="search" name="keywords" value="{{request()->keywords}}" class="form-control" placeholder="Từ khóa, id, tên xe, user, tỉnh,...">
+
+{{-- ---------------Thong ke------------------------ --}}
+
+<div class="text-bg">
+    <form id="searchForm"  action="{{ route('admin.search') }}" method="GET">
+        <div class="row"><h3><i class='fa fa-book'></i> Thống kê</h3></div>
+     
+        <div class="row d-flex justify-content-center">
+            
+            <div class="col-md-3 col-sm-12 bg-rentalcard-in rounded m-1 p-1">           
+               <h5 class="m-1">Tổng xe: <span class="word-rental-money">
+                @php
+                    $count = DB::table('rentalcar')->count();
+                    echo $count;
+                @endphp    
+            </span></h5>
+            </div>
+            <div class="col-md-3 col-sm-12 bg-rentalcard-in rounded m-1 p-1">
+                <h5 class="m-1">Tổng tin đăng: <span class="word-rental-money">
+                    @php
+                    $count = DB::table('ad_rent')->where('ad_rent.status', 1)->count();
+                    echo $count;
+                @endphp     
+                </span></h5>
+            </div>
+
+            <div class="col-md-3 col-sm-12 bg-rentalcard-in rounded m-1 p-1" >
+                <h5 class="m-1">Chưa đăng tin: <span class="word-rental-money">
+                    @php
+                    $count = DB::table('ad_rent')->where('ad_rent.price', null)->count();
+                    echo $count;
+                @endphp    
+                </span></h5>
+            </div>
+            <div class="col-md-3 col-sm-12 bg-rentalcard-in rounded m-1 p-1 ">
+                <h5 class="m-1">Tin hết hạn: <span class="word-rental-money">
+                    @php
+                    $now = now();
+                    $count = DB::table('ad_rent')->where('ad_rent.expiration_date', '<=', $now )->count();
+                    echo $count;
+                @endphp 
+                </span></h5>
+            </div>
+            <div class="col-md-3 col-sm-12 bg-rentalcard-in rounded m-1 p-1 ">
+                <h5 class="m-1">Đang hiển thị: <span class="word-rental-money">
+                    @php
+                    $now = now();
+                    $count = DB::table('ad_rent')->where('ad_rent.expiration_date', '>', $now )->count();
+                    echo $count;
+                @endphp 
+                </span></h5>
+                
+            </div>
+            <div class="col-md-3 col-sm-12 bg-rentalcard-in rounded m-1 p-1 ">
+                <h5 class="m-1">Chờ duyệt: <span class="word-rental-money">
+                    @php
+                    $count = DB::table('ad_rent')->where('ad_rent.status', 0)->where('ad_rent.price', !null)->count();
+                    echo $count;
+                @endphp   
+                </span></h5>
+            </div>
+            
         </div>
-        <div class="col-2">
-            <button type="submit" class="btn btn-primary btn-block" >Tìm kiếm</button>
-        </div>
-    </div>
-</form> --}}
+        
+    </form>
+</div>
+{{-- -------------------end thong ke--------------------------------- --}}
+<br>
 <table class="table table-bordered ">
     <thead>
         <tr  class="word-ash">
-            <th width="4%">STT</th>
-            <th width="4%"><a href="?sort-by=id&sort-type={{$sortType}}">ID</a></th>
-            <th width="12%"><a href="?sort-by=car_name&sort-type={{$sortType}}">Tên Xe</a></th>
+            <th width="2%">STT</th>
+            <th width="2%"><a href="?sort-by=id&sort-type={{$sortType}}">ID</a></th>
+            <th width="15%"><a href="?sort-by=car_name&sort-type={{$sortType}}">Tên Xe</a></th>
             <th width="8%"><a href="?sort-by=user_name&sort-type={{$sortType}}">Chủ Xe</a></th>
             <th width="8%"><a href="?sort-by=province_name&sort-type={{$sortType}}">Tỉnh thành</a></th>
-            <th width="5%"><a href="?sort-by=rented&sort-type={{$sortType}}">Đã thuê</a></th>
-            <th width="8%"><a href="?sort-by=adprice&sort-type={{$sortType}}">Giá - vnd</a></th>
+            <th width="2%"><a href="?sort-by=rented&sort-type={{$sortType}}">Thuê</a></th>
+            <th width="7%"><a href="?sort-by=adprice&sort-type={{$sortType}}">Giá - vnd</a></th>
             <th width="11%"><a href="?sort-by=adtype&sort-type={{$sortType}}">Loại Tin</a></th>
+            <th><a href="?sort-by=view_count&sort-type={{$sortType}}">View</a></th>
             <th width="8%"><a href="?sort-by=expdate&sort-type={{$sortType}}">Thời hạn</a></th>
             <th width="9%">Kiểm duyệt</th>
             <th width="6%">Chi tiết</th>
@@ -156,6 +215,7 @@
         
         
         </td>
+        <td>{{ $item->view_count }}</td>
             <td>{{$item->expdate}}</td>    
 
             <td>
@@ -178,6 +238,8 @@
             @endif
             
             </td>
+            {{-- <td><a href="{{route('admin.rentalshow', ['id'=>$item->id])}}" class="btn btn-info btn-sm" id="viewButton" data-id="{{ $item->id }}">Xem</a>
+            </td> --}}
             
             <td><a href="{{route('admin.rentalshow', ['id'=>$item->id])}}" class="btn btn-info btn-sm">Xem</a></td>
             <td><a href="{{route('admin.edit', ['id'=>$item->id])}}" class="btn btn-warning btn-sm">Sửa</a></td>
@@ -193,7 +255,26 @@
 </table>
 
 <div class="d-flex justify-content-center">{{$rentalcarList->links()}}</div>
-<script src="https://code.jquery.com/jquery.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery.min.js"></script> --}}
+{{-- <script>
+    document.getElementById('viewButton').addEventListener('click', function(event) {
+    event.preventDefault();
+    const rentalId = this.getAttribute('data-id');
+
+    // Gửi yêu cầu AJAX
+    $.ajax({
+        url: '/admin/increase-view-count/' + rentalId,
+        type: 'GET',
+        success: function(response) {
+            // Xử lý kết quả nếu cần
+            // Ví dụ: Cập nhật số lượt xem trên giao diện
+        },
+        error: function() {
+            // Xử lý lỗi nếu cần
+        }
+    });
+});
+</script> --}}
 <script>
     $('#id_make').on('change', function() {
         var selectedValue = $(this).val();

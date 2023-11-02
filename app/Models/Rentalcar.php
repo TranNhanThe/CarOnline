@@ -41,6 +41,7 @@ class Rentalcar extends Model
      'ad_rent.id_adtype as adtype',
      'ad_rent.price as adprice',
      'ad_rent.expiration_date as expdate'
+     
       
      )
       ->join('users', 'rentalcar.id_user', '=', 'users.id')

@@ -81,6 +81,7 @@ class RentalRequest extends FormRequest
 
                 'interior_color' => 'required',
                 'vin' => 'required|min:17',
+                'bsx' => 'required|min:7',
                 'no_accident' => 'required|integer',
                 
                 'seat' => 'required|integer',
@@ -134,7 +135,11 @@ class RentalRequest extends FormRequest
 
             'vin.required' => 'Số vin bắt buộc phải nhập',
 
+            'bsx.required' => 'Biển số xe bắt buộc phải nhập',
+
             'vin.min' => 'Số vin phải từ :min ký tự trở lên',
+
+            'bsx.min' => 'Biển kiểm soát có vẻ chưa hợp lệ',
 
             'no_accident.required' => 'Từng bị va chạm hay chưa',
 

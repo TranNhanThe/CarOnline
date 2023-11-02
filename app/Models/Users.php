@@ -22,9 +22,7 @@ class Users extends Model
      return $this->isAdmin;
 }
     public function getAllUsers($filters = [], $keywords = null, $sortByArr = null, $perPage = null){
-        //too raw
-       // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
-       //DB::enableQueryLog();
+       
         $users = DB::table($this->table)
         ->select('users.*')
         // ->join('groups', 'users.group_id', '=', 'groups.id')
@@ -87,11 +85,6 @@ class Users extends Model
     }
 
     public function updateUser($dataUpdate, $id){
-
-        // $data[] = $id;
-
-        // return DB::update('UPDATE '.$this->table.' SET fullname=?, email=?, update_at=? where id = ?', $data);
-        
         return DB::table($this->table)->where('id', $id)->update($dataUpdate);
 
     }

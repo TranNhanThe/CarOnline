@@ -42,36 +42,49 @@
                 </div>
                 <br>
                 <div class="row g-3 align-items-center">
+                    <div class="col-4">
+
+                       
+                        <select name="id_make" class="form-control" id="id_make" onchange="cal_price()">
+                            <option value="">Chọn Hãng</option>
+                            @if (!empty($allMake))
+                                @foreach($allMake as $item)
+
+                                    <option value="{{$item->id}}" {{old('id_make')==
+                                    $item->id?'selected':false}}>{{$item->name}}</option>
+
+                                     
+
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('id_make')
+                        <span style="color: red;">{{$message}}</span>
+                        @enderror
+
+                    </div>
 
                     <div class="col-4">
-                        <select name="id_model" class="form-control" id="">
-                            <option value="0">Chọn Model</option>
+
+                       
+
+                        <select name="id_model" class="form-control" id="id_model">
+                            <option value="">Chọn Model</option>
+
                             @if (!empty($allModel))
                                 @foreach($allModel as $item)
                                     <option value="{{$item->id}}" {{old('id_model')==
                                     $item->id?'selected':false}}>{{$item->name}}</option>
                                 @endforeach
                             @endif
+
                         </select>
                         @error('id_model')
                     <span style="color: red;">{{$message}}</span>
                     @enderror
                     </div>
 
-                    <div class="col-4">
-                        <select name="id_fuel" class="form-control" id="">
-                            <option value="0">Chọn Nhiên liệu</option>
-                            @if (!empty($allFuel))
-                                @foreach($allFuel as $item)
-                                    <option value="{{$item->id}}" {{old('id_fuel')==
-                                    $item->id?'selected':false}}>{{$item->name}}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                        @error('id_fuel')
-                    <span style="color: red;">{{$message}}</span>
-                    @enderror
-                    </div>
+                    
 
                     <div class="col-4">
                         <select name="id_drivetrain" class="form-control" id="">
@@ -123,35 +136,38 @@
                 </div>
 
                 <div class="col-4">
-                    <select name="id_make" class="form-control" id="">
-                        <option value="0">Chọn Hãng</option>
-                        @if (!empty($allMake))
-                            @foreach($allMake as $item)
-                                <option value="{{$item->id}}" {{old('id_make')==
+                    <select name="id_fuel" class="form-control" id="">
+                        <option value="0">Chọn Nhiên liệu</option>
+                        @if (!empty($allFuel))
+                            @foreach($allFuel as $item)
+                                <option value="{{$item->id}}" {{old('id_fuel')==
                                 $item->id?'selected':false}}>{{$item->name}}</option>
                             @endforeach
                         @endif
                     </select>
-                    @error('id_make')
-                    <span style="color: red;">{{$message}}</span>
-                    @enderror
+                    @error('id_fuel')
+                <span style="color: red;">{{$message}}</span>
+                @enderror
                 </div>
                 </div>
                 <br>
                 <div class="row g-3 align-items-center">
                     <div class="col-4">
-                      <label for="moneyInput" class="col-form-label"><h5>Số chỗ ngồi</h5></label>
+                      <label for="moneyInput" class="col-form-label"><h5>Biển kiểm soát</h5></label>
                     </div>
                     
                     <div class="col-4">
-                        <input type="text"  class="form-control" name="seat" placeholder="Số chỗ ngồi" value="{{old('seat')}}">
-                        @error('seat')
+                        <input type="text"  class="form-control" name="bsx" placeholder="12A-12345" value="{{old('bsx')}}">
+                        @error('bsx')
                     <span style="color: red;">{{$message}}</span>
                     @enderror
                       </div>
                       <div class="col-4">
-                        <input type="text" disabled id="moneyInput" class="form-control blood word-white"  placeholder=".vnđ/ngày" value="Giá thuê (thêm sau)">
-                       
+                        <input type="text"  class="form-control" name="seat" placeholder="Số chỗ ngồi" value="{{old('seat')}}">
+                        @error('seat')
+                    <span style="color: red;">{{$message}}</span>
+                    @enderror
+                        {{-- <input type="text" disabled id="moneyInput" class="form-control blood word-white"  placeholder=".vnđ/ngày" value="Giá thuê (thêm sau)"> --}}
                       </div>
                 </div>
 
@@ -416,7 +432,39 @@
        
         @csrf
     </form>
-
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script>
+        $('#id_make').on('change', function() {
+            var selectedValue = $(this).val();
+            //alert(selectedValue);
+            $.ajax({
+                url: 'selectmodel',
+                  method: 'GET',
+                  data: {
+                    selectedValue: selectedValue
+                  },
+                success: function(data) {
+                    var district_sent =$('#id_model');
+                    district_sent.empty();
+                    $('#id_model').append($('<option>', {
+                            value: 0,
+                            text: "Tất cả Model"
+                        }));
+                    $.each(data, function(key, model) {
+                        $('#id_model').append($('<option>', {
+                            value: model.id{{request()->id_model==$item->id?
+                            'selected':false}},
+                            text: model.name
+                        }));
+                    });
+                },
+                error: function(xhr, status, error) {
+                //   alert('Đã có lỗi xảy ra.');
+                alert('Có lỗi xảy ra: ' + error);  
+                }
+              });
+            });
+    </script>
     <script>
 
         document.getElementById("moneyInput").addEventListener("input", function (e) {
@@ -433,4 +481,5 @@
             e.target.value = inputValue;
         });
         </script>
+        
 @endsection

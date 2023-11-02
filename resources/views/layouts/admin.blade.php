@@ -21,7 +21,7 @@
     <main class="pt-5">
 
         <div class="container-flex pt-5 bg-rentalcard-in">
-            <div class="row pt-5">
+            <div class="row pt-3">
 
                 {{-- <div class="col-xl-2 col-md-0 col-sm-12">
                     <aside>

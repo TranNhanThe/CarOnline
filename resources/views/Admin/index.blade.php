@@ -47,13 +47,18 @@
         <tr class="word-white">
             <th width="5%">STT</th>
             <th><a href="?sort-by=id&sort-type={{$sortType}}">ID</a></th>
-            <th><a href="?sort-by=fullname&sort-type={{$sortType}}">Tên</a></th>
+            <th><a href="?sort-by=fullname&sort-type={{$sortType}}">Tên User - @php
+                $count = DB::table('users')->count();
+                echo $count;
+            @endphp  User </a></th>
             <th><a href="?sort-by=credit&sort-type={{$sortType}}">Credit</a></th>
             <th><a href="?sort-by=email&sort-type={{$sortType}}">Email</a></th>
             <th>Phone</th>
             <th>CCCD</th>
             <th>Star</th>
+            <th>Trạng thái</th>
             <th width="15%"><a href="?sort-by=created_at&sort-type={{$sortType}}">Thời Gian</a></th>
+            <th>Chi tiết</th>
             <th width="5%">Sửa</th>
             <th width="5%">Xóa</th>
         </tr>
@@ -70,9 +75,10 @@
             <td>{{$item->phone}}</td>
             <td>{{$item->cccd}}</td>
             <td>{{$item->user_star}}</td>
-            {{-- <td>{!!$item->status==0?'<button class="btn btn-danger btn-sm">Chưa kích hoạt</button>':
-            '<button class="btn btn-success btn-sm">kích hoạt</button>'!!}</td> --}}
+            <td>{!!$item->status==0?'<button class="btn btn-danger btn-sm">Chưa kích hoạt</button>':
+            '<button class="btn btn-success btn-sm">kích hoạt</button>'!!}</td>
             <td>{{$item->created_at}}</td>
+            <td><a href="{{route('admin.userinfo', ['id'=>$item->id])}}" class="btn btn-info btn-sm">Xem</a></td>
             <td><a href="{{route('admin.edit', ['id'=>$item->id])}}" class="btn btn-warning btn-sm">Sửa</a></td>
             <td><a onclick="return confirm('Xóa thật à?')" href="{{route('admin.delete',['id'=>$item->id] )}}" class="btn btn-danger btn-sm">Xóa</a></td>
         </tr>

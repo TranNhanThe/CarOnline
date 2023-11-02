@@ -369,8 +369,6 @@
                         <div class="middle" id="1{{$item->id}}">
                     @if (!empty(Auth::user()))
                         @if (Auth::user()->id != $item->id_user)
-                                
-                           
                             {{-- ------------------------ --}}
                             @if (Auth::check())
                             <form action="{{ route('favorite.toggle', $item->id) }}" method="POST">

@@ -28,8 +28,6 @@ class AuthController extends Controller
 
     public function registerPost(UserRequest $request)
     {
-        
-
         $users = new Users();
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');

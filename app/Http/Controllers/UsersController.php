@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\ByUserRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Users;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,36 @@ class UsersController extends Controller
         $usersList = $this->users->getAllUsers($filters, $keywords, $sortArr, self::_PER_PAGE); 
         return view('clients.users.lists', compact('title', 'usersList', 'sortType'));
     }
+    public $data = [];
+public function userinfo()
+{
+    $this->data['title'] = 'Thông tin cá nhân';
+    return view('clients.users.info', $this->data);
+}
+
+public function postUserInfo(ByUserRequest $request){
+    // dd($request->all());
+    $id = auth()->user()->id;
+    if ($request->hasFile('cccd_image')) {
+        $cccd_image = $request->file('cccd_image');
+        $imagecccd = $cccd_image->store('user_image', 'public');
+        $dataUpdate['cccd_image'] = $imagecccd; 
+    }
+    if ($request->hasFile('licence_image')) {
+        $imageblx = $request->licence_image->store('user_image', 'public');
+        $dataUpdate['licence_image'] = $imageblx;
+    }
+    if ($request->has('bank_name')) {
+        $dataUpdate['bank_name'] = $request->bank_name;
+    }
+    if ($request->has('stk')) {
+        $dataUpdate['stk'] = $request->stk;
+    }
+    
+    $this->users->updateUser($dataUpdate, $id);
+    return  redirect()->route('users.userinfo')->with('msg', 'Update thông tin thành công');
+    
+}
 
     public function add(){
         $title = 'Thêm người dùng';
@@ -113,43 +144,7 @@ class UsersController extends Controller
 
         return redirect()->route('users.index')->with('msg', 'Thêm người dùng thành công');
     }
-     //  ---------------------------------------------------
-    //  public function credit(){
-    //     $title = 'Thêm Credit';
-        
-    //      $allUser = getAllUsers(); 
-        
-    //      return view('clients.users.credit', compact('title', 'allUser'));
-    //     }
-
-            
-            // public function postCredit(UserRequest $request, $id=0){
-            //     $id = Auth::id();
-            //     $data = [
-            //         'credit' => 359,
-            //     ];
-            //     $iduser = Auth::id();
-            
-            // Users::where('id', $iduser)->update($data);
-            // return redirect()->route('home')->with('msg', 'Cập nhật credit thành công');
-            // }
-
-            // public function postCredit(UserRequest $request){
-            //     // $iduser = Auth::id();
-            //     $iduser = 56;
-            //     $creditToAdd = $request->credit;
-            //     $user = Users::find($iduser);
-                
-            //     if ($user) {
-            //         $user->credit += $creditToAdd;
-            //         $user->save();
-            //         return redirect()->route('home')->with('msg', 'Cập nhật credit thành công');
-            //     } else {
-            //         return redirect()->route('home')->with('error', 'Người dùng không tồn tại');
-            //     }
-            // }
-
-        // ----------------------------------------
+    
 
     public function getEdit(Request $request, $id=0){
         

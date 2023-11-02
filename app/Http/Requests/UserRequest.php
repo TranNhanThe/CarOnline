@@ -21,6 +21,7 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        
         $uniqueEmail = 'unique:users';
         if(session('id')){
              $id = session('id');
@@ -28,21 +29,11 @@ class UserRequest extends FormRequest
         }
        
         return [
-                // 'credit' => 'required',
                 'fullname' => 'required|min:5',
                 'email' => 'required|email|'.$uniqueEmail,
                 'phone' => 'required|min:10|max:12',
                 'cccd' => 'required|min:12|max:12',
-                
-                // 'group_id' => ['required', 'integer', function($attribute, $value, $fail){
-                //     if($value==0){
-                //         $fail('Bắt buộc phải chọn nhóm');  
-                //     }
-                // }], 
-                // 'status' => 'required|integer',
                 'password' => 'required|min:9|regex:/[A-Z]/',
-                
-            
         ];
     }
 

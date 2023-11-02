@@ -12,6 +12,9 @@
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{{route('admin.rentallist')}}">Danh sách Xe thuê</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{route('admin.addMake')}}">Hãng Và Model</a>
+          </li>
 
           
       {{--       

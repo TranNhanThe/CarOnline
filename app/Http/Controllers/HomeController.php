@@ -115,6 +115,7 @@ class HomeController extends Controller
 
         return view('clients.home', compact('title', 'ketqua', 'rentalcarList', 'sortType', 'imagelist'));
     }
+    
     public function searchMaster(Request $request){
     
          $title = 'Kết quả tìm kiếm';
@@ -200,11 +201,7 @@ class HomeController extends Controller
          return view('clients.rental.rentallist', compact('title', 'ketqua', 'rentalcarList', 'sortType', 'imagelist'));
      }
 
-    //  public function selectProvince(Request $request){
-    //     $province = $request->selectedValue;
-    //     $district = DB::table('tbl_district')->Where('id_province', $province)->get();
-    //     return response()->json($district);
-    // } 
+
 
      public function selectModel(Request $request){
         $make = $request->selectedValue;
