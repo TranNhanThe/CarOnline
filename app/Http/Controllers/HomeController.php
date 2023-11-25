@@ -23,6 +23,9 @@ class HomeController extends Controller
     public $data = [];
     private $rentalcar;
     const _PER_PAGE = 2;
+    const _PER_PAGE_SIZE = 4;
+
+    const _PER_PAGE_BIG_SIZE = 10;
     private $transmission;
     private $rental_image;
     public function __construct(){
@@ -109,11 +112,11 @@ class HomeController extends Controller
             'sortType' => $sortType
         ];
         $imagelist = $this->rental_image->getAllImage();
-        
+        $newrentalcarList = $this->rentalcar->getNewRental($filters, $keywords, $sortArr, self::_PER_PAGE_SIZE); 
         $rentalcarList = $this->rentalcar->getAllRental($filters, $keywords, $sortArr, self::_PER_PAGE); 
         
 
-        return view('clients.home', compact('title', 'ketqua', 'rentalcarList', 'sortType', 'imagelist'));
+        return view('clients.home', compact('title', 'ketqua','newrentalcarList', 'rentalcarList', 'sortType', 'imagelist'));
     }
     
     public function searchMaster(Request $request){
@@ -196,7 +199,7 @@ class HomeController extends Controller
          ];
          $imagelist = $this->rental_image->getAllImage();
          
-         $rentalcarList = $this->rentalcar->getAllRental($filters, $keywords, $sortArr); 
+         $rentalcarList = $this->rentalcar->getAllRental($filters, $keywords, $sortArr, self::_PER_PAGE_BIG_SIZE); 
          
          return view('clients.rental.rentallist', compact('title', 'ketqua', 'rentalcarList', 'sortType', 'imagelist'));
      }
@@ -263,7 +266,7 @@ class HomeController extends Controller
         ];
         $imagelist = $this->rental_image->getAllImage();
         
-        $rentalcarList = $this->rentalcar->getAllRentalFavo($filters, $keywords, $sortArr); 
+        $rentalcarList = $this->rentalcar->getAllRentalFavo($filters, $keywords, $sortArr, self::_PER_PAGE); 
         return view('clients.rental.rentallist', compact('title', 'rentalcarList', 'sortType', 'imagelist'));
      }
    

@@ -10,11 +10,21 @@
     <link rel="stylesheet" href="{{asset('assets/clients/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/clients/css/style.css')}}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
+
+
     @yield('css') 
     <style>
-        
-       
-      </style>
+        .rating label {
+            background-image: url('{{ asset('assets/clients/images/staro.png') }}');
+        }
+        .rating input:checked ~ label,
+.rating input:checked ~ label ~ input {
+  background-image: url('{{ asset('assets/clients/images/star.gif') }}');
+}
+    </style>
 </head>
 <body>
     @include('clients.blocks.header')
@@ -45,6 +55,9 @@
     @include('clients.blocks.footer')
     <script src="{{asset('assets/clients/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/clients/js/custom.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @yield('js')
     @stack('scripts')

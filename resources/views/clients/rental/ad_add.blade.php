@@ -71,7 +71,7 @@
                     <label for="moneyInput" class="col-form-label"><h5>Tổng cộng Credit</h5></label>
                 </div>
                 <div class="col-6">
-                    <input type="text" name="total" class="form-control" id="totalCredit"   >
+                    <input type="text" name="total" class="form-control" id="totalCredit">
                     @error('total')
                     <span style="color: red;">{{$message}}</span>
                     @enderror

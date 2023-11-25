@@ -92,8 +92,8 @@
                             <span style="color: red;">{{$message}}</span>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <label for="avatar">Avatar:</label>
+                        <div class="mb-3 ">
+                            <label class="word-bg" for="avatar">Ảnh đại diện:</label>
                             <input type="file" class="form-control" id="avatar" accept="image/*" name="avatar">
                         </div>
                      

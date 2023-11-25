@@ -11,6 +11,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SearchController;
 
 
@@ -38,6 +39,7 @@ Route::group(['middleware' => 'admin'], function () {
       Route::get('/users/{id}', [AdminController::class, 'userinfo'])->name('userinfo');
 
       Route::get('/rentallist', [AdminController::class, 'rentallist'])->name('rentallist');
+
       Route::post('/status/{car}', [AdminController::class, 'toggleStatus'])->name('status.toggle');
 
       Route::post('/users/{id}', [AdminController::class, 'toggleUserStatus'])->name('userstatus.toggle');
@@ -48,43 +50,42 @@ Route::group(['middleware' => 'admin'], function () {
       // Route::middleware(['auth'])->get('/admin/increase-view-count/{id}', [AdminController::class, 'increaseViewCount'])->name('admin.increase-view-count');
     });
 });
-// Route::group(['middleware' => ['auth', 'admin']], function () {
-//    // Routes for authenticated admin users
-//    Route::prefix('admin')->name('admin.')->group(function () { 
-//       Route::get('/', [AdminController::class, 'index'])->name('admin.home');
-//       // Định nghĩa các route cho trang đăng nhập và xử lý đăng nhập của admin ở đây
-//       Route::get('/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-//       Route::post('/login', [AdminController::class, 'loginPost'])->name('admin.login.post');
-//     });
-  
-   
-//    // Thêm các route khác cho admin ở đây
-// });
-
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [HomeController::class, 'searchMaster'])->name('search');
 Route::get('/selectmodel', [HomeController::class, 'selectModel'])->name('selectModel');
+Route::post('/vnpay_payment', [PaymentController::class,'vnpay_payment']);
 
 Route::prefix('rental')->name('rental.')->group(function () {
    Route::get('/', [RentalController::class, 'index'])->name('index');
    Route::middleware(['auth'])->get('/yoretaca', [RentalController::class, 'yoretaca'])->name('yoretaca');
-   // Route::middleware(['auth'])->get('/add', [RentalController::class, 'add'])->name('add');
    Route::middleware(['auth', 'checkuserstatus'])->get('/add', [RentalController::class, 'add'])->name('add');
-
    Route::middleware(['auth'])->get('/selectmodel', [HomeController::class, 'selectModel'])->name('selectModel');
    Route::middleware(['auth'])->get('/ad_readd/{id}', [RentalController::class, 'ad_readd'])->name('ad-readd');
    Route::middleware(['auth'])->post('/ad_readd/{id}', [RentalController::class, 'postAd_readd'])->name('post-ad_readd');
-
    Route::middleware(['auth'])->get('/ad_add/{id}', [RentalController::class, 'ad_add'])->name('ad-add');
    Route::middleware(['auth'])->post('/ad_add/{id}', [RentalController::class, 'postAd_add'])->name('post-ad_add');
    Route::middleware(['auth'])->post('/add', [RentalController::class, 'postAdd'])->name('post-add');
-
    Route::middleware(['auth'])->get('/credit', [RentalController::class, 'credit'])->name('credit');
-
    Route::middleware(['auth'])->post('/credit', [RentalController::class, 'postCredit'])->name('post-credit');
-
+   Route::middleware(['auth'])->post('/vnpay_payment', [PaymentController::class,'vnpay_payment'])->name('vnpay_payment');
    Route::get('/xe-thue/{id}', [RentalController::class, 'show'])->name('show');
+   Route::middleware(['auth'])->post('/xethue', [RentalController::class, 'postOne'])->name('post-one');
+   Route::middleware(['auth'])->get('yorental', [RentalController::class, 'yorental'])->name('yorental');
+   Route::middleware(['auth'])->get('youdealer', [RentalController::class, 'youDealer'])->name('yodealer');
+   Route::middleware(['auth'])->get('/contract/{id}', [RentalController::class, 'contract'])->name('contract');
+
+   Route::post('/agree/{id}', [RentalController::class, 'toggleAgree'])->name('agree.toggle');
+   Route::post('/given/{id}', [RentalController::class, 'toggleGiven'])->name('given.toggle');
+   Route::post('/take/{id}', [RentalController::class, 'toggleTake'])->name('take.toggle');
+   Route::post('/back/{id}', [RentalController::class, 'toggleBack'])->name('back.toggle');
+   Route::post('/finish/{id}', [RentalController::class, 'toggleFinish'])->name('finish.toggle');
+
+   Route::post('/rating/{id}', [RentalController::class, 'rating'])->name('post-rating');
+   Route::post('/usercheck/{id}', [RentalController::class, 'userCheck'])->name('post-usercheck');
+   Route::post('/dealercheck/{id}', [RentalController::class, 'dealerCheck'])->name('post-dealercheck');
+
+   Route::middleware(['auth'])->get('/dealer/{id}', [RentalController::class, 'dealer'])->name('dealer');
 });
 Route::group(['middleware' => 'auth'], function () {
 Route::post('/favorite/{car}', [FavoriteController::class, 'toggleFavorite'])->name('favorite.toggle');

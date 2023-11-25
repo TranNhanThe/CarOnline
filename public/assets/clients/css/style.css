@@ -36,6 +36,9 @@ a{
 .bg-rentalcard {
     background-color: #383448;
 }
+.bg-white {
+  background-color: #ffffff;
+}
 .bg-rentalcard-in{
     background-color: #1f1b2d;
 }
@@ -58,15 +61,24 @@ a{
   color: #ff6600;
 }
 
+.word-orange{
+  color: #ffa216;
+}
+
 .word-ash{
     color: #c7cad1;
 }
 .word-ash-normal{
     color: #c7cad1;
 }
-
 .word-white{
   color: azure;
+}
+.word-white-orange{
+  color: azure;
+}
+.word-white-orange:hover{
+  color: #ff6600;
 }
 
 .t-a-r{
@@ -218,6 +230,50 @@ a{
     padding: 5px;
     border-radius: 10px;
   }
+  .wait{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #e0d31c, #fffb00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f12711, #f5af19); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .agree{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #00b09b, #96c93d);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #00b09b, #96c93d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .given{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #000046, #1CB5E0);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #000046, #1CB5E0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .take{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ff7e5f, #feb47b);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .back{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #cfc09b, #f8b500);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #cfc09b, #f8b500); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .finish{
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #56ab2f, #a8e063);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #56ab2f, #a8e063); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    padding: 5px;
+    border-radius: 10px;
+  }
+
 
   .blood{
     background: #000046;  /* fallback for old browsers */
@@ -230,7 +286,8 @@ a{
   .gold{
     background: #FF8008;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #FFC837, #FF8008);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #ffc637af, #ff7f08ab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to right, #ffe259
+, #ffa751); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
     padding: 5px;
     border-radius: 10px;
@@ -380,7 +437,7 @@ label{
 /* end icon pack */
 /* ------------------------------------------------ */
 /* star pack */
-.rating {
+.rating-e {
   font-size: 24px; /* Điều chỉnh kích thước sao */
 }
 
@@ -502,4 +559,35 @@ select {
 
 .input-group-append {
   cursor: pointer;
+}
+
+/* ----------------------star platinum--------------------------- */
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+}
+
+.rating input:checked ~ label,
+.rating input:checked ~ label ~ input {
+  background-image: url('public\assets\clients\images\starfill.png');
+}
+.your-slider {
+  width: 80%; /* Điều chỉnh chiều rộng của slider */
+  margin: 0 auto; /* Canh giữa slider */
+}
+
+.your-slider div {
+  padding: 20px; /* Khoảng cách giữa các xe */
 }

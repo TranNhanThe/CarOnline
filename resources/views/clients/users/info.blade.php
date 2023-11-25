@@ -4,9 +4,9 @@
 @endsection
 
 @section('content')
-@if (session('msg'))
-<div class="alert alert-success">{{session('msg')}}</div>
-@endif
+    @if (session('msg'))
+        <div class="alert alert-success">{{ session('msg') }}</div>
+    @endif
     <div class="row word-white">
         <div class="col d-flex justify-content-center">
             <div>
@@ -54,9 +54,9 @@
                             <td><span class="word-rental-money">{{ auth()->user()->created_at }}</span></td>
                         </tr>
                         <tr>
-        <form action="" method="POST" enctype="multipart/form-data" >
+                            <form action="" method="POST" enctype="multipart/form-data">
 
-       
+
                                 <td>Số tài khoản: </td>
                                 <td><input type="text" class="word-ash bg-rentalcard" name="stk" id="stk"
                                         value="{{ auth()->user()->stk }}"> <label for="stk"><span title="Có thể sửa"
@@ -68,6 +68,7 @@
                                     value="{{ auth()->user()->bank_name }}"> <label for="bank"><span title="Có thể sửa"
                                         class="word-red"><i class='fa fa-pencil'></i></span></label></td>
                         </tr>
+                        
 
                     </table>
                 </h4>
@@ -82,7 +83,7 @@
                         $fullStars = floor($rating); // Số sao đầy
                         $halfStar = $rating - $fullStars >= 0.5; // Xem xét có hiển thị nửa sao không
                     @endphp
-                    <div class="rating">
+                    <div class="rating-e">
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= $fullStars)
                                 <span class="star">&#9733;</span>
@@ -110,7 +111,7 @@
             @else
                 <div class="container-flex">
 
-                    <img  src="{{ asset('storage/' . auth()->user()->cccd_image) }}"
+                    <img src="{{ asset('storage/' . auth()->user()->cccd_image) }}"
                         class=" rounded imagecccd cover object2">
 
 
@@ -123,17 +124,17 @@
 
             <h4>Ảnh Bằng lái:</h4>
             @if (!auth()->user()->licence_image)
-                <input class="text-bg form-control" type="file" name="licence_image"  accept="image/*">
+                <input class="text-bg form-control" type="file" name="licence_image" accept="image/*">
             @else
                 <div class="container-flex">
 
-                    <img  src="{{ asset('storage/' . auth()->user()->licence_image) }}"
+                    <img src="{{ asset('storage/' . auth()->user()->licence_image) }}"
                         class=" rounded imagecccd cover object2">
 
 
                     <div>
                         <input class="text-bg form-control" title="Chọn ảnh khác" type="file" name="licence_image"
-                             accept="image/*">
+                            accept="image/*">
                     </div>
                 </div>
             @endif
@@ -151,7 +152,7 @@
         </button>
     </div>
     @csrf
-</form>
+    </form>
     <script src="https://code.jquery.com/jquery.min.js"></script>
 
     <script>

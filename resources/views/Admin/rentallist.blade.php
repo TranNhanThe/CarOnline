@@ -9,6 +9,7 @@
     <div class="alert alert-success">{{session('msg')}}</div>
 @endif
 <hr>
+<div class="container">
 <div class="text-bg">
     <form id="searchForm"  action="{{ route('admin.search') }}" method="GET">
         <div class="row"><h3><i class='fa fa-search'></i> Tìm xe thuê</h3></div>
@@ -147,6 +148,7 @@
         
     </form>
 </div>
+</div>
 {{-- -------------------end thong ke--------------------------------- --}}
 <br>
 <table class="table table-bordered ">
@@ -255,6 +257,7 @@
 </table>
 
 <div class="d-flex justify-content-center">{{$rentalcarList->links()}}</div>
+
 {{-- <script src="https://code.jquery.com/jquery.min.js"></script> --}}
 {{-- <script>
     document.getElementById('viewButton').addEventListener('click', function(event) {

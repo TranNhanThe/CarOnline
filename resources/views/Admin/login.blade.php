@@ -43,12 +43,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="d-flex justify-content-center mb-1"><h5>Nếu bạn chưa có tài khoản</h5></div>
-                    <div class="d-flex justify-content-center"> 
-                        <div class="col-lg-5 btn btn-primary bg-rentalcard m-3"><a href="{{route('register')}}" class="btn text-light">Đăng Ký</a></div> 
-                        
-                        <div class="col-lg-5 btn btn-danger bg-rentalcard m-3"><a href="{{route('home')}}" class="btn text-light">Quay lại</a></div>
-                    </div>
+                    
                 </div>
             </div>
         </div>

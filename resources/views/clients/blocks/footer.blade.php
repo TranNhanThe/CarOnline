@@ -82,7 +82,7 @@
             </div>
               <div>
              
-              <h5> <i style="font-size: 30px" class='fa-solid fa-location-dot'></i> 2231, Sraparache, Bounular, Suenka, Vieena</h5>
+              <h5> <i style="font-size: 30px" class='fa-solid fa-location-dot'></i> 2231, Quốc Khánh, Quốc Thái, An Phú, An Giang</h5>
                
               </div>
             <!--Grid column-->

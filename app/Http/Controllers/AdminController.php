@@ -439,6 +439,7 @@ public function toggleStatus($carId)
 
 public function toggleUserStatus($userId)
 {
+    
     $users = Users::where('id', $userId)->first(); // Lấy ra bản ghi cần thao tác
    
     if ($users) {

@@ -1,256 +1,27 @@
-@extends('layouts.client')
+@extends('layouts.kclient')
 @section('title')
     {{ $title }}
 @endsection
-@section('sidebar')
-    <div class=" d-none d-lg-block d-sm-none d-xlg-none d-md-none mb-5">
-        <form id="searchForm" action="{{ route('search') }}" method="GET">
-            <h5 class="word-white">Vị trí xe</h5>
-            <div>
 
-                <select class="form-select bg-rentalcard word-white" id="province" name="id_province">
-                    <option value=""><i class='fas fa-car-alt'></i>Tất cả Tỉnh</option>
-                    @if (!empty(getAllProvince()))
-                        @foreach (getAllProvince() as $item)
-                            <option
-                                value="{{ $item->id }}"{{ request()->id_province == $item->id ? 'selected' : false }}>
-                                {{ $item->name }}</option>
-                        @endforeach
-                    @endif
-                   
-                </select>
-            </div>
-
-            <br>
-            <h5 class="word-white">Dòng xe</h5>
-
-            <div class="checkbox-container custom-scrollbar">
-                <!-- Danh sách các checkbox -->
-                @if (!empty(getAllBodytype()))
-                    @foreach (getAllBodytype() as $item)
-                        <div class="form-check p-1">
-                            <input class="form-check-input mx-2" type="checkbox" value="{{ $item->id }}"
-                                name="id_bodytype" id="{{ $item->id }}">
-                            <label class="form-check-label" for="{{ $item->id }}">
-                                <h6>{{ $item->name }}</h6>
-                            </label>
-                        </div>
-                        {{-- <label class="form-check-label">
-                                <input class="form-check-input p-1" type="checkbox" name="id_bodytype" value="{{$item->id}}">
-                                <h6>{{$item->name}}</h6>
-                            </label> --}}
-                    @endforeach
-                @endif
-
-                <!-- Thêm các checkbox khác tại đây -->
-            </div>
-            <br>
-
-
-            {{-- <div class="form-group row mb-3">
-                <div class="col-sm-6 col-12 form-group row">
-                    <div class="col-sm-10 col">
-                       <select  id="getmake" class="form-select" onchange="cal_price()">
-                            <option value="" selected disabled>Tất cả Hãng</option>
-                            @foreach (getAllMake() as $item)
-                                <option value="{{$item->id}}">{{ $item->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div> --}}
-            {{-- ---------------------------------------------------- --}}
-            <div>
-                <select class="form-select bg-rentalcard word-white" name="id_make" id="id_make" onchange="cal_price()">
-                    <option value=""><i class='fas fa-car-alt'></i>Tất cả hãng</option>
-                    @if (!empty(getAllMake()))
-                        @foreach (getAllMake() as $item)
-                            <option value="{{ $item->id }}"{{ request()->id_make == $item->id ? 'selected' : false }}>
-                                {{ $item->name }}</option>
-                            {{-- <option value="{{$item->id}}">{{ $item->name}}</option> --}}
-                        @endforeach
-                    @endif
-                    <!-- Thêm các hãng xe khác vào đây -->
-                </select>
-            </div>
-
-            {{-- <select name="district_receive" id="district_receive" class="form-select">
-                <option value=""><i class='fas fa-car-alt'></i>Tất cả Model</option>
-
-            </select> --}}
-            {{-- --------------------------------------------- --}}
-            <div class="pt-1">
-                <select name="id_model" class="form-select bg-rentalcard word-white" id="id_model">
-                    <option value=""><i class='fas fa-car-alt'></i>Tất cả Model</option>
-                    {{-- @if (!empty(getAllModels()))
-                    @foreach (getAllModels() as $item)
-                        <option value="{{$item->id}}"{{request()->id_model==$item->id?
-                            'selected':false}}>{{$item->name}}</option>                           
-                    @endforeach
-                @endif --}}
-                    <!-- Thêm các hãng xe khác vào đây -->
-                </select>
-            </div>
-            <br>
-            <h5 class="word-white">Dẫn động</h5>
-
-            <div class="checkbox-container custom-scrollbar">
-                <!-- Danh sách các checkbox -->
-                @if (!empty(getAllDrivetrain()))
-                    @foreach (getAllDrivetrain() as $item)
-                        <div class="form-check p-1">
-                            <input class="form-check-input mx-2" type="checkbox" value="{{ $item->id }}"
-                                name="id_drivetrain" id="{{ $item->id }}+100">
-                            <label class="form-check-label" for="{{ $item->id }}+100">
-                                <h6>{{ $item->name }}</h6>
-                            </label>
-                        </div>
-                        {{-- <label class="form-check-label">
-                                <input class="form-check-input p-1" type="checkbox" name="id_bodytype" value="{{$item->id}}">
-                                <h6>{{$item->name}}</h6>
-                            </label> --}}
-                    @endforeach
-                @endif
-
-
-            </div>
-            <br>
-            <h5 class="word-white">Nhiên liệu</h5>
-
-            <div class="checkbox-container custom-scrollbar">
-                <!-- Danh sách các checkbox -->
-                @if (!empty(getAllFuel()))
-                    @foreach (getAllFuel() as $item)
-                        <div class="form-check p-1">
-                            <input class="form-check-input mx-2" type="checkbox" value="{{ $item->id }}" name="id_fuel"
-                                id="{{ $item->id }}+200">
-                            <label class="form-check-label" for="{{ $item->id }}+2lk00">
-                                <h6>{{ $item->name }}</h6>
-                            </label>
-                        </div>
-                        {{-- <label class="form-check-label">
-                                <input class="form-check-input p-1" type="checkbox" name="id_bodytype" value="{{$item->id}}">
-                                <h6>{{$item->name}}</h6>
-                            </label> --}}
-                    @endforeach
-                @endif
-
-
-            </div>
-            <br>
-            <h5 class="word-white">Hộp số</h5>
-
-            <div class="checkbox-container custom-scrollbar">
-                <!-- Danh sách các checkbox -->
-                @if (!empty(getAllTransmission()))
-                    @foreach (getAllTransmission() as $item)
-                        <div class="form-check p-1">
-                            <input class="form-check-input mx-2" type="checkbox" value="{{ $item->id }}"
-                                name="id_transmission" id="{{ $item->id }}+300">
-                            <label class="form-check-label" for="{{ $item->id }}+300">
-                                <h6>{{ $item->name }}</h6>
-                            </label>
-                        </div>
-                       
-                    @endforeach
-                @endif
-
-
-            </div>
-            <div class="d-none d-lg-block d-sm-none d-xlg-none d-md-none ">
-                <button class="btn text-search w-100" type="submit">Tìm Kiếm</button>
-            </div>
-        </form>
-    </div>
-
-
-
-@endsection
 @section('content')
-    <h4 class="word-white">{{ $title }}</h4>
-
-
-    <div class="text-bg-bar d-lg-none flex-container rounded">
-        <form id="searchForm" action="{{ route('search') }}" method="GET">
-            <div class="row">
-
-                <div class="col-md-2 col-sm-12">
-                    <input class="form-control " value="{{ request()->keywords }}" type="text" id="keyword"
-                        placeholder="Từ khóa" name="keywords">
-                </div>
-                <div class="col-md-2 col-sm-12">
-
-                    <select class="form-select bg-rentalcard word-white" id="make" name="id_make">
-                        <option value=""><i class='fas fa-car-alt'></i>Tất cả hãng</option>
-                        @if (!empty(getAllMake()))
-                            @foreach (getAllMake() as $item)
-                                <option
-                                    value="{{ $item->id }}"{{ request()->id_make == $item->id ? 'selected' : false }}>
-                                    {{ $item->name }}</option>
-                            @endforeach
-                        @endif
-
-                    </select>
-                </div>
-                <div class="col-md-2 col-sm-12" id="modelField">
-
-                    <select class="form-select bg-rentalcard word-white" id="model" name="id_model">
-                        <option value=""><i class='fas fa-car-alt'></i>Tất cả Model</option>
-                        @if (!empty(getAllModels()))
-                            @foreach (getAllModels() as $item)
-                                <option
-                                    value="{{ $item->id }}"{{ request()->id_model == $item->id ? 'selected' : false }}>
-                                    {{ $item->name }}</option>
-                            @endforeach
-                        @endif
-
-                    </select>
-                </div>
-                <div class="col-md-2 col-sm-12">
-
-                    <select class="form-select bg-rentalcard word-white" id="bodytype" name="id_bodytype">
-                        <option value=""><i class='fas fa-car-alt'></i>Tất cả Dòng xe</option>
-                        @if (!empty(getAllBodytype()))
-                            @foreach (getAllBodytype() as $item)
-                                <option
-                                    value="{{ $item->id }}"{{ request()->id_bodytype == $item->id ? 'selected' : false }}>
-                                    {{ $item->name }}</option>
-                            @endforeach
-                        @endif
-
-                    </select>
-
-                </div>
-                <div class="col-md-2 col-sm-12">
-                    <select class="form-select bg-rentalcard word-white" id="province" name="id_province">
-                        <option value=""><i class='fas fa-car-alt'></i>Tất cả Tỉnh</option>
-                        @if (!empty(getAllProvince()))
-                            @foreach (getAllProvince() as $item)
-                                <option
-                                    value="{{ $item->id }}"{{ request()->id_province == $item->id ? 'selected' : false }}>
-                                    {{ $item->name }}</option>
-                            @endforeach
-                        @endif
-
-                    </select>
-
-                </div>
-                <div class="col-md-2 col-sm-12">
-                    <button class="btn text-search" width="100%" type="submit">Tìm Kiếm</button>
-                </div>
-
-            </div>
-
-        </form>
+    @if (session('msg'))
+        <div class="alert alert-success">{{ session('msg') }}</div>
+    @endif
+    <div class="row">
+        <div class="col-6">
+            <h4 class="word-white mx-2"><span>{{ $title }}</span></h4>
+        </div>
+        <div class="col-6 t-a-r">
+            <h4 class="mx-2"><a class="word-white-orange" href=""><i class='fa fa-history'></i> Lịch sử thuê</a> </h4>
+        </div>
     </div>
+    
     <hr>
     <div class="row">
-        @if (session('msg'))
-            <div class="alert alert-success">{{ session('msg') }}</div>
-        @endif
         @if (!empty($rentalcarList))
             @foreach ($rentalcarList as $key => $item)
                 {{-- <div class="container mb-3 col-12 col-md-12 col-lg-12 col-xl-4 "> --}}
-                <div class="container mb-3 col-12 col-lg-12 col-md-12 col-sm-6 col-xxl-12">
+                <div class="container mb-3 col-12 col-lg-6 col-md-12 col-sm-12 col-xxl-6">
                     <div class="container">
 
                         <div class=" bg-rentalcard rounded-open">
@@ -258,22 +29,23 @@
                             <div class="row">
 
                                 {{-- /////////////////////////////////image///////////////////////////// --}}
-                                <div class="col-md-12 col-lg-5 col-xl-5 col-sm-12 col-xxl-5">
+                                <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12 col-xxl-12">
 
                                     <div class="rounded-image-open container-flex">
 
                                         {{-- <img src="public/storage/{{$item->image_link}}" class="image cover object" id="{{$item->id}}"> --}}
-                                        <a href="{{ route('rental.show', ['id' => $item->id]) }}"><img
-                                                src="{{ asset('storage/' . $item->image_link) }}"
-                                                class="image cover object" id="{{ $item->id }}"></a>
-
+                                        {{-- <a href="{{route('rental.show', ['id'=>$item->id])}}"><img src="{{ asset('storage/' . $item->image_link) }}" class="image cover object" id="{{$item->id}}"></a> --}}
+                                        <a href="{{ route('rental.contract', ['id' => $item->sub_id]) }}"><img
+                                                src="{{ asset('storage/' . $item->image_link) }}" class="image cover object"
+                                                id="{{ $item->id }}"></a>
+                                        
                                         <div class="middle" id="1{{ $item->id }}">
                                             @if (!empty(Auth::user()))
                                                 @if (Auth::user()->id != $item->id_user)
                                                     {{-- ------------------------ --}}
                                                     @if (Auth::check())
                                                         <form action="{{ route('favorite.toggle', $item->id) }}"
-                                                            method="POST" id="favoriteForm">
+                                                            method="POST">
                                                             @csrf
                                                             <button class="btn" type="submit">
                                                                 @if (Auth::user()->hasFavorite($item->id))
@@ -294,12 +66,10 @@
                                                     <a class="back-info rounded" href="">Đang chờ duyệt</a>
                                                 @elseif(Auth::user()->id == $item->id_user && $item->status == 1 && $item->rentaldays != 0 && $item->expdate < now())
                                                     <a class="back-orange rounded"
-                                                        href="{{ route('rental.ad-readd', ['id' => $item->id]) }}">Gia
-                                                        hạn</a>
+                                                        href="{{ route('rental.ad-readd', ['id' => $item->id]) }}">Gia hạn</a>
                                                 @else
                                                     <a class="btn btn-primary"
-                                                        href="{{ route('rental.ad-add', ['id' => $item->id]) }}">Đăng tin
-                                                        xe
+                                                        href="{{ route('rental.ad-add', ['id' => $item->id]) }}">Đăng tin xe
                                                         này</a>
                                                 @endif
                                             @endif
@@ -325,8 +95,8 @@
                                                             <p class=" saving word-white"><i class='fa fa-flash'></i> Tiết
                                                                 kiệm</p>
                                                         @elseif($item->adtype == 2 && $item->expdate >= now())
-                                                            <p class=" silver word-white"><i class='fa fa-circle-o'></i>
-                                                                Cơ bản</p>
+                                                            <p class=" silver word-white"><i class='fa fa-circle-o'></i> Cơ
+                                                                bản</p>
                                                         @elseif($item->adtype == 3 && $item->expdate >= now())
                                                             <p class=" gold word-white">
                                                                 <i class='fa fa-plus'></i> Plus
@@ -346,15 +116,20 @@
                                             </div>
                                         </div>
                                         <div class="bottom">
-                                            @php
-                                                $renting = \App\Models\SubRental::where('id_car', $item->id)->get();
-                                            @endphp
+                                            @if ($item->agree == 1 && $item->given == 0)
+                                                <p class=" agree word-white"><i class='fa fa-check'></i> Đã chấp thuận</p>
+                                            @elseif($item->agree == 1 && $item->given == 1 && $item->take == 0)
+                                                <p class=" given word-white"><i class='fa fa-car'></i> Đã giao xe</p>
+                                            @elseif($item->agree == 1 && $item->given == 1 && $item->take == 1 && $item->back == 0)
+                                                <p class=" take word-white"><i class='fa fa-car'></i> Đã nhận xe</p>
+                                            @elseif($item->agree == 1 && $item->given == 1 && $item->take == 1 && $item->back == 1 && $item->finish == 0)
+                                                <p class=" back word-white"><i class='fa fa-car'></i> Đã trả xe</p>
+                                            @elseif($item->agree == 1 && $item->given == 1 && $item->take == 1 && $item->back == 1 && $item->finish == 1)
+                                                <p class=" finish word-white"><i class='fa fa-car'></i> Đã kết thúc chuyến đi</p>
+                                            @else
+                                                <p class=" wait word-white"><i class='fa fa-send-o'></i> Đang yêu cầu</p>
+                                            @endif
 
-                                        @foreach ($renting as $key => $rento)
-                                            @if ($rento->id_car == $item->id && $rento->agree == 1 &&  $rento->finish == 0)
-                                           <p class=" wait word-white">Đã có người thuê</p>
-                                           @endif 
-                                        @endforeach
                                         </div>
                                         {{-- assets\clients\images\kar.jpg --}}
                                         {{-- height="200px" width="auto" --}}
@@ -363,7 +138,7 @@
                                 </div>
                                 {{-- /////////////////////////////////image-end///////////////////////////// --}}
 
-                                <div class="col-md-6  col-lg-7 col-xl-7 col-sm-12 col-xxl-7">
+                                <div class="col-md-12  col-lg-12 col-xl-12 col-sm-12 col-xxl-12">
                                     <div class="row container">
 
                                         <div class="col-md-8 col-sm-8">
@@ -371,7 +146,6 @@
                                                 {{ date('d-m-Y', strtotime($item->created_at)) }}</p>
                                             <a href="{{ route('rental.show', ['id' => $item->id]) }}">
                                                 <h4 class="my-1 word-ash">{{ $item->car_name }}</h4>
-                                                
                                             </a>
                                             @if (!empty($item->ad_status))
                                                 <p class="my-1 word-rental-money">
@@ -408,8 +182,8 @@
                                             <div class="rounded bg-rentalcard-in text-white pt-3"
                                                 style="width: auto; height: auto;">
                                                 <div class="d-flex align-items-center justify-content-center"><img
-                                                        src="{{ asset('assets\clients\images\seat2.png') }}"
-                                                        width="30px" alt=""></div>
+                                                        src="{{ asset('assets\clients\images\seat2.png') }}" width="30px"
+                                                        alt=""></div>
                                                 <div class="d-flex align-items-center justify-content-center">
                                                     <h5>{{ $item->seat }}</h5>
                                                 </div>
@@ -461,36 +235,10 @@
                 <td colspan="4">Không có xe</td>
             </tr>
         @endif
-        <div class="d-flex justify-content-center">{{$rentalcarList->links()}}</div>
     </div>
-    
 
     <!-- jQuery CDN - Phiên bản mới nhất -->
     <script src="https://code.jquery.com/jquery.min.js"></script>
-
-    {{-- <script>
-        // Kiểm tra xem có vị trí cuộn đã lưu hay không
-        const scrollPosition = localStorage.getItem('scrollPosition');
-        
-        // Nếu có, cuộn đến vị trí đó
-        if (scrollPosition) {
-            window.scrollTo(0, parseInt(scrollPosition));
-            localStorage.removeItem('scrollPosition'); // Xóa vị trí đã lưu để không ảnh hưởng đến các lần cuộn tiếp theo
-        }
-
-        // Gán sự kiện cho nút hoặc form submit
-        document.getElementById('favoriteForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            // Thực hiện các thao tác cần thiết
-
-            // Lưu vị trí cuộn hiện tại
-            localStorage.setItem('scrollPosition', window.scrollY);
-
-            // Chuyển hướng về trang chủ hoặc trang khác
-            window.location.href = '/path/to/homepage';
-        });
-    </script> --}}
 
     <script>
         const containers = document.querySelectorAll('.container');
@@ -501,12 +249,14 @@
             const middle = container.querySelector('.middle');
             const toptop = container.querySelector('.toptop');
             const topleft = container.querySelector('.topleft');
+            const bottom = container.querySelector('.bottom');
 
             container.addEventListener('mouseenter', () => {
                 image.style.opacity = '0.3';
                 middle.style.opacity = '1';
                 toptop.style.opacity = '1';
                 topleft.style.opacity = '1';
+                bottom.style.opacity = '1';
 
             });
 
@@ -515,6 +265,7 @@
                 middle.style.opacity = '0';
                 toptop.style.opacity = '0';
                 topleft.style.opacity = '0';
+                bottom.style.opacity = '0';
             });
         });
     </script>
@@ -606,37 +357,37 @@
             });
         });
     </script>
-    <script>
+    {{-- <script>
         $('#id_make').on('change', function() {
             var selectedValue = $(this).val();
             //alert(selectedValue);
             $.ajax({
                 url: 'selectmodel',
-                method: 'GET',
-                data: {
+                  method: 'GET',
+                  data: {
                     selectedValue: selectedValue
-                },
+                  },
                 success: function(data) {
-                    var district_sent = $('#id_model');
+                    var district_sent =$('#id_model');
                     district_sent.empty();
                     $('#id_model').append($('<option>', {
-                        value: 0,
-                        text: "Tất cả Model"
-                    }));
+                            value: 0,
+                            text: "Tất cả Model"
+                        }));
                     $.each(data, function(key, model) {
                         $('#id_model').append($('<option>', {
-                            value: model
-                                .id{{ request()->id_model == $item->id ? 'selected' : false }},
+                            value: model.id{{request()->id_model==$item->id?
+                            'selected':false}},
                             text: model.name
                         }));
                     });
                 },
                 error: function() {
-                    alert('Đã có lỗi xảy ra.');
+                  alert('Đã có lỗi xảy ra.');
                 }
+              });
             });
-        });
-    </script>
+    </script> --}}
     {{-- $('#province_receive').on('change', function() {
         var selectedValue = $(this).val();
         //alert(selectedValue);

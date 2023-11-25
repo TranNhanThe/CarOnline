@@ -6,6 +6,7 @@
     <div class="alert alert-success">{{session('msg')}}</div>
 @endif
 @section('content')
+<div class="container">
     <div class="row word-white">
         <div class="col d-flex justify-content-center">
             <div>
@@ -82,23 +83,41 @@
         </div>
         <div class="col">
             <h4>
+                
                 <div>
                     @php
-                        $rating = $users->user_star; // Đây là giá trị xếp hạng thực tế
+                        use App\Models\SubRental;
+                        // $averageCarStar = SubRental::where('id_car', $rentalcar->id)->avg('carstar');
+                        $averageUserStar = SubRental::where('id_dealer', $users->id)->avg('userstar');
+                        // $carRater = SubRental::where('id_car', $rentalcar->id)->where('carstar', '!=', null)->count();
+                        //  $userRater = SubRental::where('id_car', $rentalcar->id)->count();
+                    @endphp
+                    @php
+                        $rating = $averageUserStar; // Đây là giá trị xếp hạng thực tế
                         $fullStars = floor($rating); // Số sao đầy
                         $halfStar = $rating - $fullStars >= 0.5; // Xem xét có hiển thị nửa sao không
                     @endphp
-                    <div class="rating">
+                    <div class="rating-e">
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= $fullStars)
-                                <span class="star">&#9733;</span>
+                                <span class="star"><i class="fa fa-star"
+                                        style="font-size:24px;color:yellow"></i></span>
                             @elseif ($i == $fullStars + 1 && $halfStar)
-                                <span class="star-half">&#9734;</span>
+                                <span class="star-half"><i class="fa fa-star-half-full"
+                                        style="font-size:24px;color:yellow"></i></span>
                             @else
-                                <span class="star">&#9734;</span>
+                                <span class="star"><i class="fa fa-star-o"
+                                        style="font-size:24px;color:yellow"></i></span>
                             @endif
                         @endfor
-                        <span class="word-white">{{ $users->user_star }}</span>
+                        
+                        <span class="word-white">{{ round($averageUserStar, 1) }}</span>
+                        
+                        {{-- @if (!empty($sub->carstar)) --}}
+                            {{-- <h6 class="word-white">{{ $userRater }} đánh giá</h6> --}}
+                        {{-- @endif --}}
+                        
+                        
                     </div>
                 </div>
             </h4>
@@ -155,6 +174,7 @@
     </div> --}}
     @csrf
 </form>
+</div>
     <script src="https://code.jquery.com/jquery.min.js"></script>
 
     <script>

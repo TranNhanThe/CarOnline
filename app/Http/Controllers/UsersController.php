@@ -7,6 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Http\Requests\ByUserRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Users;
+use App\Models\SubRental;
 use Illuminate\Support\Facades\DB;
 
 use Attribute;

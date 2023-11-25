@@ -6,7 +6,9 @@
 @section('content')
 <h3 class="word-ash mid">{{$title}}</h3>
 
-<form action="{{route('rental.post-credit')}}" method="POST" enctype="multipart/form-data">
+{{-- <form action="{{route('rental.post-credit')}}" method="POST" enctype="multipart/form-data"> --}}
+    <form action="{{url('/vnpay_payment')}}" method="POST">
+        @csrf
     <div class="row justify-content-center">
         <div class="col-7">
              @if (session('msg'))
@@ -26,7 +28,7 @@
             <tr>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="200" name="credit" id="1">
+                        <input class="form-check-input" type="radio" value="20000" name="credit" id="1">
                         <label class="form-check-label" for="1">
                             <h6>20.000 vnđ</h6>
                         </label>
@@ -40,7 +42,7 @@
             <tr>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="500" name="credit" id="2">
+                        <input class="form-check-input" type="radio" value="50000" name="credit" id="2">
                         <label class="form-check-label" for="2">
                             <h6>50.000 vnđ</h6>
                         </label>
@@ -54,7 +56,7 @@
             <tr>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="1000" name="credit" id="3">
+                        <input class="form-check-input" type="radio" value="100000" name="credit" id="3">
                         <label class="form-check-label" for="3">
                             <h6>100.000 vnđ</h6>
                         </label>
@@ -68,7 +70,7 @@
             <tr>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="2000" name="credit" id="4">
+                        <input class="form-check-input" type="radio" value="200000" name="credit" id="4">
                         <label class="form-check-label" for="4">
                             <h6>200.000 vnđ</h6>
                         </label>
@@ -82,7 +84,7 @@
             <tr>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="5000" name="credit" id="5">
+                        <input class="form-check-input" type="radio" value="500000" name="credit" id="5">
                         <label class="form-check-label" for="5">
                             <h6>500.000 vnđ</h6>
                         </label>
@@ -101,13 +103,13 @@
      <div class="row justify-content-center ">
        
         <div class="col-3">
-            <button type="submit" title="Thanh toán"  class="btn back-green mid"> Thanh toán</button>
+            <button type="submit" title="Thanh toán" name="redirect"  class="btn back-green mid"> Thanh toán bằng VnPay</button>
     </div>
         </div>
     </div>
      
 
-@csrf
+
 </form>          
 
 <script>

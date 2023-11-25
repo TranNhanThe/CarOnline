@@ -74,7 +74,14 @@
             <td>{{$item->email}}</td>
             <td>{{$item->phone}}</td>
             <td>{{$item->cccd}}</td>
-            <td>{{$item->user_star}}</td>
+            @php
+            
+            // $averageCarStar = SubRental::where('id_car', $rentalcar->id)->avg('carstar');
+            $averageUserStar = \App\Models\SubRental::where('id_dealer', $item->id)->avg('userstar');
+            // $carRater = SubRental::where('id_car', $rentalcar->id)->where('carstar', '!=', null)->count();
+            //  $userRater = SubRental::where('id_car', $rentalcar->id)->count();
+        @endphp
+            <td>{{$averageUserStar}}</td>
             <td>{!!$item->status==0?'<button class="btn btn-danger btn-sm">Chưa kích hoạt</button>':
             '<button class="btn btn-success btn-sm">kích hoạt</button>'!!}</td>
             <td>{{$item->created_at}}</td>
