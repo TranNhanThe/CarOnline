@@ -358,7 +358,7 @@
             </div>
 
             {{-- --------------------------------------------end offer------------------------------ --}}
-
+            
             <h2 class="word-white">Điều gì làm cho Timoto khác biệt?</h2>
             <hr><br>
             <div class="row word-white">
@@ -652,8 +652,19 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
+            <div id="map"></div>
         </div>
 
+        <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        var map = L.map('map').setView([51.505, -0.09], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Add markers or other map elements here...
+    </script>
         <script src="https://code.jquery.com/jquery.min.js"></script>
         <script>
             $('#id_make').on('change', function() {

@@ -41,8 +41,6 @@ class Rentalcar extends Model
      'ad_rent.id_adtype as adtype',
      'ad_rent.price as adprice',
      'ad_rent.expiration_date as expdate'
-     
-      
      )
       ->join('users', 'rentalcar.id_user', '=', 'users.id')
       ->join('ad_rent', 'rentalcar.id', '=', 'ad_rent.id_rentalcar')
@@ -497,6 +495,107 @@ public function youDealer($filters = [], $keywords = null, $sortByArr = null, $p
     ->where('rental_image.is_main', 1);
     
     $orderBy = 'rentalcar.created_at';
+    $orderType = 'desc';
+    
+   
+    if(!empty($sortByArr) && is_array($sortByArr)){
+        if(!empty($sortByArr['sortBy']) && !empty($sortByArr['sortType'])){
+            $orderBy = trim($sortByArr['sortBy']);
+            $orderType = trim($sortByArr['sortType']);        
+        } 
+    }
+   
+    $rentalcar = $rentalcar->orderBy($orderBy, $orderType);
+    
+   
+    if(!empty($filters)){
+        $rentalcar = $rentalcar->where($filters);
+    }
+   
+    if(!empty($keywords)){
+        $rentalcar = $rentalcar->where(function($query) use ($keywords){
+            $query->orWhere('car_name', 'like', '%'.$keywords.'%');
+            $query->orWhere('location', 'like', '%'.$keywords.'%');
+            $query->orWhere('rentalcar.id', 'like', '%'.$keywords.'%');
+        });
+    }
+   
+   // $users = $users->get(); 
+   
+   //phân trang
+    if(!empty($perPage)){
+        $rentalcar = $rentalcar->paginate($perPage)->withQueryString();
+    }else{
+     $rentalcar = $rentalcar->get();
+    }
+    
+   
+   //    $sql = DB::getQueryLog();
+   //    //dd($lists);
+   //    dd($sql);
+   
+    return $rentalcar;
+   }
+
+   public function getAllSub($filters = [], $keywords = null, $sortByArr = null, $perPage = null){
+    $now = now();
+    $rentalcar = DB::table($this->table)
+    ->select('rentalcar.*', 
+    'users.fullname as user_name',
+    'users.fullname as dealername',
+    'model.name as model_name',
+    'fuel.name as fuel_name',
+    'drivetrain.name as drivetrain_name', 
+    'transmission.name as transmission_name',
+    'bodytype.name as bodytype_name',
+    'make.name as make_name',
+    'province.name as province_name',
+    'rental_image.link as image_link',
+    'ad_rent.status as ad_status',
+     'ad_rent.price as adprice',
+    'ad_rent.id_adtype as adtype',
+    'ad_rent.rentaldays as rentaldays',
+    
+    'sub_rental.id as sub_id',
+    'sub_rental.id_user as customa',
+    'sub_rental.days as days',
+    'sub_rental.total as total',
+    'sub_rental.deposit as deposit',
+    'sub_rental.received_date as received_date',
+    'sub_rental.return_date as return_date',
+    'sub_rental.days as days',
+
+
+    'sub_rental.agree as agree',
+    'sub_rental.given as given',
+    'sub_rental.take as take',
+    'sub_rental.back as back',
+    'sub_rental.finish as finish',
+
+    'sub_rental.pay as pay',
+    'sub_rental.depo as depo',
+
+    'sub_rental.dealer_check as dealer_check',
+    'sub_rental.user_check as user_check',
+
+    'ad_rent.expiration_date as expdate'
+    )
+     ->join('users', 'rentalcar.id_user', '=', 'users.id')
+       ->join('ad_rent', 'rentalcar.id', '=', 'ad_rent.id_rentalcar')
+     ->join('model', 'rentalcar.id_model', '=', 'model.id')
+     ->join('fuel', 'rentalcar.id_fuel', '=', 'fuel.id')
+     ->join('drivetrain', 'rentalcar.id_drivetrain', '=', 'drivetrain.id')
+     ->join('transmission', 'rentalcar.id_transmission', '=', 'transmission.id')
+     ->join('bodytype', 'rentalcar.id_bodytype', '=', 'bodytype.id')
+     ->join('make', 'rentalcar.id_make', '=', 'make.id')
+     ->join('sub_rental', 'rentalcar.id', '=', 'sub_rental.id_car')
+     ->join('province', 'rentalcar.id_province', '=', 'province.id')
+     ->join('rental_image', 'rentalcar.id', '=', 'rental_image.id_rentalcar')
+   
+    ->where('rentalcar.trash', 0)
+    ->where('rental_image.is_main', 1);
+    
+    $orderBy = 'sub_rental.created_at';
     $orderType = 'desc';
     
    

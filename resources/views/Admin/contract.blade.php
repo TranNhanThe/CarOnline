@@ -1,4 +1,4 @@
-@extends('layouts.kclient')
+@extends('layouts.admin')
 @section('title')
     {{ $title }}
 @endsection
@@ -85,7 +85,7 @@
             <hr>
             <h3 class="">Thuê {{ $sub_rental->days }} ngày</h3>
             <div class="row justify-content-center container">
-                <div class="col-6">
+                <div class="col-5">
                     <h5><table>
                         <tr>
                             <td>Ngày nhận:</td>
@@ -99,7 +99,7 @@
                     
 
                 </div>
-                <div class="col-6">
+                <div class="col-7">
                     @php
                         $dichvu = $sub_rental->days * 50000;
                         $baohiem = $sub_rental->days * 70000;
@@ -111,11 +111,24 @@
                             <td>Số tiền: </td>
                             <td>&nbsp; {{ number_format($sub_rental->total, 0, ',', '.') }}</td>
                             <td>&nbsp; vnđ</td>
+                            
                         </tr>
                         <tr class="word-black">
                             <td>Tiền cọc: </td>
                             <td>&nbsp; {{ number_format($sub_rental->deposit, 0, ',', '.') }}</td>
                             <td>&nbsp; vnđ</td>
+                            <td><form method="post" action="{{ route('admin.depo.toggle', $sub_rental->id) }}">
+                                @csrf
+                                @method('POST') <!-- Sử dụng POST method -->
+                            
+                            
+                                @if ($sub_rental->depo == 1)
+                                    <button type="submit" disabled  class="btn btn-success">Đã hoàn </button>
+                                @else
+                                <button type="submit"  class="btn btn-warning">Hoàn tiền</button>
+                                @endif
+                                
+                            </form></td>
                         </tr>
                         <tr class="word-black">
                             <td>Phí dịch vụ: </td>
@@ -131,6 +144,20 @@
                             <td>Thu nhập 90%: </td>
                             <td>&nbsp; {{ number_format($thunhap, 0, ',', '.') }} </td>
                             <td>&nbsp; vnđ</td>
+                            <td>
+                                <form method="post" action="{{ route('admin.pay.toggle', $sub_rental->id) }}">
+                                    @csrf
+                                    @method('POST') <!-- Sử dụng POST method -->
+                                
+                                
+                                    @if ($sub_rental->pay == 1)
+                                        <button type="submit" disabled  class="btn btn-success">Đã hoàn</button>
+                                    @else
+                                    <button type="submit"  class="btn btn-warning">Hoàn tiền</button>
+                                    @endif
+                                    
+                                </form>
+                            </td>
                         </tr>
                         <tr class="word-black">
                             <td>Hoa hồng 10%: </td>
@@ -177,6 +204,7 @@
 
             </div>
             <br>
+            ID hợp đồng: {{ $sub_rental->id }}
         </div>
 
         <div class="row justify-content-center p-3">
@@ -280,9 +308,6 @@
 
                     </table>
                     <br>
-                    <br>
-                    <h5 class="word-white">Theo dõi vị trí xe trên bản đồ</h5>
-                    <iframe width="100%" height="400" src="https://cookchoisong.000webhostapp.com/"></iframe>
                     <hr class="mt-3">
                     @if ($sub_rental->id_user == auth()->user()->id && $sub_rental->finish == 1 &&  $sub_rental->userstar == null)
                     <h4 class="word-white mid">Đánh giá của bạn</h4>

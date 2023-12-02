@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\PaymentRequest;
 use App\Models\Users;
 class PaymentController extends Controller
 {
-    public function vnpay_payment(Request $request){
+    public function vnpay_payment(PaymentRequest $request){
         
 $data=$request->all();
 $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";

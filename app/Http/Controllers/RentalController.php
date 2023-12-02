@@ -360,8 +360,6 @@ if ($rentalcar) {
 public $data = [];
 public function show(Request $request, $id)
 {
-
-    
     $rentalcar = Rentalcar::find($id);
         $title = 'Chi tiết xe thuê';
         $ketqua = 'Kết quả cho:';

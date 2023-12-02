@@ -88,9 +88,7 @@
                         <label class="form-check-label" for="5">
                             <h6>500.000 vnđ</h6>
                         </label>
-                        @error('credit')
-                  <span style="color: red;">{{$message}}</span>
-                  @enderror
+                       
                     </div>
                 </td>
                 <td>
@@ -100,10 +98,15 @@
         </tbody>
      </table>
 
-     <div class="row justify-content-center ">
-       
+     <div class="row justify-content-center pb-3">
+        @error('credit')
+        <span style="color: red;">{{$message}}</span>
+        @enderror
         <div class="col-3">
-            <button type="submit" title="Thanh toán" name="redirect"  class="btn back-green mid"> Thanh toán bằng VnPay</button>
+            <button type="submit" title="Thanh toán" name="redirect"  class="btn back-white mid">
+                <img src="{{ asset('assets\clients\images\vnpay.webp') }}" class=""
+                            title="Credit" width="100px" alt="">
+        </button>
     </div>
         </div>
     </div>

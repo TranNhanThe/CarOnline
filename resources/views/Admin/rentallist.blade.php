@@ -111,8 +111,10 @@
             <div class="col-md-3 col-sm-12 bg-rentalcard-in rounded m-1 p-1" >
                 <h5 class="m-1">Chưa đăng tin: <span class="word-rental-money">
                     @php
-                    $count = DB::table('ad_rent')->where('ad_rent.price', null)->count();
-                    echo $count;
+                    $huyndai = DB::table('rentalcar')->count();
+                    $kia = DB::table('ad_rent')->where('ad_rent.status', 1)->count();
+                    $k = $huyndai - $kia;
+                    echo $k;
                 @endphp    
                 </span></h5>
             </div>
@@ -138,7 +140,7 @@
             <div class="col-md-3 col-sm-12 bg-rentalcard-in rounded m-1 p-1 ">
                 <h5 class="m-1">Chờ duyệt: <span class="word-rental-money">
                     @php
-                    $count = DB::table('ad_rent')->where('ad_rent.status', 0)->where('ad_rent.price', !null)->count();
+                    $count = DB::table('ad_rent')->where('ad_rent.status', 0)->count();
                     echo $count;
                 @endphp   
                 </span></h5>
@@ -218,7 +220,7 @@
         
         </td>
         <td>{{ $item->view_count }}</td>
-            <td>{{$item->expdate}}</td>    
+            <td>{{ date('d-m-Y', strtotime($item->expdate))  }}</td>    
 
             <td>
             @if (!$item->adtype)

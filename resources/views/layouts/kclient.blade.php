@@ -9,7 +9,13 @@
     <script src="https://kit.fontawesome.com/5644bf12f0.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{asset('assets/clients/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/clients/css/style.css')}}">
+    <!-- Thẻ link để nhúng Leaflet qua CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha384-vyjlT5JUpH7I3z5kz8OealwkHC1MTv8odFhR/rzBab0QpO8FhDDdM9t77zpkhhIW" crossorigin="anonymous">
+    <!-- Thêm thẻ script để sử dụng Leaflet qua CDN -->
+    {{-- <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha384-r6DFF6i1y0qKkM8H83R4IgeGcdus2m9U6mJHTCq0KoVi/5C4EPt2PYyJp70D0Jzv" crossorigin="anonymous"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" crossorigin=""/>
+
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
 
@@ -24,6 +30,11 @@
 .rating input:checked ~ label ~ input {
   background-image: url('{{ asset('assets/clients/images/star.gif') }}');
 }
+    </style>
+    <style>
+        #map {
+            height: 400px;
+        }
     </style>
 </head>
 <body>

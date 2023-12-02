@@ -15,6 +15,9 @@
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{{route('admin.addMake')}}">Hãng Và Model</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{route('admin.subrental')}}">Theo dõi hợp đồng</a>
+          </li>
 
           
       {{--       

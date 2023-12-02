@@ -33,6 +33,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\CheckIsAdmin::class,
         'checkuserstatus' => \App\Http\Middleware\CheckUserStatus::class,
         
+        
     ];
     protected $middlewareGroups = [
         'web' => [

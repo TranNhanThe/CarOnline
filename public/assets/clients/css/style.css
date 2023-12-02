@@ -36,11 +36,20 @@ a{
 .bg-rentalcard {
     background-color: #383448;
 }
+.bg-rentalcard-2 {
+  background-color: #5f587b;
+}
+.bg-rentalcard-3 {
+  background-color: #ffffff;
+}
 .bg-white {
   background-color: #ffffff;
 }
 .bg-rentalcard-in{
     background-color: #1f1b2d;
+}
+.bg-rentalcard-in-2{
+  background-color: #342e4d;
 }
 
 /* word-pack */
@@ -334,6 +343,14 @@ padding: 5px;
     font-size: 15px;
     padding: 7px 32px;
   }
+
+  .back-white{
+    background-color: #ffffff ;
+    color: white;
+    font-size: 15px;
+    padding: 7px 32px;
+  }
+
   .back-green-custom{
     background-color: #3fad0c ;
     color: white;

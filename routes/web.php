@@ -9,6 +9,7 @@ use App\Http\Controllers\CatController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RentalController;
+use App\Http\Controllers\SellController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PaymentController;
@@ -35,8 +36,16 @@ Route::group(['middleware' => 'admin'], function () {
       Route::post('/update', [AdminController::class, 'postEdit'])->name('post-edit');
       Route::get('/delete/{id}', [AdminController::class, 'delete'])->name('delete');
       Route::get('/xe-thue/{id}', [AdminController::class, 'rentalshow'])->name('rentalshow');
+      Route::get('/contract/{id}', [AdminController::class, 'contract'])->name('contract');
 
+      Route::post('/pay/{id}', [AdminController::class, 'togglePay'])->name('pay.toggle');
+
+      Route::post('/depo/{id}', [AdminController::class, 'toggleDepo'])->name('depo.toggle');
       Route::get('/users/{id}', [AdminController::class, 'userinfo'])->name('userinfo');
+
+      Route::get('/subrental', [AdminController::class, 'subrental'])->name('subrental');
+      
+      Route::get('subdetail/{id}', [AdminController::class, 'subdetail'])->name('subdetail');
 
       Route::get('/rentallist', [AdminController::class, 'rentallist'])->name('rentallist');
 
@@ -56,6 +65,11 @@ Route::get('/search', [HomeController::class, 'searchMaster'])->name('search');
 Route::get('/selectmodel', [HomeController::class, 'selectModel'])->name('selectModel');
 Route::post('/vnpay_payment', [PaymentController::class,'vnpay_payment']);
 
+Route::prefix('sell')->name('sell.')->group(function () {
+   Route::get('/', [SellController::class, 'index'])->name('index');       
+   Route::get('/xe-ban/{id}', [SellController::class, 'show'])->name('show');                   
+});
+
 Route::prefix('rental')->name('rental.')->group(function () {
    Route::get('/', [RentalController::class, 'index'])->name('index');
    Route::middleware(['auth'])->get('/yoretaca', [RentalController::class, 'yoretaca'])->name('yoretaca');
@@ -68,7 +82,7 @@ Route::prefix('rental')->name('rental.')->group(function () {
    Route::middleware(['auth'])->post('/add', [RentalController::class, 'postAdd'])->name('post-add');
    Route::middleware(['auth'])->get('/credit', [RentalController::class, 'credit'])->name('credit');
    Route::middleware(['auth'])->post('/credit', [RentalController::class, 'postCredit'])->name('post-credit');
-   Route::middleware(['auth'])->post('/vnpay_payment', [PaymentController::class,'vnpay_payment'])->name('vnpay_payment');
+   Route::middleware(['auth', 'checkuserstatus'])->get('/vnpay_payment', [PaymentController::class,'vnpay_payment'])->name('vnpay_payment');
    Route::get('/xe-thue/{id}', [RentalController::class, 'show'])->name('show');
    Route::middleware(['auth'])->post('/xethue', [RentalController::class, 'postOne'])->name('post-one');
    Route::middleware(['auth'])->get('yorental', [RentalController::class, 'yorental'])->name('yorental');

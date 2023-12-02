@@ -5,7 +5,9 @@ use App\Models\Rentalcar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Users;
+use App\Models\SubRental;
 use App\Models\RentalImage;
+
 use App\Http\Requests\MakeRequest;
 use App\Http\Requests\ModelRequest;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +34,8 @@ class AdminController extends Controller
     private $make;
     private $model;
 
+    private $sub_rental;
+
     private $rental_image;
     public $data = [];
     const _PER_PAGE = 10;
@@ -41,6 +45,7 @@ class AdminController extends Controller
         $this->rentalcar = new Rentalcar();
         $this->rental_image = New RentalImage();
         $this->make = New Make();
+       
         $this->model = New Models();
     }
     public function userinfo($id)
@@ -53,6 +58,7 @@ class AdminController extends Controller
         'users' => $users,
     ], $this->data);
     }
+
     public function addMake(Request $request){
         $title = 'Hãng và Model';
         $filters = [];
@@ -554,7 +560,126 @@ public function selectModel(Request $request){
    $make = $request->selectedValue;
    $model = DB::table('model')->Where('id_make', $make)->get();
    return response()->json($model);
-} 
+}
+
+public function subrental(Request $request){
+    $title = 'Danh sách hợp đồng';
+     $filters = [];
+     $keywords = null;
+     if (!empty($request->status)){
+         $status = $request->status; 
+         if ($status == 'active'){
+             $status = 1;
+         }else{
+             $status = 0;
+         }
+
+         $filters[] =  ['rentalcar.status', '=', $status];
+
+  
+     }
+     // if (!empty($request->group_id)){
+     //     $groupId = $request->group_id; 
+     //     $filters[] =  ['users.group_id', '=', $groupId];
+     // }
+
+     if (!empty($request->keywords)){
+         $keywords = $request->keywords;
+          
+     }
+
+     //Xử lý logic sắp xếp
+
+     $sortBy = $request->input('sort-by');
+     
+     $sortType = $request->input('sort-type')?$request->input('sort-type'):'asc'; 
+
+     $allowSort = ['asc', 'desc'];
+
+     if(!empty($sortType)&&in_array($sortType, $allowSort, $sortBy)){
+         if($sortType == 'desc'){
+                     $sortType = 'asc';
+         }else{
+                     $sortType = 'desc';
+          } 
+     }else{
+         $sortType = 'asc';
+     }
+
+     
+     $sortArr = [
+         'sortBy' => $sortBy,
+         'sortType' => $sortType
+     ];
+     
+     
+
+     $rentalcarList = $this->rentalcar->getAllSub($filters, $keywords, $sortArr, self::_PER_PAGE); 
+     $imagelist = $this->rental_image->getAllImage();
+     return view('admin.subrental', compact('title', 'rentalcarList', 'sortType', 'imagelist'));
+}
+public function contract($id){
+    $this->data['title'] = 'Hợp đồng thuê xe';
+    $sub_rental = SubRental::find($id);
+    $users = Users::find($sub_rental->id_user);
+    $dealer = Users::find($sub_rental->id_dealer);
+    $rentalcar = Rentalcar::find($sub_rental->id_car);
+    $province = Province::find($rentalcar->id_province);
+    return view('admin.contract', [
+        'sub_rental' => $sub_rental,
+        'dealer' => $dealer,
+        'rentalcar' => $rentalcar,
+        'users' => $users,
+        'province' => $province
+    ], $this->data);
+ }
+
+ public function togglePay($id_sub){
+
+    // dd($id_sub->route()->middleware());
+     $sub_rental = SubRental::where('id', $id_sub)->first(); // Lấy ra bản ghi cần thao tác
+    
+     if ($sub_rental) {
+         if ($sub_rental->pay == '1') {
+             $sub_rental->pay = '0';
+             $message = 'Đã hủy';
+         } else {
+             $sub_rental->pay = '1';
+             $message = 'Đã chuyển tiền';
+         }
+ 
+         $sub_rental->save(); // Lưu thay đổi
+ 
+          return redirect()->back()->with('success', $message);
+         // return redirect()->route('admin.rentalshow', ['id'=>$carId])->with('success', $message);
+     } else {
+         return redirect()->back()->with('error', 'Không tìm thấy');
+     }
+ 
+ }
+ public function toggleDepo($id_sub){
+
+    // dd($id_sub->route()->middleware());
+     $sub_rental = SubRental::where('id', $id_sub)->first(); // Lấy ra bản ghi cần thao tác
+    
+     if ($sub_rental) {
+         if ($sub_rental->depo == '1') {
+             $sub_rental->depo = '0';
+             $message = 'Đã hủy';
+         } else {
+             $sub_rental->depo = '1';
+             $message = 'Đã chuyển tiền';
+         }
+ 
+         $sub_rental->save(); // Lưu thay đổi
+ 
+          return redirect()->back()->with('success', $message);
+         // return redirect()->route('admin.rentalshow', ['id'=>$carId])->with('success', $message);
+     } else {
+         return redirect()->back()->with('error', 'Không tìm thấy');
+     }
+ 
+ }
 }
 
 
